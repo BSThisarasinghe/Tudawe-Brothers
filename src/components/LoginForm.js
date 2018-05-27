@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, TextInput, Text, Image } from 'react-native';
+import { Alert, View, TextInput, Text, Image } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import Button from './common/Button';
 import Card from './common/Card';
@@ -10,7 +10,8 @@ class LoginForm extends Component {
 
     static navigationOptions =
         {
-            title: 'LoginForm',
+            title: 'Login',
+            headerStyle: { backgroundColor: '#fad815' }
         };
 
     state = { user_email: '', user_password: '', error: '', loading: false };
@@ -41,11 +42,12 @@ class LoginForm extends Component {
 
                 //Then open Profile activity and send user email to profile activity.
                 navigate('Second', { Email: user_email });
-                console.log("Login");
+                this.setState({ loading: false });
 
             }
             else {
                 Alert.alert(responseJson);
+                this.setState({ loading: false });
             }
 
         }).catch((error) => {

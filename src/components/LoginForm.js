@@ -142,7 +142,7 @@ const styles = {
     },
     imageStyle: {
         height: 100,
-        width: 100
+        width: '100%'
     },
     errorStyle: {
         fontSize: 20,

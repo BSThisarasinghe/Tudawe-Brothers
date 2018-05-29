@@ -15,22 +15,28 @@ class ProjectPage extends Component {
             headerRight: <Notification />
         };
 
+    state = { user_email: this.props.navigation.state.params.Email, user_password: '', error: '', loading: false };
+
     goBack() {
         const { navigate } = this.props.navigation;
         navigate('First');
     }
 
+    viewProjects() {
+        const { navigate } = this.props.navigation;
+        navigate('Fourth', { Email: this.state.user_email });
+    }
+
     render() {
-        //const { goBack } = this.props.navigation;
         return (
             <Card>
                 <View style={styles.viewStyle}>
                     <Image source={require('./pics/logo.png')} style={styles.logoStyle} />
                     <Text style={styles.titleStyle}> {this.props.navigation.state.params.Email} </Text>
-                    <Button title="LOGOUT" onPress={this.goBack.bind(this)} style={{ color: '#fad815' }} />
+                    <Button title="LOGOUT" onPress={this.goBack.bind(this)} color= '#fad815' />
                 </View>
                 <View style={styles.containerStyle}>
-                    <TouchableOpacity style={styles.linkStyle}>
+                    <TouchableOpacity style={styles.linkStyle} onPress={this.viewProjects.bind(this)}>
                         <View style={{ width: '20%', height: 50 }}>
                             <Image source={require('./pics/mobitel.png')} style={styles.iconStyle} />
                         </View>
@@ -41,7 +47,7 @@ class ProjectPage extends Component {
                             <Image source={require('./pics/right-arrow.png')} style={styles.arrowStyle} />
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.linkStyle}>
+                    <TouchableOpacity style={styles.linkStyle} onPress={this.viewProjects.bind(this)}>
                         <View style={{ width: '20%', height: 50 }}>
                             <Image source={require('./pics/dialog.png')} style={styles.iconStyle} />
                         </View>
@@ -52,7 +58,7 @@ class ProjectPage extends Component {
                             <Image source={require('./pics/right-arrow.png')} style={styles.arrowStyle} />
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.linkStyle}>
+                    <TouchableOpacity style={styles.linkStyle} onPress={this.viewProjects.bind(this)}>
                         <View style={{ width: '20%', height: 50 }}>
                             <Image source={require('./pics/ezcash.png')} style={styles.iconStyle} />
                         </View>
@@ -63,7 +69,7 @@ class ProjectPage extends Component {
                             <Image source={require('./pics/right-arrow.png')} style={styles.arrowStyle} />
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.linkStyle}>
+                    <TouchableOpacity style={styles.linkStyle} onPress={this.viewProjects.bind(this)}>
                         <View style={{ width: '20%', height: 50 }}>
                             <Image source={require('./pics/airtel.png')} style={styles.iconStyle} />
                         </View>
@@ -74,7 +80,7 @@ class ProjectPage extends Component {
                             <Image source={require('./pics/right-arrow.png')} style={styles.arrowStyle} />
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.linkStyle}>
+                    <TouchableOpacity style={styles.linkStyle} onPress={this.viewProjects.bind(this)}>
                         <View style={{ width: '20%', height: 50 }}>
                             <Image source={require('./pics/recharge.png')} style={styles.iconStyle} />
                         </View>

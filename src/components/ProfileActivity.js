@@ -17,12 +17,12 @@ class ProfileActivity extends Component {
       headerRight: <Notification />
     };
 
-    state = { user_email: this.props.navigation.state.params.Email, user_password: '', error: '', loading: false };
+  state = { user_email: this.props.navigation.state.params.Email, user_password: '', error: '', loading: false };
 
-    viewProjects(){
-      const { navigate } = this.props.navigation;
-      navigate('Third', { Email: this.state.user_email });
-    }
+  viewProjects() {
+    const { navigate } = this.props.navigation;
+    navigate('Third', { Email: this.state.user_email });
+  }
 
   render() {
 
@@ -31,14 +31,14 @@ class ProfileActivity extends Component {
     return (
       <Card>
         <View style={styles.viewStyle}>
-        <Image source={require('./pics/logo.png')} style={styles.logoStyle} />
+          <Image source={require('./pics/logo.png')} style={styles.logoStyle} />
           <Text style={styles.titleStyle}> {this.props.navigation.state.params.Email} </Text>
-          <Button title="LOGOUT" onPress={() => goBack(null)} style={{ color: '#fad815' }} />
+          <Button title="LOGOUT" onPress={() => goBack(null)} color='#fad815' />
         </View>
         <CardSection>
           <View style={{ width: '100%', height: 80, justifyContent: 'center', alignItems: 'center' }}>
             <TouchableOpacity style={styles.buttonStyle} onPress={this.viewProjects.bind(this)}>
-              <View style={{ flexDirection: 'row',justifyContent: 'center', alignItems: 'center' }}>
+              <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                 <Image source={require('./pics/projects.png')} style={styles.imageStyle} />
                 <Text style={styles.textStyle}>Projects</Text>
               </View>
@@ -46,15 +46,15 @@ class ProfileActivity extends Component {
           </View>
         </CardSection>
         <CardSection>
-        <View style={{ width: '100%', height: 80, justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
+          <View style={{ width: '100%', height: 80, justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
             <TouchableOpacity style={styles.buttonStyle}>
-              <View style={{ flexDirection: 'row',justifyContent: 'center', alignItems: 'center' }}>
+              <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                 <Image source={require('./pics/rejected.png')} style={styles.imageStyle} />
                 <Text style={styles.textStyle}>Rejected</Text>
               </View>
             </TouchableOpacity>
             <TouchableOpacity style={styles.buttonStyle}>
-              <View style={{ flexDirection: 'row',justifyContent: 'center', alignItems: 'center' }}>
+              <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                 <Image source={require('./pics/settings.png')} style={styles.imageStyle} />
                 <Text style={styles.textStyle}>Settings</Text>
               </View>
@@ -106,8 +106,8 @@ const styles = {
     height: 40
   },
   logoStyle: {
-      height: '100%',
-      width: 40
+    height: '100%',
+    width: 40
   }
 }
 

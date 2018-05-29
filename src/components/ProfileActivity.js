@@ -30,7 +30,7 @@ class ProfileActivity extends Component {
 
     return (
       <Card>
-        <View style={styles.headerStyle}>
+        <View style={styles.viewStyle}>
         <Image source={require('./pics/logo.png')} style={styles.logoStyle} />
           <Text style={styles.titleStyle}> {this.props.navigation.state.params.Email} </Text>
           <Button title="LOGOUT" onPress={() => goBack(null)} style={{ color: '#fad815' }} />
@@ -68,7 +68,7 @@ class ProfileActivity extends Component {
 }
 
 const styles = {
-  headerStyle: {
+  viewStyle: {
     borderBottomWidth: 1,
     padding: 5,
     backgroundColor: '#fff',

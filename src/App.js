@@ -6,12 +6,16 @@ import LoginForm from './components/LoginForm';
 import ProfileActivity from './components/ProfileActivity';
 import ProjectPage from './components/ProjectPage';
 import ProjectDetails from './components/ProjectDetails';
+import RejectedProjects from './components/RejectedProjects';
+import RejectedProjectsDetails from './components/RejectedProjectsDetails';
 
 const NavigationApp = StackNavigator({
   First: { screen: LoginForm },
   Second: { screen: ProfileActivity },
   Third: { screen: ProjectPage },
-  Fourth: { screen: ProjectDetails }
+  Fourth: { screen: ProjectDetails },
+  Fifth: { screen: RejectedProjects },
+  Sixth: { screen: RejectedProjectsDetails }
 });
 
 export default class App extends React.Component{

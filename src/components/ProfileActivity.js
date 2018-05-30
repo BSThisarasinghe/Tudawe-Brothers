@@ -24,6 +24,11 @@ class ProfileActivity extends Component {
     navigate('Third', { Email: this.state.user_email });
   }
 
+  rejectedProjects() {
+    const { navigate } = this.props.navigation;
+    navigate('Fifth', { Email: this.state.user_email });
+  }
+
   render() {
 
     const { goBack } = this.props.navigation;
@@ -47,7 +52,7 @@ class ProfileActivity extends Component {
         </CardSection>
         <CardSection>
           <View style={{ width: '100%', height: 80, justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
-            <TouchableOpacity style={styles.buttonStyle}>
+            <TouchableOpacity style={styles.buttonStyle} onPress={this.rejectedProjects.bind(this)}>
               <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                 <Image source={require('./pics/rejected.png')} style={styles.imageStyle} />
                 <Text style={styles.textStyle}>Rejected</Text>

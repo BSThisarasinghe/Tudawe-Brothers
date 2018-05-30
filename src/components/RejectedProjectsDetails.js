@@ -7,12 +7,12 @@ import { Spinner } from './common/Spinner';
 import Notification from './common/Notification';
 
 
-class ProjectDetails extends Component {
+class RejectedProjectsDetails extends Component {
 
     // Setting up profile activity title.
     static navigationOptions =
         {
-            title: 'Project Details',
+            title: 'Rejected Project Details',
             headerStyle: { backgroundColor: '#fad815' },
             headerRight: <Notification />
         };
@@ -165,4 +165,4 @@ const styles = {
     }
 }
 
-export default ProjectDetails;
+export default RejectedProjectsDetails;

@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { StyleSheet, TextInput, View, Alert, Button, Text, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, TextInput, View, Alert, Button, Text, TouchableOpacity, Image, AppState, Platform } from 'react-native';
 import { StackNavigator } from 'react-navigation';
+import PushNotification from 'react-native-push-notification';
 import Card from './common/Card';
 import CardSection from './common/CardSection';
 import { Spinner } from './common/Spinner';
 import Notification from './common/Notification';
+import PushController from './PushController';
 
 
 class ProfileActivity extends Component {
@@ -17,7 +19,14 @@ class ProfileActivity extends Component {
       headerRight: <Notification />
     };
 
-  state = { user_email: this.props.navigation.state.params.Email, user_password: '', error: '', loading: false };
+    constructor(props){
+      super(props);
+
+      this.handleAppStateChange = this.handleAppStateChange.bind(this);
+      this.state = { user_email: this.props.navigation.state.params.Email, user_password: '', error: '', loading: false, seconds: 5 };
+    }
+
+  //state = { user_email: this.props.navigation.state.params.Email, user_password: '', error: '', loading: false, seconds: 5 };
 
   viewProjects() {
     const { navigate } = this.props.navigation;
@@ -27,6 +36,29 @@ class ProfileActivity extends Component {
   rejectedProjects() {
     const { navigate } = this.props.navigation;
     navigate('Fifth', { Email: this.state.user_email });
+  }
+
+  componentDidMount(){
+    AppState.addEventListener('change', this.handleAppStateChange);
+  }
+
+  componentWillUnmount(){
+    AppState.removeEventListener('change', this.handleAppStateChange);
+  }
+
+  handleAppStateChange(appState){
+    if(appState === 'background'){
+      let date = new Date(Date.now() + (60 * 1000));
+
+      if(Platform.OS === 'ios'){
+        date = date.toISOString();
+      }
+
+      PushNotification.localNotificationSchedule({
+        message: "My Notification Message", // (required)
+        date, // in 60 secs
+      });
+    }
   }
 
   render() {
@@ -66,6 +98,7 @@ class ProfileActivity extends Component {
             </TouchableOpacity>
           </View>
         </CardSection>
+        <PushController />
       </Card>
     );
   }

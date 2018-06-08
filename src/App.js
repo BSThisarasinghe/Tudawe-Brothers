@@ -8,6 +8,7 @@ import ProjectPage from './components/ProjectPage';
 import ProjectDetails from './components/ProjectDetails';
 import RejectedProjects from './components/RejectedProjects';
 import RejectedProjectsDetails from './components/RejectedProjectsDetails';
+import Settings from './components/Settings';
 
 const NavigationApp = StackNavigator({
   First: { screen: LoginForm },
@@ -15,7 +16,8 @@ const NavigationApp = StackNavigator({
   Third: { screen: ProjectPage },
   Fourth: { screen: ProjectDetails },
   Fifth: { screen: RejectedProjects },
-  Sixth: { screen: RejectedProjectsDetails }
+  Sixth: { screen: RejectedProjectsDetails },
+  Seventh: { screen: Settings }
 });
 
 export default class App extends React.Component{

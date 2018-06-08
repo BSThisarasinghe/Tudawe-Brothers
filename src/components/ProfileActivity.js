@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, TextInput, View, Alert, Button, Text, TouchableOpacity, Image, AppState, Platform } from 'react-native';
+import { StyleSheet, TextInput, View, Alert, Button, Text, TouchableOpacity, Image, AppState, Platform, Picker } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import PushNotification from 'react-native-push-notification';
 import Card from './common/Card';
@@ -7,6 +7,7 @@ import CardSection from './common/CardSection';
 import { Spinner } from './common/Spinner';
 import Notification from './common/Notification';
 import PushController from './PushController';
+import Img from './common/background';
 
 
 class ProfileActivity extends Component {
@@ -14,17 +15,17 @@ class ProfileActivity extends Component {
   // Setting up profile activity title.
   static navigationOptions =
     {
-      title: 'Profile',
+      title: 'Tudawe Brothers(Pvt) Ltd',
       headerStyle: { backgroundColor: '#fad815' },
       headerRight: <Notification />
     };
 
-    constructor(props){
-      super(props);
+  constructor(props) {
+    super(props);
 
-      this.handleAppStateChange = this.handleAppStateChange.bind(this);
-      this.state = { user_email: this.props.navigation.state.params.Email, user_password: '', error: '', loading: false, seconds: 5 };
-    }
+    this.handleAppStateChange = this.handleAppStateChange.bind(this);
+    this.state = { user_email: this.props.navigation.state.params.Email, user_password: '', error: '', loading: false, seconds: 5 };
+  }
 
   //state = { user_email: this.props.navigation.state.params.Email, user_password: '', error: '', loading: false, seconds: 5 };
 
@@ -38,19 +39,24 @@ class ProfileActivity extends Component {
     navigate('Fifth', { Email: this.state.user_email });
   }
 
-  componentDidMount(){
+  settingsView() {
+    const { navigate } = this.props.navigation;
+    navigate('Seventh', { Email: this.state.user_email });
+  }
+
+  componentDidMount() {
     AppState.addEventListener('change', this.handleAppStateChange);
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     AppState.removeEventListener('change', this.handleAppStateChange);
   }
 
-  handleAppStateChange(appState){
-    if(appState === 'background'){
+  handleAppStateChange(appState) {
+    if (appState === 'background') {
       let date = new Date(Date.now() + (60 * 1000));
 
-      if(Platform.OS === 'ios'){
+      if (Platform.OS === 'ios') {
         date = date.toISOString();
       }
 
@@ -61,45 +67,65 @@ class ProfileActivity extends Component {
     }
   }
 
+  goBack() {
+    const { navigate } = this.props.navigation;
+    navigate('First');
+  }
+
+  logoutButton(itemValue) {
+    if (itemValue === "Logout") {
+      { this.goBack() };
+    }
+  }
+
   render() {
 
-    const { goBack } = this.props.navigation;
-
     return (
-      <Card>
+      <View style={{ flex: 1 }}>
+        <Img />
         <View style={styles.viewStyle}>
-          <Image source={require('./pics/logo.png')} style={styles.logoStyle} />
-          <Text style={styles.titleStyle}> {this.props.navigation.state.params.Email} </Text>
-          <Button title="LOGOUT" onPress={() => goBack(null)} color='#fad815' />
+          <View style={{ height: 30, width: 100, backgroundColor: '#fff' }}>
+            <Picker
+              selectedValue={this.state.user_email}
+              style={{ height: 30, width: 100 }}
+              mode='dropdown'
+              onValueChange={(itemValue, itemIndex) => this.logoutButton(itemValue)}>
+              <Picker.Item label={this.state.user_email} value="" />
+              <Picker.Item label="Logout" value="Logout" />
+            </Picker>
+          </View>
         </View>
-        <CardSection>
-          <View style={{ width: '100%', height: 80, justifyContent: 'center', alignItems: 'center' }}>
+        <Card>
+          <View style={{ width: '100%', height: 100, justifyContent: 'center', alignItems: 'center', flexDirection: 'row', marginBottom: 10 }}>
             <TouchableOpacity style={styles.buttonStyle} onPress={this.viewProjects.bind(this)}>
-              <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+              <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', paddingTop: 20 }}>
                 <Image source={require('./pics/projects.png')} style={styles.imageStyle} />
                 <Text style={styles.textStyle}>Projects</Text>
               </View>
             </TouchableOpacity>
-          </View>
-        </CardSection>
-        <CardSection>
-          <View style={{ width: '100%', height: 80, justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
             <TouchableOpacity style={styles.buttonStyle} onPress={this.rejectedProjects.bind(this)}>
-              <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+              <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', paddingTop: 20 }}>
                 <Image source={require('./pics/rejected.png')} style={styles.imageStyle} />
                 <Text style={styles.textStyle}>Rejected</Text>
               </View>
             </TouchableOpacity>
+          </View>
+          <View style={{ width: '100%', height: 100, justifyContent: 'center', alignItems: 'center', flexDirection: 'row', marginBottom: 10 }}>
             <TouchableOpacity style={styles.buttonStyle}>
-              <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+              <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', paddingTop: 20 }}>
+                <Image source={require('./pics/approved.png')} style={styles.imageStyle} />
+                <Text style={styles.textStyle}>Approved</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.buttonStyle} onPress={this.settingsView.bind(this)}>
+              <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', paddingTop: 20 }}>
                 <Image source={require('./pics/settings.png')} style={styles.imageStyle} />
                 <Text style={styles.textStyle}>Settings</Text>
               </View>
             </TouchableOpacity>
           </View>
-        </CardSection>
-        <PushController />
-      </Card>
+        </Card>
+      </View>
     );
   }
 
@@ -107,14 +133,10 @@ class ProfileActivity extends Component {
 
 const styles = {
   viewStyle: {
-    borderBottomWidth: 1,
     padding: 5,
-    backgroundColor: '#fff',
     justifyContent: 'flex-start',
     alignItems: 'flex-end',
-    flexDirection: 'row',
-    borderColor: '#ddd',
-    position: 'relative'
+    marginBottom: '30%'
   },
   titleStyle: {
     fontSize: 20,
@@ -127,10 +149,10 @@ const styles = {
     fontWeight: 'bold',
     paddingLeft: 20,
     flex: 1,
-    color: '#000'
+    color: '#fff'
   },
   buttonStyle: {
-    backgroundColor: '#fad815',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
     flex: 1,
     height: '100%',
     borderRadius: 5,

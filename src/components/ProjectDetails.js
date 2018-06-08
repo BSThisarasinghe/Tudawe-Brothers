@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { StyleSheet, TextInput, View, Alert, Button, Text, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, TextInput, View, Alert, Button, Text, TouchableOpacity, Image, Picker, ScrollView, TouchableHighlight } from 'react-native';
 import { StackNavigator } from 'react-navigation';
+import EditableText from 'react-native-inline-edit';
 import Card from './common/Card';
 import CardSection from './common/CardSection';
 import { Spinner } from './common/Spinner';
@@ -17,58 +18,170 @@ class ProjectDetails extends Component {
             headerRight: <Notification />
         };
 
-    state = { user_email: this.props.navigation.state.params.Email, user_password: '', error: '', loading: false, text: '' };
+    state = {
+        user_email: this.props.navigation.state.params.Email,
+        user_password: '',
+        error: '',
+        loading: false,
+        text: '',
+        item_code: 'Item Value',
+        des: 'Description',
+        editable: false,
+        editable1: false,
+        editable2: false
+    };
 
     goBack() {
         const { navigate } = this.props.navigation;
         navigate('First');
     }
 
-    render() {
+    logoutButton(itemValue) {
+        if (itemValue === "Logout") {
+            { this.goBack() }
+        }
+    }
 
-        const { goBack } = this.props.navigation;
+    onFocus() {
+        //this.setState({ editable: true });
+        console.log("Edit");
+    }
 
+    onFocus1() {
+        // this.setState({ editable1: true });
+        console.log("Edit1");
+    }
+
+    onFocus2() {
+        // this.setState({ editable2: true });
+        console.log("Edit2");
+    }
+
+    onBlur() {
+        this.setState({ editable: false });
+        // console.log("Edit");
+    }
+
+    tableView() {
         return (
-            <Card>
-                <View style={styles.viewStyle}>
-                    <Image source={require('./pics/logo.png')} style={styles.logoStyle} />
-                    <Text style={styles.titleStyle}> {this.props.navigation.state.params.Email} </Text>
-                    <Button title="LOGOUT" onPress={this.goBack.bind(this)} color='#fad815' />
+            <View style={{ flex: 1, flexDirection: 'column', borderWidth: 1, marginBottom: 10 }}>
+                <View style={{ flex: 1, flexDirection: 'row', height: 40 }}>
+                    <View style={{ flex: 1, borderWidth: 1 }}>
+                        <Text>Item Code</Text>
+                    </View>
+                    <View style={{ flex: 1, borderWidth: 1 }}>
+                        <EditableText
+                            text={'textOfTheField'} //required
+                            sendText={this.onFocus.bind(this)} //required
+                        />
+                    </View>
                 </View>
+                <View style={{ flex: 1, flexDirection: 'row', height: 40 }}>
+                    <View style={{ flex: 1, borderWidth: 1 }}>
+                        <Text>Destriction</Text>
+                    </View>
+                    <View style={{ flex: 1, borderWidth: 1 }}>
+                        <EditableText
+                            text={'textOfTheField122'} //required
+                            sendText={this.onFocus1.bind(this)} //required
+                        />
+                    </View>
+                </View>
+                <View style={{ flex: 1, flexDirection: 'row', height: 40 }}>
+                    <View style={{ flex: 1, borderWidth: 1 }}>
+                        <Text>Delivery Date</Text>
+                    </View>
+                    <View style={{ flex: 1, borderWidth: 1 }}>
+                        <EditableText
+                            text={'textOfTheFie2'} //required
+                            sendText={this.onFocus2.bind(this)} //required
+                        />
+                    </View>
+                </View>
+            </View>
+        );
+    }
+
+    render() {
+        return (
+            <ScrollView>
                 <Card>
-                    <CardSection>
-                        <Image source={require('./pics/dialog.png')} style={styles.iconStyle} />
-                        <Text style={styles.titleStyle}>Dialog Selfcare</Text>
-                    </CardSection>
-                    <CardSection>
-                        <View style={{ width: '50%' }}>
-                            <Text style={styles.textBoldStyle}>Start Date: </Text>
+                    <View style={styles.viewStyle}>
+                        <View style={{ height: 30, width: 100, backgroundColor: '#fff' }}>
+                            <Picker
+                                selectedValue={this.state.user_email}
+                                style={{ height: 30, width: 100 }}
+                                mode='dropdown'
+                                onValueChange={(itemValue, itemIndex) => this.logoutButton(itemValue)}>
+                                <Picker.Item label={this.state.user_email} value="" />
+                                <Picker.Item label="Logout" value="Logout" />
+                            </Picker>
                         </View>
-                        <View style={{ width: '50%' }}>
-                            <Text style={styles.textStyle}>Sep 15, 2015</Text>
+                    </View>
+                    <View style={styles.containerStyle}>
+                        <Text style={styles.titleStyle}>Material Requisition</Text>
+                    </View>
+                    <View style={styles.cardStyle}>
+                        <View style={{ width: '35%' }}>
+                            <Text style={styles.textBoldStyle}>Project Name: </Text>
                         </View>
-                    </CardSection>
-                    <CardSection>
-                        <View style={{ width: '50%' }}>
-                            <Text style={styles.textBoldStyle}>Start Date: </Text>
+                        <View style={{ width: '65%' }}>
+                            <Text style={styles.textStyle}>Something</Text>
                         </View>
-                        <View style={{ width: '50%' }}>
-                            <Text style={styles.textStyle}>Sep 15, 2016</Text>
+                    </View>
+                    <View style={styles.cardStyle}>
+                        <View style={{ width: '35%' }}>
+                            <Text style={styles.textBoldStyle}>MRN No: </Text>
                         </View>
-                    </CardSection>
-                    <CardSection>
-                        <View style={{ width: '50%' }}>
-                            <Text style={styles.textBoldStyle}>Company: </Text>
+                        <View style={{ width: '65%' }}>
+                            <Text style={styles.textStyle}>Something</Text>
                         </View>
-                        <View style={{ width: '50%' }}>
-                            <Text style={styles.textStyle}>Dilog Axiata PLC</Text>
+                    </View>
+                    <View style={styles.cardStyle}>
+                        <View style={{ width: '35%' }}>
+                            <Text style={styles.textBoldStyle}>MRN Date: </Text>
                         </View>
-                    </CardSection>
-                    <CardSection>
-                        <View style={{ width: '50%', height: 50 }}>
-                            <Text style={styles.textBoldStyle}>Note: </Text>
+                        <View style={{ width: '65%' }}>
+                            <Text style={styles.textStyle}>Something</Text>
                         </View>
-                        <View style={{ width: '50%', height: 50 }}>
+                    </View>
+                    <View style={styles.cardStyle}>
+                        <View style={{ width: '35%' }}>
+                            <Text style={styles.textBoldStyle}>Prepared By: </Text>
+                        </View>
+                        <View style={{ width: '65%' }}>
+                            <Text style={styles.textStyle}>Something</Text>
+                        </View>
+                    </View>
+                    <View style={styles.cardStyle}>
+                        <View style={{ width: '35%' }}>
+                            <Text style={styles.textBoldStyle}>Site Eng/Mgr: </Text>
+                        </View>
+                        <View style={{ width: '65%' }}>
+                            <Text style={styles.textStyle}>Something</Text>
+                        </View>
+                    </View>
+                    <View style={styles.cardStyle}>
+                        <View style={{ width: '35%' }}>
+                            <Text style={styles.textBoldStyle}>Coordinator: </Text>
+                        </View>
+                        <View style={{ width: '65%' }}>
+                            <Text style={styles.textStyle}>Something</Text>
+                        </View>
+                    </View>
+                    <View style={styles.cardStyle}>
+                        <View style={{ width: '35%' }}>
+                            <Text style={styles.textBoldStyle}>Site QS: </Text>
+                        </View>
+                        <View style={{ width: '65%' }}>
+                            <Text style={styles.textStyle}>Something</Text>
+                        </View>
+                    </View>
+                    <View style={styles.cardStyle}>
+                        <View style={{ width: '35%', height: 50 }}>
+                            <Text style={styles.textBoldStyle}>Remarks: </Text>
+                        </View>
+                        <View style={{ width: '65%', height: 50 }}>
                             <TextInput
                                 multiline={true}
                                 numberOfLines={4}
@@ -79,21 +192,30 @@ class ProjectDetails extends Component {
                                 style={styles.inputStyle}
                             />
                         </View>
-                    </CardSection>
-                    <CardSection>
-                        <View style={{ width: '50%', height: 35 }}>
+                    </View>
+                    <View style={{ flex: 1, flexDirection: 'row' }}>
+                        <View style={{ flex: 1, flexDirection: 'row' }}>
                             <TouchableOpacity style={styles.approveStyle}>
                                 <Text style={styles.titleStyle}>APPROVE</Text>
                             </TouchableOpacity>
                         </View>
-                        <View style={{ width: '50%', height: 35 }}>
+                        <View style={{ flex: 1, flexDirection: 'row' }}>
+                            <TouchableOpacity style={styles.cancelStyle}>
+                                <Text style={styles.titleStyle}>CANCEL</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={{ flex: 1, flexDirection: 'row' }}>
                             <TouchableOpacity style={styles.rejectStyle}>
                                 <Text style={styles.titleStyle}>REJECT</Text>
                             </TouchableOpacity>
                         </View>
-                    </CardSection>
+                    </View>
+                    <View style={styles.container}>
+                        {this.tableView()}
+                        {this.tableView()}
+                    </View>
                 </Card>
-            </Card>
+            </ScrollView>
         );
     }
 
@@ -101,21 +223,15 @@ class ProjectDetails extends Component {
 
 const styles = {
     viewStyle: {
-        borderBottomWidth: 1,
         padding: 5,
-        backgroundColor: '#fff',
         justifyContent: 'flex-start',
         alignItems: 'flex-end',
-        flexDirection: 'row',
-        borderColor: '#ddd',
-        position: 'relative',
-        marginBottom: 50
+        marginBottom: 20
     },
     titleStyle: {
         fontSize: 20,
-        paddingLeft: 20,
-        flex: 1,
-        color: '#000'
+        color: '#000',
+        fontWeight: 'bold'
     },
     logoStyle: {
         height: '100%',
@@ -144,10 +260,22 @@ const styles = {
         alignSelf: 'stretch',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#169bd4',
+        backgroundColor: '#1DC737',
         borderRadius: 5,
         borderWidth: 2,
-        borderColor: '#169bd4',
+        borderColor: '#1DC737',
+        marginLeft: 5,
+        marginRight: 5
+    },
+    cancelStyle: {
+        flex: 1,
+        alignSelf: 'stretch',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#D3CA0C',
+        borderRadius: 5,
+        borderWidth: 2,
+        borderColor: '#D3CA0C',
         marginLeft: 5,
         marginRight: 5
     },
@@ -156,13 +284,34 @@ const styles = {
         alignSelf: 'stretch',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#fff',
+        backgroundColor: '#F22D1D',
         borderRadius: 5,
         borderWidth: 2,
-        borderColor: '#169bd4',
+        borderColor: '#F22D1D',
         marginLeft: 5,
         marginRight: 5
-    }
+    },
+    containerStyle: {
+        padding: 5,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    cardStyle: {
+        marginTop: 20,
+        padding: 5,
+        marginLeft: 20,
+        marginRight: 20,
+        justifyContent: 'flex-start',
+        flexDirection: 'row',
+        //borderColor: '#ddd',
+        position: 'relative',
+    },
+    container: {
+        flex: 1,
+        padding: 16,
+        paddingTop: 30,
+        backgroundColor: '#fff'
+    },
 }
 
 export default ProjectDetails;

@@ -8,17 +8,17 @@ import { Spinner } from './common/Spinner';
 import Notification from './common/Notification';
 
 
-class RejectedProjectsDetails extends Component {
+class ApprovedProjectsDetails extends Component {
 
     // Setting up profile activity title.
     static navigationOptions =
         {
-            title: 'Rejected Project Details',
+            title: 'Approved Project Details',
             headerStyle: { backgroundColor: '#fad815' },
             headerRight: <Notification />
         };
 
-    state = { 
+    state = {
         user_email: this.props.navigation.state.params.Email,
         user_password: '',
         error: '',
@@ -103,9 +103,6 @@ class RejectedProjectsDetails extends Component {
     }
 
     render() {
-
-        const { goBack } = this.props.navigation;
-
         return (
             <ScrollView>
                 <Card>
@@ -314,7 +311,7 @@ const styles = {
         padding: 16,
         paddingTop: 30,
         backgroundColor: '#fff'
-    }
+    },
 }
 
-export default RejectedProjectsDetails;
+export default ApprovedProjectsDetails;

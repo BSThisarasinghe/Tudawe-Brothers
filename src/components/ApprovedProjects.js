@@ -7,11 +7,11 @@ import CardSection from './common/CardSection';
 import Img from './common/background';
 import { Spinner } from './common/Spinner';
 
-class ProjectPage extends Component {
+class ApprovedProjects extends Component {
 
     static navigationOptions =
         {
-            title: 'Projects',
+            title: 'Approved Projects',
             headerStyle: { backgroundColor: '#fad815' },
             headerRight: <Notification />
         };
@@ -41,7 +41,7 @@ class ProjectPage extends Component {
         const { user_email, user_password } = this.state;
         console.log(user_email);
         const { navigate } = this.props.navigation;
-        navigate('Fourth', { Email: user_email }, { job_code: item });
+        navigate('Ninth', { Email: user_email }, { job_code: item });
         fetch('http://bsthisarasinghe-001-site1.1tempurl.com/index.php', {
             method: 'POST',
             headers: {
@@ -177,4 +177,4 @@ const styles = {
     }
 }
 
-export default ProjectPage;
+export default ApprovedProjects;

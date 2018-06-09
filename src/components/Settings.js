@@ -18,7 +18,14 @@ class Settings extends Component {
             headerRight: <Notification />
         };
 
-    state = { user_email: this.props.navigation.state.params.Email, user_password: '', error: '', loading: false };
+    state = {
+        user_email: this.props.navigation.state.params.Email,
+        cur_pwd: '',
+        new_pwd: '',
+        con_pwd: '',
+        error: '',
+        loading: false
+    };
 
     goBack() {
         const { navigate } = this.props.navigation;
@@ -29,6 +36,35 @@ class Settings extends Component {
         if (itemValue === "Logout") {
             { this.goBack() };
         }
+    }
+
+    onButtonPress() {
+        const { cur_pwd, new_pwd, con_pwd } = this.state;
+        const { navigate } = this.props.navigation;
+        this.setState({ error: '', loading: true });
+        //console.log(email);
+
+        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/changePassword.php', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                cur_pwd: cur_pwd,
+                new_pwd: new_pwd,
+                con_pwd: con_pwd
+            })
+
+        }).then((response) => response.json())
+            .then((responseJson) => {
+                Alert.alert(responseJson);
+                this.setState({ loading: false });
+            }).catch((error) => {
+                //console.error(error);
+                Alert.alert("No internet connection");
+                this.setState({ loading: false });
+            });
     }
 
     render() {
@@ -58,8 +94,8 @@ class Settings extends Component {
                                 placeholder="Current Password"
                                 //placeholderTextColor="#fff"
                                 autoCorrect={false}
-                                onChangeText={user_password => this.setState({ user_password })}
-                                value={this.state.user_password}
+                                onChangeText={cur_pwd => this.setState({ cur_pwd })}
+                                value={this.state.cur_pwd}
                                 style={styles.inputStyle}
                                 underlineColorAndroid='transparent'
                             //inlineImageLeft='search_icon'
@@ -71,8 +107,8 @@ class Settings extends Component {
                                 placeholder="New Password"
                                 //placeholderTextColor="#fff"
                                 autoCorrect={false}
-                                onChangeText={user_password => this.setState({ user_password })}
-                                value={this.state.user_password}
+                                onChangeText={new_pwd => this.setState({ new_pwd })}
+                                value={this.state.new_pwd}
                                 style={styles.inputStyle}
                                 underlineColorAndroid='transparent'
                             />
@@ -83,14 +119,14 @@ class Settings extends Component {
                                 placeholder="Confirm Password"
                                 //placeholderTextColor="#fff"
                                 autoCorrect={false}
-                                onChangeText={user_password => this.setState({ user_password })}
-                                value={this.state.user_password}
+                                onChangeText={con_pwd => this.setState({ con_pwd })}
+                                value={this.state.con_pwd}
                                 style={styles.inputStyle}
                                 underlineColorAndroid='transparent'
                             />
                         </View>
                         <View style={styles.mainStyle}>
-                            <TouchableOpacity style={styles.buttonStyle}>
+                            <TouchableOpacity style={styles.buttonStyle} onPress={this.onButtonPress.bind(this)}>
                                 <Text style={styles.textStyle}>CHANGE PASSWORD</Text>
                             </TouchableOpacity>
                         </View>

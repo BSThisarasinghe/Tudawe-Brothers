@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, TouchableOpacity, View, Image, Button, Picker, FlatList } from 'react-native';
+import { Alert, Text, TouchableOpacity, View, Image, Button, Picker, FlatList } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import Notification from './common/Notification';
 import Card from './common/Card';
@@ -51,6 +51,7 @@ class RejectedProjects extends Component {
                 console.log(responseJson);
             }).catch((error) => {
                 console.error(error);
+                Alert.alert("No internet connection");
             });
     }
 
@@ -72,7 +73,7 @@ class RejectedProjects extends Component {
         fetch('http://bsthisarasinghe-001-site1.1tempurl.com/projects.php')
             .then((response) => response.json())
             .then((responseJson) => {
-                //console.log(responseJson.results);
+                console.log(responseJson.results);
                 this.setState({ package: responseJson.results });
             }).catch((error) => {
                 //console.error(error);

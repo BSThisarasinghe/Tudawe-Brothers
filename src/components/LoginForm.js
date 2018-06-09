@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, View, TextInput, Text, Image } from 'react-native';
+import { Alert, View, TextInput, Text, Image, YellowBox } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import Button from './common/Button';
 import Card from './common/Card';
@@ -53,9 +53,14 @@ class LoginForm extends Component {
 
             }).catch((error) => {
                 //console.error(error);
-               Alert.alert("No internet connection");
+                // Alert.alert(error);
+                Alert.alert("No internet connection");
                 this.setState({ loading: false });
             });
+    }
+
+    componentWillMount() {
+        YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated']);
     }
 
     renderButton() {
@@ -134,7 +139,7 @@ const styles = {
         fontSize: 18,
         lineHeight: 23,
         flex: 2
-       // borderBottomColor: 'transparent'
+        // borderBottomColor: 'transparent'
         //backgroundColor: 'transparent'
     },
     labelStyle: {

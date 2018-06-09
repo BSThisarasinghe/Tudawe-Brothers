@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, TextInput, View, Alert, Button, Text, TouchableOpacity, Image, Picker, ScrollView, TouchableHighlight } from 'react-native';
+import { StyleSheet, TextInput, View, Alert, Button, Text, TouchableOpacity, Image, Picker, ScrollView } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import EditableText from 'react-native-inline-edit';
 import Card from './common/Card';

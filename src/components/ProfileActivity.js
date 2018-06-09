@@ -35,8 +35,15 @@ class ProfileActivity extends Component {
   }
 
   rejectedProjects() {
+    // console.log("Working");
     const { navigate } = this.props.navigation;
     navigate('Fifth', { Email: this.state.user_email });
+  }
+
+  approvedProjects() {
+    // console.log("Working");
+    const { navigate } = this.props.navigation;
+    navigate('Eighth', { Email: this.state.user_email });
   }
 
   settingsView() {
@@ -111,7 +118,7 @@ class ProfileActivity extends Component {
             </TouchableOpacity>
           </View>
           <View style={{ width: '100%', height: 100, justifyContent: 'center', alignItems: 'center', flexDirection: 'row', marginBottom: 10 }}>
-            <TouchableOpacity style={styles.buttonStyle}>
+            <TouchableOpacity style={styles.buttonStyle} onPress={this.approvedProjects.bind(this)}>
               <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', paddingTop: 20 }}>
                 <Image source={require('./pics/approved.png')} style={styles.imageStyle} />
                 <Text style={styles.textStyle}>Approved</Text>

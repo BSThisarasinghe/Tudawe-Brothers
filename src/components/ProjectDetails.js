@@ -22,7 +22,7 @@ class ProjectDetails extends Component {
         user_email: this.props.navigation.state.params.code,
         user_password: '',
         error: '',
-        loading: false,
+        loading: true,
         text: '',
         item_code: 'Item Value',
         des: 'Description',
@@ -80,7 +80,10 @@ class ProjectDetails extends Component {
         }).then((response) => response.json())
             .then((responseJson) => {
                 // console.log(responseJson);
-                this.setState({ data: responseJson.results });
+                // this.setState({ data: responseJson.results });
+                this.setState({ data: responseJson.results }, function () {
+                    this.setState({ loading: false });
+                });
                 // If server response message same as Data Matched
 
             }).catch((error) => {
@@ -88,12 +91,138 @@ class ProjectDetails extends Component {
                 // Alert.alert(error);
                 Alert.alert("No internet connection");
                 this.setState({ loading: false });
-            });     
+            });
     }
 
-    // componentDidMount(){
-    //     this.setState({ Job_Name: this.state.data[0].Job_Name });
-    // }
+    completeView() {
+        if (this.state.loading) {
+            return (
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    <Spinner size="large" spinnerStyle={styles.spinnerStyle} />
+                </View>
+            );
+        }
+        return (
+            <Card>
+                {/* <View style={styles.viewStyle}>
+                <View style={{ height: 30, width: 100, backgroundColor: '#fff' }}>
+                    <Picker
+                        selectedValue={this.state.user_email}
+                        style={{ height: 30, width: 100 }}
+                        mode='dropdown'
+                        onValueChange={(itemValue, itemIndex) => this.logoutButton(itemValue)}>
+                        <Picker.Item label={this.state.user_email} value="" />
+                        <Picker.Item label="Logout" value="Logout" />
+                    </Picker>
+                </View>
+            </View> */}
+                <View style={styles.containerStyle}>
+                    <Text style={styles.titleStyle}>Material Requisition</Text>
+                </View>
+                <View style={styles.cardStyle}>
+                    <View style={{ width: '35%' }}>
+                        <Text style={styles.textBoldStyle}>Project Name: </Text>
+                    </View>
+                    <View style={{ width: '65%' }}>
+                        <Text style={styles.textStyle}>{this.state.data[0].Job_Name}</Text>
+                    </View>
+                </View>
+                <View style={styles.cardStyle}>
+                    <View style={{ width: '35%' }}>
+                        <Text style={styles.textBoldStyle}>SRN No: </Text>
+                    </View>
+                    <View style={{ width: '65%' }}>
+                        <Text style={styles.textStyle}>{this.state.data[0].SRN_No}</Text>
+                    </View>
+                </View>
+                <View style={styles.cardStyle}>
+                    <View style={{ width: '35%' }}>
+                        <Text style={styles.textBoldStyle}>SRN Date: </Text>
+                    </View>
+                    <View style={{ width: '65%' }}>
+                        <Text style={styles.textStyle}>{this.state.data[0].SRN_Date.date}</Text>
+                    </View>
+                </View>
+                <View style={styles.cardStyle}>
+                    <View style={{ width: '35%' }}>
+                        <Text style={styles.textBoldStyle}>Prepared By: </Text>
+                    </View>
+                    <View style={{ width: '65%' }}>
+                        <Text style={styles.textStyle}>{this.state.data[0].FLevel}</Text>
+                    </View>
+                </View>
+                <View style={styles.cardStyle}>
+                    <View style={{ width: '35%' }}>
+                        <Text style={styles.textBoldStyle}>Site Eng/Mgr: </Text>
+                    </View>
+                    <View style={{ width: '65%' }}>
+                        <Text style={styles.textStyle}>{this.state.data[0].SLevel}</Text>
+                    </View>
+                </View>
+                <View style={styles.cardStyle}>
+                    <View style={{ width: '35%' }}>
+                        <Text style={styles.textBoldStyle}>Coordinator: </Text>
+                    </View>
+                    <View style={{ width: '65%' }}>
+                        <Text style={styles.textStyle}>{this.state.data[0].TLevel}</Text>
+                    </View>
+                </View>
+                <View style={styles.cardStyle}>
+                    <View style={{ width: '35%' }}>
+                        <Text style={styles.textBoldStyle}>Site QS: </Text>
+                    </View>
+                    <View style={{ width: '65%' }}>
+                        <Text style={styles.textStyle}>{this.state.data[0].FLevel}</Text>
+                    </View>
+                </View>
+                <View style={styles.cardStyle}>
+                    <View style={{ width: '35%' }}>
+                        <Text style={styles.textBoldStyle}>Remarks: </Text>
+                    </View>
+                    <View style={{ width: '65%' }}>
+                        <Text style={styles.textStyle}>{this.state.data[0].Remarks}</Text>
+                    </View>
+                </View>
+                <View style={styles.cardStyle}>
+                    <View style={{ width: '35%', height: 50 }}>
+                        <Text style={styles.textBoldStyle}>Note: </Text>
+                    </View>
+                    <View style={{ width: '65%', height: 50 }}>
+                        <TextInput
+                            multiline={true}
+                            numberOfLines={4}
+                            autoCorrect={true}
+                            onChangeText={text => this.setState({ text })}
+                            value={this.state.text}
+                            placeholder="Enter a note"
+                            style={styles.inputStyle}
+                        />
+                    </View>
+                </View>
+                <View style={{ flex: 1, flexDirection: 'row' }}>
+                    <View style={{ flex: 1, flexDirection: 'row' }}>
+                        <TouchableOpacity style={styles.approveStyle}>
+                            <Text style={styles.titleStyle}>APPROVE</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={{ flex: 1, flexDirection: 'row' }}>
+                        <TouchableOpacity style={styles.cancelStyle}>
+                            <Text style={styles.titleStyle}>CANCEL</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={{ flex: 1, flexDirection: 'row' }}>
+                        <TouchableOpacity style={styles.rejectStyle}>
+                            <Text style={styles.titleStyle}>REJECT</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+                <View style={styles.container}>
+                    {this.tableView()}
+                    {this.tableView()}
+                </View>
+            </Card>
+        );
+    }
 
     tableView() {
         return (
@@ -138,116 +267,7 @@ class ProjectDetails extends Component {
     render() {
         return (
             <ScrollView>
-                <Card>
-                    {/* <View style={styles.viewStyle}>
-                        <View style={{ height: 30, width: 100, backgroundColor: '#fff' }}>
-                            <Picker
-                                selectedValue={this.state.user_email}
-                                style={{ height: 30, width: 100 }}
-                                mode='dropdown'
-                                onValueChange={(itemValue, itemIndex) => this.logoutButton(itemValue)}>
-                                <Picker.Item label={this.state.user_email} value="" />
-                                <Picker.Item label="Logout" value="Logout" />
-                            </Picker>
-                        </View>
-                    </View> */}
-                    <View style={styles.containerStyle}>
-                        <Text style={styles.titleStyle}>Material Requisition</Text>
-                    </View>
-                    <View style={styles.cardStyle}>
-                        <View style={{ width: '35%' }}>
-                            <Text style={styles.textBoldStyle}>Project Name: </Text>
-                        </View>
-                        <View style={{ width: '65%' }}>
-                            <Text style={styles.textStyle}>Something</Text>
-                        </View>
-                    </View>
-                    <View style={styles.cardStyle}>
-                        <View style={{ width: '35%' }}>
-                            <Text style={styles.textBoldStyle}>MRN No: </Text>
-                        </View>
-                        <View style={{ width: '65%' }}>
-                            <Text style={styles.textStyle}>Something</Text>
-                        </View>
-                    </View>
-                    <View style={styles.cardStyle}>
-                        <View style={{ width: '35%' }}>
-                            <Text style={styles.textBoldStyle}>MRN Date: </Text>
-                        </View>
-                        <View style={{ width: '65%' }}>
-                            <Text style={styles.textStyle}>Something</Text>
-                        </View>
-                    </View>
-                    <View style={styles.cardStyle}>
-                        <View style={{ width: '35%' }}>
-                            <Text style={styles.textBoldStyle}>Prepared By: </Text>
-                        </View>
-                        <View style={{ width: '65%' }}>
-                            <Text style={styles.textStyle}>Something</Text>
-                        </View>
-                    </View>
-                    <View style={styles.cardStyle}>
-                        <View style={{ width: '35%' }}>
-                            <Text style={styles.textBoldStyle}>Site Eng/Mgr: </Text>
-                        </View>
-                        <View style={{ width: '65%' }}>
-                            <Text style={styles.textStyle}>Something</Text>
-                        </View>
-                    </View>
-                    <View style={styles.cardStyle}>
-                        <View style={{ width: '35%' }}>
-                            <Text style={styles.textBoldStyle}>Coordinator: </Text>
-                        </View>
-                        <View style={{ width: '65%' }}>
-                            <Text style={styles.textStyle}>Something</Text>
-                        </View>
-                    </View>
-                    <View style={styles.cardStyle}>
-                        <View style={{ width: '35%' }}>
-                            <Text style={styles.textBoldStyle}>Site QS: </Text>
-                        </View>
-                        <View style={{ width: '65%' }}>
-                            <Text style={styles.textStyle}>Something</Text>
-                        </View>
-                    </View>
-                    <View style={styles.cardStyle}>
-                        <View style={{ width: '35%', height: 50 }}>
-                            <Text style={styles.textBoldStyle}>Remarks: </Text>
-                        </View>
-                        <View style={{ width: '65%', height: 50 }}>
-                            <TextInput
-                                multiline={true}
-                                numberOfLines={4}
-                                autoCorrect={true}
-                                onChangeText={text => this.setState({ text })}
-                                value={this.state.text}
-                                placeholder="Enter a note"
-                                style={styles.inputStyle}
-                            />
-                        </View>
-                    </View>
-                    <View style={{ flex: 1, flexDirection: 'row' }}>
-                        <View style={{ flex: 1, flexDirection: 'row' }}>
-                            <TouchableOpacity style={styles.approveStyle}>
-                                <Text style={styles.titleStyle}>APPROVE</Text>
-                            </TouchableOpacity>
-                        </View>
-                        <View style={{ flex: 1, flexDirection: 'row' }}>
-                            <TouchableOpacity style={styles.cancelStyle}>
-                                <Text style={styles.titleStyle}>CANCEL</Text>
-                            </TouchableOpacity>
-                        </View>
-                        <View style={{ flex: 1, flexDirection: 'row' }}>
-                            <TouchableOpacity style={styles.rejectStyle}>
-                                <Text style={styles.titleStyle}>REJECT</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                    <View style={styles.container}>
-                        {this.tableView()}
-                        {this.tableView()}
-                    </View>
-                </Card>
+                {this.completeView()}
             </ScrollView>
         );
     }
@@ -345,6 +365,16 @@ const styles = {
         paddingTop: 30,
         backgroundColor: '#fff'
     },
+    spinnerStyle: {
+        flex: 1,
+        alignSelf: 'stretch',
+        borderRadius: 5,
+        marginLeft: 20,
+        marginRight: 20,
+        borderRadius: 60,
+        paddingTop: 10,
+        paddingBottom: 10
+    }
 }
 
 export default ProjectDetails;

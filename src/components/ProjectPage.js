@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Alert, Text, TouchableOpacity, View, Image, Button, Picker, FlatList } from 'react-native';
 import { StackNavigator } from 'react-navigation';
+import ModalDropdown from 'react-native-modal-dropdown';
 import Notification from './common/Notification';
 import Card from './common/Card';
 import CardSection from './common/CardSection';
@@ -24,6 +25,8 @@ class ProjectPage extends Component {
         loading: false,
         itemVal: 0,
         package: [],
+        dropDownData: ['1st Layer', '2nd Layer', '3rd Layer', '4th Layer'],
+        level: 'Select Level'
     };
 
     goBack() {
@@ -59,6 +62,12 @@ class ProjectPage extends Component {
         </TouchableOpacity>
     )
 
+    onSelectOpt(idx, value) {
+        this.setState({
+            level: value
+        });
+    }
+
     componentWillMount() {
         fetch('http://bsthisarasinghe-001-site1.1tempurl.com/projects.php')
             .then((response) => response.json())
@@ -90,6 +99,21 @@ class ProjectPage extends Component {
                             </Picker>
                         </View>
                     </View>
+                    <View style={styles.containerStyle1}>
+                        <ModalDropdown options={this.state.dropDownData} onSelect={(idx, value) => this.onSelectOpt(idx, value)} style={{ width: '100%', backgroundColor: 'rgba(255,255,255,0.8)', height: 30, justifyContent: 'center', paddingLeft: 20 }} dropdownStyle={{ width: '80%', height: 100 }} dropdownTextStyle={{ color: '#000', fontSize: 15 }} dropdownTextHighlightStyle={{ fontWeight: 'bold' }} >
+                            <View style={{ flexDirection: 'row' }}>
+                                <View style={{ width: '70%' }}>
+                                    <Text style={{ color: '#000', fontSize: 15 }}>{this.state.level}</Text>
+                                </View>
+                                <View style={{ width: '30%', alignItems: 'flex-end', paddingRight: 10 }}>
+                                    <Image
+                                        source={require('./pics/down.png')}
+                                        style={styles.downStyle}
+                                    />
+                                </View>
+                            </View>
+                        </ModalDropdown>
+                    </View>
                     <View style={styles.containerStyle}>
                         <FlatList
                             data={finalPakageDetails}
@@ -110,7 +134,7 @@ const styles = {
         padding: 5,
         justifyContent: 'flex-start',
         alignItems: 'flex-end',
-        marginBottom: '30%'
+        // marginBottom: '30%'
     },
     titleStyle: {
         fontSize: 20,
@@ -138,6 +162,14 @@ const styles = {
         borderColor: '#ddd',
         position: 'relative',
     },
+    containerStyle1: {
+        borderBottomWidth: 1,
+        padding: 5,
+        justifyContent: 'flex-start',
+        borderColor: '#ddd',
+        position: 'relative',
+        marginBottom: '20%'
+    },
     iconStyle: {
         height: 40,
         width: 40
@@ -157,6 +189,10 @@ const styles = {
         shadowOpacity: 0.1,
         shadowRadius: 2,
         elevation: 1,
+    },
+    downStyle: {
+        width: 10,
+        height: 10
     }
 }
 

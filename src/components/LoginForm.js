@@ -65,7 +65,7 @@ class LoginForm extends Component {
 
     renderButton() {
         if (this.state.loading) {
-            return <Spinner size="small" />;
+            return <Spinner size="small" spinnerStyle={styles.spinnerStyle} />;
         }
 
         return (
@@ -183,6 +183,17 @@ const styles = {
         justifyContent: 'flex-start',
         flexDirection: 'row',
         position: 'relative',
+    },
+    spinnerStyle: {
+        flex: 1,
+        backgroundColor: 'rgba(253, 197, 24, 0.8)',
+        alignSelf: 'stretch',
+        borderRadius: 5,
+        marginLeft: 20,
+        marginRight: 20,
+        borderRadius: 60,
+        paddingTop: 10,
+        paddingBottom: 10
     }
 }
 

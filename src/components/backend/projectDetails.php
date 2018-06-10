@@ -16,10 +16,10 @@ $sql = "SELECT * FROM JobMaster INNER JOIN SiteRequisitionMaster ON JobMaster.Jo
 $result_set = sqlsrv_query($conn, $sql);
 $result = sqlsrv_fetch_array($result_set, SQLSRV_FETCH_ASSOC);
 
-// array_push($details, $result);
+array_push($details, $result);
 
-// $SuccessMsgJson = json_encode(array('results' => $details));
+$SuccessMsgJson = json_encode(array('results' => $details));
 // Echo the message.
-echo '<p>'.$result['Owner'].'</p>'; 
+echo $SuccessMsgJson; 
 
 ?>

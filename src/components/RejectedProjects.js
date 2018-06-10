@@ -64,7 +64,7 @@ class RejectedProjects extends Component {
     }
 
     renderListItem = ({ item }) => (
-        <TouchableOpacity style={styles.linkStyle} onPress={() => this.viewProjects(item.Job_Code)}>
+        <TouchableOpacity style={styles.linkStyle} key={item.Job_Code} onPress={() => this.viewProjects(item.Job_Code)}>
             <View style={{ width: '20%', height: 70, alignItems: 'flex-start', justifyContent: 'center' }}>
                 <Text style={styles.textStyle}>{item.Job_Code}</Text>
             </View>
@@ -112,7 +112,7 @@ class RejectedProjects extends Component {
                         <FlatList
                             data={finalPakageDetails}
                             renderItem={this.renderListItem}
-                            keyExtractor={(item, index) => index}
+                            keyExtractor={(item, index) => item.Job_Code}
                             scrollEnabled={this.state.scrollEnabled}
                         />
                     </View>

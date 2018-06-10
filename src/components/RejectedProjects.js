@@ -16,7 +16,13 @@ class RejectedProjects extends Component {
             headerRight: <Notification />
         };
 
-    state = { user_email: this.props.navigation.state.params.Email, user_password: '', error: '', loading: false };
+    state = {
+        user_email: this.props.navigation.state.params.Email,
+        user_password: '',
+        error: '',
+        loading: false,
+        itemVal: 0,
+    };
 
     goBack() {
         const { navigate } = this.props.navigation;
@@ -31,6 +37,8 @@ class RejectedProjects extends Component {
 
     viewProjects(item) {
         // console.log(item);
+        this.setState({ itemVal: 5 });
+        console.log("ItemVal",this.state.itemVal);
         const { user_email, user_password } = this.state;
         console.log(user_email);
         const { navigate } = this.props.navigation;

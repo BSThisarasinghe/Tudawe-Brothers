@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, TextInput, View, Alert, Button, Text, TouchableOpacity, Image, Picker, ScrollView } from 'react-native';
+import { StyleSheet, TextInput, View, Alert, Button, Text, TouchableOpacity, Image, Picker, ScrollView, WebView } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import EditableText from 'react-native-inline-edit';
 import Card from './common/Card';
@@ -19,7 +19,7 @@ class ProjectDetails extends Component {
         };
 
     state = {
-        user_email: this.props.navigation.state.params.Email,
+        user_email: this.props.navigation.state.params.code,
         user_password: '',
         error: '',
         loading: false,
@@ -28,7 +28,9 @@ class ProjectDetails extends Component {
         des: 'Description',
         editable: false,
         editable1: false,
-        editable2: false
+        editable2: false,
+        data: [],
+        Job_Name: []
     };
 
     goBack() {
@@ -49,8 +51,9 @@ class ProjectDetails extends Component {
 
     onFocus1() {
         // this.setState({ editable1: true });
-        console.log("Edit1");
+        console.log(this.state.data);
     }
+
 
     onFocus2() {
         // this.setState({ editable2: true });
@@ -61,6 +64,36 @@ class ProjectDetails extends Component {
         this.setState({ editable: false });
         // console.log("Edit");
     }
+
+    componentWillMount() {
+        // console.log(this.props.navigation.state.params.code);
+        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/projectDetails.php', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                job_code: this.props.navigation.state.params.code
+            })
+
+        }).then((response) => response.json())
+            .then((responseJson) => {
+                // console.log(responseJson);
+                this.setState({ data: responseJson.results });
+                // If server response message same as Data Matched
+
+            }).catch((error) => {
+                //console.error(error);
+                // Alert.alert(error);
+                Alert.alert("No internet connection");
+                this.setState({ loading: false });
+            });     
+    }
+
+    // componentDidMount(){
+    //     this.setState({ Job_Name: this.state.data[0].Job_Name });
+    // }
 
     tableView() {
         return (
@@ -106,7 +139,7 @@ class ProjectDetails extends Component {
         return (
             <ScrollView>
                 <Card>
-                    <View style={styles.viewStyle}>
+                    {/* <View style={styles.viewStyle}>
                         <View style={{ height: 30, width: 100, backgroundColor: '#fff' }}>
                             <Picker
                                 selectedValue={this.state.user_email}
@@ -117,7 +150,7 @@ class ProjectDetails extends Component {
                                 <Picker.Item label="Logout" value="Logout" />
                             </Picker>
                         </View>
-                    </View>
+                    </View> */}
                     <View style={styles.containerStyle}>
                         <Text style={styles.titleStyle}>Material Requisition</Text>
                     </View>

@@ -22,6 +22,7 @@ class ProjectPage extends Component {
         error: '',
         scrollEnabled: true,
         loading: false,
+        itemVal: 0,
         package: [],
     };
 
@@ -36,34 +37,16 @@ class ProjectPage extends Component {
         }
     }
 
-    viewProjects(item) {
-        // console.log(item);
-        const { user_email, user_password } = this.state;
-        console.log(user_email);
-        const { navigate } = this.props.navigation;
-        navigate('Fourth', { Email: user_email }, { job_code: item });
-        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/index.php', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                Email: user_email,
-                job_code: item
-            })
+    viewProjects(job_code) {
+        // console.log("Item",job_code);
+        const { user_email, itemVal } = this.state;
 
-        }).then((response) => response.json())
-            .then((responseJson) => {
-                console.log(responseJson);
-            }).catch((error) => {
-                Alert.alert("No internet connection");
-                console.error(error);
-            });
+        const { navigate } = this.props.navigation;
+        navigate('Fourth', { code: job_code });
     }
 
     renderListItem = ({ item }) => (
-        <TouchableOpacity style={styles.linkStyle} onPress={() => this.viewProjects(item.Job_Code)}>
+        <TouchableOpacity style={styles.linkStyle} key={item.Job_Code} onPress={() => this.viewProjects(item.Job_Code)}>
             <View style={{ width: '20%', height: 70, alignItems: 'flex-start', justifyContent: 'center' }}>
                 <Text style={styles.textStyle}>{item.Job_Code}</Text>
             </View>
@@ -111,7 +94,7 @@ class ProjectPage extends Component {
                         <FlatList
                             data={finalPakageDetails}
                             renderItem={this.renderListItem}
-                            keyExtractor={(item, index) => index}
+                            keyExtractor={(item, index) => item.Job_Code}
                             scrollEnabled={this.state.scrollEnabled}
                         />
                     </View>

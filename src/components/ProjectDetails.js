@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, TextInput, View, Alert, Button, Text, TouchableOpacity, Image, Picker, ScrollView, WebView } from 'react-native';
+import { StyleSheet, TextInput, View, Alert, Text, TouchableOpacity, Image, Picker, ScrollView, FlatList } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import EditableText from 'react-native-inline-edit';
 import Card from './common/Card';
@@ -19,10 +19,11 @@ class ProjectDetails extends Component {
         };
 
     state = {
-        user_email: this.props.navigation.state.params.code,
+        user_email: this.props.navigation.state.params.Email,
         user_password: '',
         error: '',
         loading: true,
+        loading2: true,
         text: '',
         item_code: 'Item Value',
         des: 'Description',
@@ -30,7 +31,7 @@ class ProjectDetails extends Component {
         editable1: false,
         editable2: false,
         data: [],
-        Job_Name: []
+        item_data: []
     };
 
     goBack() {
@@ -65,8 +66,7 @@ class ProjectDetails extends Component {
         // console.log("Edit");
     }
 
-    componentWillMount() {
-        // console.log(this.props.navigation.state.params.code);
+    fetchJobData() {
         fetch('http://bsthisarasinghe-001-site1.1tempurl.com/projectDetails.php', {
             method: 'POST',
             headers: {
@@ -94,7 +94,84 @@ class ProjectDetails extends Component {
             });
     }
 
+    fetchItemData() {
+        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/itemDetails.php', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                job_code: this.props.navigation.state.params.code
+            })
+
+        }).then((response) => response.json())
+            .then((responseJson) => {
+                // console.log(responseJson);
+                // this.setState({ data: responseJson.results });
+                this.setState({ item_data: responseJson.results }, function () {
+                    this.setState({ loading2: false });
+                });
+                // If server response message same as Data Matched
+
+            }).catch((error) => {
+                //console.error(error);
+                // Alert.alert(error);
+                Alert.alert("No internet connection");
+                this.setState({ loading: false });
+            });
+    }
+
+    componentWillMount() {
+        this.fetchJobData();
+        this.fetchItemData();
+    }
+
+    flatListView() {
+        finalPakageDetails = this.state.item_data;
+        if (this.state.loading2) {
+            return (
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    <Spinner size="large" spinnerStyle={styles.spinnerStyle} />
+                </View>
+            );
+        }
+        return (
+            <FlatList
+                data={finalPakageDetails}
+                renderItem={this.tableView}
+                keyExtractor={(item, index) => item.Item_Code}
+                scrollEnabled={false}
+            />
+        );
+    }
+
+    onApprove() {
+        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/approve.php', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                job_level: this.props.navigation.state.params.job_level,
+                job_code: this.props.navigation.state.params.code
+            })
+
+        }).then((response) => response.json())
+            .then((responseJson) => {
+                Alert.alert(responseJson);
+                // console.log(responseJson);
+            }).catch((error) => {
+                console.error(error);
+                // Alert.alert(error);
+                // Alert.alert("No internet connection");
+                this.setState({ loading: false });
+            });
+    }
+
     completeView() {
+        finalPakageDetails = this.state.item_data;
         if (this.state.loading) {
             return (
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -104,7 +181,7 @@ class ProjectDetails extends Component {
         }
         return (
             <Card>
-                {/* <View style={styles.viewStyle}>
+                <View style={styles.viewStyle}>
                 <View style={{ height: 30, width: 100, backgroundColor: '#fff' }}>
                     <Picker
                         selectedValue={this.state.user_email}
@@ -115,7 +192,7 @@ class ProjectDetails extends Component {
                         <Picker.Item label="Logout" value="Logout" />
                     </Picker>
                 </View>
-            </View> */}
+            </View>
                 <View style={styles.containerStyle}>
                     <Text style={styles.titleStyle}>Material Requisition</Text>
                 </View>
@@ -201,7 +278,7 @@ class ProjectDetails extends Component {
                 </View>
                 <View style={{ flex: 1, flexDirection: 'row' }}>
                     <View style={{ flex: 1, flexDirection: 'row' }}>
-                        <TouchableOpacity style={styles.approveStyle}>
+                        <TouchableOpacity style={styles.approveStyle} onPress={this.onApprove.bind(this)}>
                             <Text style={styles.titleStyle}>APPROVE</Text>
                         </TouchableOpacity>
                     </View>
@@ -217,34 +294,33 @@ class ProjectDetails extends Component {
                     </View>
                 </View>
                 <View style={styles.container}>
-                    {this.tableView()}
-                    {this.tableView()}
+                    {this.flatListView()}
                 </View>
             </Card>
         );
     }
 
-    tableView() {
+    tableView = ({ item }) => {
         return (
-            <View style={{ flex: 1, flexDirection: 'column', borderWidth: 1, marginBottom: 10 }}>
+            <View style={{ flex: 1, flexDirection: 'column', borderWidth: 1, marginBottom: 10 }} key={item.Item_Code}>
                 <View style={{ flex: 1, flexDirection: 'row', height: 40 }}>
                     <View style={{ flex: 1, borderWidth: 1 }}>
                         <Text>Item Code</Text>
                     </View>
                     <View style={{ flex: 1, borderWidth: 1 }}>
                         <EditableText
-                            text={'textOfTheField'} //required
+                            text={this.state.item_data[0].Item_Code} //required
                             sendText={this.onFocus.bind(this)} //required
                         />
                     </View>
                 </View>
                 <View style={{ flex: 1, flexDirection: 'row', height: 40 }}>
                     <View style={{ flex: 1, borderWidth: 1 }}>
-                        <Text>Destriction</Text>
+                        <Text>Description</Text>
                     </View>
                     <View style={{ flex: 1, borderWidth: 1 }}>
                         <EditableText
-                            text={'textOfTheField122'} //required
+                            text={this.state.item_data[0].Discription} //required
                             sendText={this.onFocus1.bind(this)} //required
                         />
                     </View>
@@ -255,7 +331,7 @@ class ProjectDetails extends Component {
                     </View>
                     <View style={{ flex: 1, borderWidth: 1 }}>
                         <EditableText
-                            text={'textOfTheFie2'} //required
+                            text={this.state.item_data[0].Discription} //required
                             sendText={this.onFocus2.bind(this)} //required
                         />
                     </View>

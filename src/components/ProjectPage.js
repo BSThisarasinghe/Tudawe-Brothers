@@ -22,10 +22,10 @@ class ProjectPage extends Component {
         user_password: '',
         error: '',
         scrollEnabled: true,
-        loading: false,
+        loading: true,
         itemVal: 0,
         package: [],
-        dropDownData: ['1st Layer', '2nd Layer', '3rd Layer', '4th Layer'],
+        dropDownData: ['1st Level', '2nd Level', '3rd Level', '4th Level'],
         level: 'Select Level'
     };
 
@@ -45,7 +45,11 @@ class ProjectPage extends Component {
         const { user_email, itemVal } = this.state;
 
         const { navigate } = this.props.navigation;
-        navigate('Fourth', { code: job_code });
+        navigate('Fourth', {
+            Email: user_email,
+            code: job_code,
+            job_level: this.state.level
+        });
     }
 
     renderListItem = ({ item }) => (
@@ -63,22 +67,57 @@ class ProjectPage extends Component {
     )
 
     onSelectOpt(idx, value) {
-        this.setState({
-            level: value
+
+        this.setState({ level: value }, function () {
+            this.projectsList();
         });
     }
 
-    componentWillMount() {
-        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/projects.php')
-            .then((response) => response.json())
+    projectsList() {
+        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/projects.php', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                job_level: this.state.level
+            })
+
+        }).then((response) => response.json())
             .then((responseJson) => {
                 //console.log(responseJson.results);
-                this.setState({ package: responseJson.results });
+                this.setState({ package: responseJson.results }, function () {
+                    this.setState({ loading: false });
+                });
             }).catch((error) => {
                 //console.error(error);
                 Alert.alert("No internet connection");
                 this.setState({ loading: false });
             });
+    }
+
+    componentWillMount() {
+        this.projectsList();
+    }
+
+    completeView() {
+        finalPakageDetails = this.state.package;
+        if (this.state.loading) {
+            return (
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 100, height: 100 }}>
+                    <Spinner size="large" spinnerStyle={styles.spinnerStyle} />
+                </View>
+            );
+        }
+        return (
+            <FlatList
+                data={finalPakageDetails}
+                renderItem={this.renderListItem}
+                keyExtractor={(item, index) => item.Job_Code}
+                scrollEnabled={this.state.scrollEnabled}
+            />
+        );
     }
 
     render() {
@@ -115,12 +154,7 @@ class ProjectPage extends Component {
                         </ModalDropdown>
                     </View>
                     <View style={styles.containerStyle}>
-                        <FlatList
-                            data={finalPakageDetails}
-                            renderItem={this.renderListItem}
-                            keyExtractor={(item, index) => item.Job_Code}
-                            scrollEnabled={this.state.scrollEnabled}
-                        />
+                        {this.completeView()}
                     </View>
                 </Card>
             </View>
@@ -193,6 +227,16 @@ const styles = {
     downStyle: {
         width: 10,
         height: 10
+    },
+    spinnerStyle: {
+        flex: 1,
+        alignSelf: 'stretch',
+        borderRadius: 5,
+        marginLeft: 20,
+        marginRight: 20,
+        borderRadius: 60,
+        paddingTop: 10,
+        paddingBottom: 10
     }
 }
 

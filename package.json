@@ -9,14 +9,21 @@
   "dependencies": {
     "axios": "^0.18.0",
     "react": "16.3.1",
+    "react-inline-editing": "^1.0.10",
     "react-native": "0.55.4",
+    "react-native-check-box": "^2.1.0",
+    "react-native-inline-edit": "^0.4.0",
+    "react-native-modal-dropdown": "^0.6.2",
     "react-native-push-notification": "^3.0.2",
+    "react-native-table-component": "^1.1.8",
+    "react-native-tableview-simple": "^0.17.5",
     "react-navigation": "^2.0.4"
   },
   "devDependencies": {
     "babel-jest": "22.4.4",
     "babel-preset-react-native": "4.0.0",
     "jest": "22.4.4",
+    "react-editable-text": "0.0.9",
     "react-test-renderer": "16.3.1"
   },
   "jest": {

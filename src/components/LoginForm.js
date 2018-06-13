@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, View, TextInput, Text, Image, YellowBox } from 'react-native';
+import { Alert, View, TextInput, Text, Image, YellowBox, ScrollView } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import Button from './common/Button';
 import Card from './common/Card';
@@ -92,40 +92,48 @@ class LoginForm extends Component {
         return (
             <View style={{ flex: 1 }}>
                 <Img />
-                <View style={styles.containerStyle2}>
-                    <Image source={require('./pics/ic_launcher.png')} style={styles.imageStyle} />
-                </View>
-                <View style={{ height: 50, justifyContent: 'center', alignItems: 'center' }}>
-                    <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold' }}>Tudawe Brothers(Pvt) Ltd</Text>
-                </View>
-                <CardSection style={styles.containerStyle}>
-                    <Image source={require('./pics/user.png')} style={styles.iconStyle} />
-                    <TextInput
-                        placeholder="Username"
-                        placeholderTextColor="#fff"
-                        onChangeText={user_email => this.setState({ user_email })}
-                        value={this.state.user_email}
-                        style={styles.inputStyle}
-                    />
-                </CardSection>
-                <CardSection style={styles.containerStyle}>
-                    <Image source={require('./pics/pwd.png')} style={styles.iconStyle} />
-                    <TextInput
-                        secureTextEntry
-                        placeholder="Password"
-                        placeholderTextColor="#fff"
-                        autoCorrect={false}
-                        onChangeText={user_password => this.setState({ user_password })}
-                        value={this.state.user_password}
-                        style={styles.inputStyle}
-                    />
-                </CardSection>
-                <Text style={styles.errorStyle}>
-                    {this.state.error}
-                </Text>
-                <View style={styles.buttonStyle}>
-                    {this.renderButton()}
-                </View>
+                <ScrollView>
+                    <View style={styles.containerStyle2}>
+                        <Image source={require('./pics/ic_launcher.png')} style={styles.imageStyle} />
+                    </View>
+                    <View style={{ height: 50, justifyContent: 'center', alignItems: 'center' }}>
+                        <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold' }}>Tudawe Brothers(Pvt) Ltd</Text>
+                    </View>
+                    <CardSection style={styles.containerStyle}>
+                        <View style={{ height: 40, justifyContent: 'center', alignItems: 'center' }}>
+                            <Image source={require('./pics/user.png')} style={styles.iconStyle} />
+                        </View>
+                        <TextInput
+                            placeholder="Username"
+                            placeholderTextColor="#fff"
+                            onChangeText={user_email => this.setState({ user_email })}
+                            value={this.state.user_email}
+                            style={styles.inputStyle}
+                            underlineColorAndroid='transparent'
+                        />
+                    </CardSection>
+                    <CardSection style={styles.containerStyle}>
+                        <View style={{ height: 40, justifyContent: 'center', alignItems: 'center' }}>
+                            <Image source={require('./pics/pwd.png')} style={styles.iconStyle} />
+                        </View>
+                        <TextInput
+                            secureTextEntry
+                            placeholder="Password"
+                            placeholderTextColor="#fff"
+                            autoCorrect={false}
+                            onChangeText={user_password => this.setState({ user_password })}
+                            value={this.state.user_password}
+                            style={styles.inputStyle}
+                            underlineColorAndroid='transparent'
+                        />
+                    </CardSection>
+                    <Text style={styles.errorStyle}>
+                        {this.state.error}
+                    </Text>
+                    <View style={styles.buttonStyle}>
+                        {this.renderButton()}
+                    </View>
+                </ScrollView>
             </View>
         );
     }

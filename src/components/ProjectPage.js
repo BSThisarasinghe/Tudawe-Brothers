@@ -190,7 +190,7 @@ const styles = {
         color: '#000'
     },
     containerStyle: {
-        borderBottomWidth: 1,
+        // borderBottomWidth: 1,
         padding: 5,
         justifyContent: 'flex-start',
         borderColor: '#ddd',
@@ -229,14 +229,14 @@ const styles = {
         height: 10
     },
     spinnerStyle: {
-        flex: 1,
         alignSelf: 'stretch',
         borderRadius: 5,
         marginLeft: 20,
         marginRight: 20,
         borderRadius: 60,
         paddingTop: 10,
-        paddingBottom: 10
+        paddingBottom: 10,
+        height: 100
     }
 }
 

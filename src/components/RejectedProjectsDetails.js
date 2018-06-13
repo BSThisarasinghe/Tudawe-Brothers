@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, TextInput, View, Alert, Button, Text, TouchableOpacity, Image, Picker, ScrollView } from 'react-native';
+import { StyleSheet, TextInput, View, Alert, Button, Text, TouchableOpacity, Image, Picker, ScrollView, FlatList } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import EditableText from 'react-native-inline-edit';
 import Card from './common/Card';
@@ -28,7 +28,12 @@ class RejectedProjectsDetails extends Component {
         des: 'Description',
         editable: false,
         editable1: false,
-        editable2: false
+        editable2: false,
+        data: [],
+        item_data: [],
+        value1: '',
+        value2: '',
+        value3: '',
     };
 
     goBack() {

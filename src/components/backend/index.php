@@ -1,5 +1,6 @@
-<?php include 'includes/db.php'; ?>
+<?php include 'db.php'; ?>
 <?php
+session_start();
 
 $json = file_get_contents('php://input');
 
@@ -10,11 +11,13 @@ $email = $obj['email'];
 
 $password = $obj['password'];
 
-$sql = "SELECT * FROM user WHERE username = '" . $email . "'";
-$result_set = mysqli_query($conn, $sql);
-$result = mysqli_fetch_assoc($result_set);
-if($password == $result['password']){
- 
+$sql = "SELECT * FROM AccountUsers WHERE UserName = '" . $email . "'";
+$result_set = sqlsrv_query($conn, $sql);
+$result = sqlsrv_fetch_array($result_set, SQLSRV_FETCH_ASSOC);
+if($email !== ''){
+if($password !== ''){
+if($password == $result['UserPassword']){
+ $_SESSION['id'] = $result['UserID'];
     $SuccessLoginMsg = 'Data Matched';
     
     // Converting the message into JSON format.
@@ -37,6 +40,39 @@ if($password == $result['password']){
     echo $InvalidMSGJSon ;
     
     }
+}else{
+    // If the record inserted successfully then show the message.
+   $InvalidMSG = 'Password is required' ;
     
-    mysqli_close($conn);
+   // Converting the message into JSON format.
+   $InvalidMSGJSon = json_encode($InvalidMSG);
+    
+   // Echo the message.
+    echo $InvalidMSGJSon ;
+}
+}else{
+    // If the record inserted successfully then show the message.
+   $InvalidMSG = 'Username is required' ;
+    
+   // Converting the message into JSON format.
+   $InvalidMSGJSon = json_encode($InvalidMSG);
+    
+   // Echo the message.
+    echo $InvalidMSGJSon ;
+}
+
+
+    
 ?>
+
+
+
+
+
+
+
+
+
+
+
+

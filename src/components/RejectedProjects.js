@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Alert, Text, TouchableOpacity, View, Image, Button, Picker, FlatList } from 'react-native';
 import { StackNavigator } from 'react-navigation';
+import ModalDropdown from 'react-native-modal-dropdown';
 import Notification from './common/Notification';
 import Card from './common/Card';
 import CardSection from './common/CardSection';
@@ -20,8 +21,12 @@ class RejectedProjects extends Component {
         user_email: this.props.navigation.state.params.Email,
         user_password: '',
         error: '',
-        loading: false,
+        scrollEnabled: true,
+        loading: true,
         itemVal: 0,
+        package: [],
+        dropDownData: ['1st Level', '2nd Level', '3rd Level', '4th Level'],
+        level: 'Select Level'
     };
 
     goBack() {
@@ -35,36 +40,20 @@ class RejectedProjects extends Component {
         }
     }
 
-    viewProjects(item) {
+    viewProjects(job_code) {
         // console.log(item);
-        this.setState({ itemVal: 5 });
-        console.log("ItemVal",this.state.itemVal);
-        const { user_email, user_password } = this.state;
-        console.log(user_email);
-        const { navigate } = this.props.navigation;
-        navigate('Sixth', { Email: user_email }, { job_code: item });
-        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/index.php', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                Email: user_email,
-                job_code: item
-            })
+        const { user_email, itemVal } = this.state;
 
-        }).then((response) => response.json())
-            .then((responseJson) => {
-                console.log(responseJson);
-            }).catch((error) => {
-                console.error(error);
-                Alert.alert("No internet connection");
-            });
+        const { navigate } = this.props.navigation;
+        navigate('Sixth', {
+            Email: user_email,
+            code: job_code,
+            job_level: this.state.level
+        });
     }
 
     renderListItem = ({ item }) => (
-        <TouchableOpacity style={styles.linkStyle} key={item.Job_Code} onPress={() => this.viewProjects(item.Job_Code)}>
+        <TouchableOpacity style={styles.linkStyle} key={item.Job_Code}>
             <View style={{ width: '20%', height: 70, alignItems: 'flex-start', justifyContent: 'center' }}>
                 <Text style={styles.textStyle}>{item.Job_Code}</Text>
             </View>
@@ -77,17 +66,58 @@ class RejectedProjects extends Component {
         </TouchableOpacity>
     )
 
-    componentWillMount() {
-        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/projects.php')
-            .then((response) => response.json())
+    onSelectOpt(idx, value) {
+        this.setState({ level: value }, function () {
+            // console.log(this.state.level);
+            this.projectsList();
+        });
+    }
+
+    projectsList() {
+        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/rejected_projects.php', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                job_level: this.state.level
+            })
+
+        }).then((response) => response.json())
             .then((responseJson) => {
-                console.log(responseJson.results);
-                this.setState({ package: responseJson.results });
+                //console.log(responseJson.results);
+                this.setState({ package: responseJson.results }, function () {
+                    this.setState({ loading: false });
+                });
             }).catch((error) => {
-                //console.error(error);
-                Alert.alert("No internet connection");
+                console.error(error);
+                // Alert.alert("No internet connection");
                 this.setState({ loading: false });
             });
+    }
+
+    componentWillMount() {
+        this.projectsList();
+    }
+
+    completeView() {
+        finalPakageDetails = this.state.package;
+        if (this.state.loading) {
+            return (
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 100, height: 100 }}>
+                    <Spinner size="large" spinnerStyle={styles.spinnerStyle} />
+                </View>
+            );
+        }
+        return (
+            <FlatList
+                data={finalPakageDetails}
+                renderItem={this.renderListItem}
+                keyExtractor={(item, index) => item.Job_Code}
+                scrollEnabled={this.state.scrollEnabled}
+            />
+        );
     }
 
     render() {
@@ -108,13 +138,23 @@ class RejectedProjects extends Component {
                             </Picker>
                         </View>
                     </View>
+                    <View style={styles.containerStyle1}>
+                        <ModalDropdown options={this.state.dropDownData} onSelect={(idx, value) => this.onSelectOpt(idx, value)} style={{ width: '100%', backgroundColor: 'rgba(255,255,255,0.8)', height: 30, justifyContent: 'center', paddingLeft: 20 }} dropdownStyle={{ width: '80%', height: 100 }} dropdownTextStyle={{ color: '#000', fontSize: 15 }} dropdownTextHighlightStyle={{ fontWeight: 'bold' }} >
+                            <View style={{ flexDirection: 'row' }}>
+                                <View style={{ width: '70%' }}>
+                                    <Text style={{ color: '#000', fontSize: 15 }}>{this.state.level}</Text>
+                                </View>
+                                <View style={{ width: '30%', alignItems: 'flex-end', paddingRight: 10 }}>
+                                    <Image
+                                        source={require('./pics/down.png')}
+                                        style={styles.downStyle}
+                                    />
+                                </View>
+                            </View>
+                        </ModalDropdown>
+                    </View>
                     <View style={styles.containerStyle}>
-                        <FlatList
-                            data={finalPakageDetails}
-                            renderItem={this.renderListItem}
-                            keyExtractor={(item, index) => item.Job_Code}
-                            scrollEnabled={this.state.scrollEnabled}
-                        />
+                        {this.completeView()}
                     </View>
                 </Card>
             </View>
@@ -128,7 +168,7 @@ const styles = {
         padding: 5,
         justifyContent: 'flex-start',
         alignItems: 'flex-end',
-        marginBottom: '30%'
+        // marginBottom: '30%'
     },
     titleStyle: {
         fontSize: 20,
@@ -150,7 +190,7 @@ const styles = {
         color: '#000'
     },
     containerStyle: {
-        borderBottomWidth: 1,
+        // borderBottomWidth: 1,
         padding: 5,
         justifyContent: 'flex-start',
         borderColor: '#ddd',
@@ -175,6 +215,28 @@ const styles = {
         shadowOpacity: 0.1,
         shadowRadius: 2,
         elevation: 1,
+    },
+    containerStyle1: {
+        borderBottomWidth: 1,
+        padding: 5,
+        justifyContent: 'flex-start',
+        borderColor: '#ddd',
+        position: 'relative',
+        marginBottom: '20%'
+    },
+    downStyle: {
+        width: 10,
+        height: 10
+    },
+    spinnerStyle: {
+        alignSelf: 'stretch',
+        borderRadius: 5,
+        marginLeft: 20,
+        marginRight: 20,
+        borderRadius: 60,
+        paddingTop: 10,
+        paddingBottom: 10,
+        height: 100
     }
 }
 

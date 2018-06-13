@@ -9,18 +9,4 @@ const Spinner = ({ size, spinnerStyle }) => {
     );
 }
 
-// const styles = {
-//     viewStyle: { 
-//         flex: 1,
-//         backgroundColor: 'rgba(253, 197, 24, 0.8)',
-//         alignSelf: 'stretch',
-//         borderRadius: 5,
-//         marginLeft: 20,
-//         marginRight: 20,
-//         borderRadius: 60,
-//         paddingTop: 10,
-//         paddingBottom: 10
-//     }
-// }
-
 export { Spinner };

@@ -31,7 +31,11 @@ class ProjectDetails extends Component {
         editable1: false,
         editable2: false,
         data: [],
-        item_data: []
+        item_data: [],
+        value1: '',
+        value2: '',
+        value3: '',
+        hideText: true
     };
 
     goBack() {
@@ -45,20 +49,78 @@ class ProjectDetails extends Component {
         }
     }
 
-    onFocus() {
-        //this.setState({ editable: true });
-        console.log("Edit");
+    onFocus(value) {
+        console.log(value);
+        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/changeItem.php', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                item_code: this.state.item_data[0].Item_Code,
+                new_value: value
+            })
+
+        }).then((response) => response.json())
+            .then((responseJson) => {
+                Alert.alert(responseJson);
+                // console.log(responseJson);
+            }).catch((error) => {
+                console.error(error);
+                // Alert.alert(error);
+                // Alert.alert("No internet connection");
+                this.setState({ loading: false });
+            });
     }
 
-    onFocus1() {
-        // this.setState({ editable1: true });
-        console.log(this.state.data);
+    onFocus1(value, item_code) {
+        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/changeDes.php', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                item_code: item_code,
+                des: value
+            })
+
+        }).then((response) => response.json())
+            .then((responseJson) => {
+                Alert.alert(responseJson);
+                // console.log(responseJson);
+            }).catch((error) => {
+                console.error(error);
+                // Alert.alert(error);
+                // Alert.alert("No internet connection");
+                this.setState({ loading: false });
+            });
     }
 
 
-    onFocus2() {
-        // this.setState({ editable2: true });
-        console.log("Edit2");
+    onFocus2(value, item_code) {
+        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/changeDate.php', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                item_code: item_code,
+                des: value
+            })
+
+        }).then((response) => response.json())
+            .then((responseJson) => {
+                Alert.alert(responseJson);
+                // console.log(responseJson);
+            }).catch((error) => {
+                console.error(error);
+                // Alert.alert(error);
+                // Alert.alert("No internet connection");
+                this.setState({ loading: false });
+            });
     }
 
     onBlur() {
@@ -110,7 +172,11 @@ class ProjectDetails extends Component {
                 // console.log(responseJson);
                 // this.setState({ data: responseJson.results });
                 this.setState({ item_data: responseJson.results }, function () {
+                    this.setState({ value1: this.state.item_data[0].Item_Code });
+                    this.setState({ value2: this.state.item_data[0].Discription });
+                    this.setState({ value3: this.state.item_data[0].Delivery_Date.date });
                     this.setState({ loading2: false });
+                    console.log(this.state.item_data[0].Discription);
                 });
                 // If server response message same as Data Matched
 
@@ -170,6 +236,55 @@ class ProjectDetails extends Component {
             });
     }
 
+    onCancel() {
+        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/cancel.php', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                text: this.state.text,
+                job_code: this.props.navigation.state.params.code
+            })
+
+        }).then((response) => response.json())
+            .then((responseJson) => {
+                Alert.alert(responseJson);
+                // console.log(responseJson);
+            }).catch((error) => {
+                console.error(error);
+                // Alert.alert(error);
+                // Alert.alert("No internet connection");
+                this.setState({ loading: false });
+            });
+    }
+
+    onReject() {
+        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/reject.php', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                job_level: this.props.navigation.state.params.job_level,
+                text: this.state.text,
+                job_code: this.props.navigation.state.params.code
+            })
+
+        }).then((response) => response.json())
+            .then((responseJson) => {
+                Alert.alert(responseJson);
+                // console.log(responseJson);
+            }).catch((error) => {
+                console.error(error);
+                // Alert.alert(error);
+                // Alert.alert("No internet connection");
+                this.setState({ loading: false });
+            });
+    }
+
     completeView() {
         finalPakageDetails = this.state.item_data;
         if (this.state.loading) {
@@ -180,21 +295,21 @@ class ProjectDetails extends Component {
             );
         }
         return (
-            <Card>
+            <View style={styles.fullViewStyle}>
                 <View style={styles.viewStyle}>
-                <View style={{ height: 30, width: 100, backgroundColor: '#fff' }}>
-                    <Picker
-                        selectedValue={this.state.user_email}
-                        style={{ height: 30, width: 100 }}
-                        mode='dropdown'
-                        onValueChange={(itemValue, itemIndex) => this.logoutButton(itemValue)}>
-                        <Picker.Item label={this.state.user_email} value="" />
-                        <Picker.Item label="Logout" value="Logout" />
-                    </Picker>
+                    <View style={{ height: 30, width: 100, backgroundColor: '#fff' }}>
+                        <Picker
+                            selectedValue={this.state.user_email}
+                            style={{ height: 30, width: 100 }}
+                            mode='dropdown'
+                            onValueChange={(itemValue, itemIndex) => this.logoutButton(itemValue)}>
+                            <Picker.Item label={this.state.user_email} value="" />
+                            <Picker.Item label="Logout" value="Logout" />
+                        </Picker>
+                    </View>
                 </View>
-            </View>
                 <View style={styles.containerStyle}>
-                    <Text style={styles.titleStyle}>Material Requisition</Text>
+                    <Text style={styles.titleStyle}>MATERIAL REQUISITION</Text>
                 </View>
                 <View style={styles.cardStyle}>
                     <View style={{ width: '35%' }}>
@@ -276,64 +391,85 @@ class ProjectDetails extends Component {
                         />
                     </View>
                 </View>
-                <View style={{ flex: 1, flexDirection: 'row' }}>
+                <View style={{ flex: 1, flexDirection: 'row', marginTop: 20, paddingLeft: 5, paddingRight: 5 }}>
                     <View style={{ flex: 1, flexDirection: 'row' }}>
                         <TouchableOpacity style={styles.approveStyle} onPress={this.onApprove.bind(this)}>
-                            <Text style={styles.titleStyle}>APPROVE</Text>
+                            <Text style={styles.buttonTextStyle}>APPROVE</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={{ flex: 1, flexDirection: 'row' }}>
-                        <TouchableOpacity style={styles.cancelStyle}>
-                            <Text style={styles.titleStyle}>CANCEL</Text>
+                        <TouchableOpacity style={styles.cancelStyle} onPress={this.onCancel.bind(this)}>
+                            <Text style={styles.buttonTextStyle}>CANCEL</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={{ flex: 1, flexDirection: 'row' }}>
-                        <TouchableOpacity style={styles.rejectStyle}>
-                            <Text style={styles.titleStyle}>REJECT</Text>
+                        <TouchableOpacity style={styles.rejectStyle} onPress={this.onReject.bind(this)}>
+                            <Text style={styles.buttonTextStyle}>REJECT</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
                 <View style={styles.container}>
                     {this.flatListView()}
                 </View>
-            </Card>
+            </View>
         );
+    }
+
+    displayDate() {
+        if(this.state.hideText){
+            return(
+                <Text style={styles.textStyle} onPress={this.setState({hideText: false})}>{this.state.value3}</Text>
+            );
+        }else{
+            return (
+                <TextInput
+                    onChangeText={value3 => this.setState({ value3 })}
+                    onBlur={() => this.onFocus2(this.state.value3, this.state.item_data[0].Item_Code)}
+                    value={this.state.value3}
+                    style={styles.inputStyle}
+                    underlineColorAndroid='transparent'
+                />
+            );
+        }
     }
 
     tableView = ({ item }) => {
         return (
             <View style={{ flex: 1, flexDirection: 'column', borderWidth: 1, marginBottom: 10 }} key={item.Item_Code}>
                 <View style={{ flex: 1, flexDirection: 'row', height: 40 }}>
-                    <View style={{ flex: 1, borderWidth: 1 }}>
-                        <Text>Item Code</Text>
+                    <View style={{ flex: 1, borderWidth: 1, justifyContent: 'center', alignItems: 'center' }}>
+                        <Text style={styles.dataStyle}>Item Code</Text>
                     </View>
                     <View style={{ flex: 1, borderWidth: 1 }}>
-                        <EditableText
-                            text={this.state.item_data[0].Item_Code} //required
-                            sendText={this.onFocus.bind(this)} //required
+                        <TextInput
+                            onChangeText={value1 => this.setState({ value1 })}
+                            onBlur={() => this.onFocus(this.state.value1)}
+                            value={this.state.value1}
+                            style={styles.inputStyle}
+                            underlineColorAndroid='transparent'
                         />
                     </View>
                 </View>
                 <View style={{ flex: 1, flexDirection: 'row', height: 40 }}>
-                    <View style={{ flex: 1, borderWidth: 1 }}>
-                        <Text>Description</Text>
+                    <View style={{ flex: 1, borderWidth: 1, justifyContent: 'center', alignItems: 'center' }}>
+                        <Text style={styles.dataStyle}>Description</Text>
                     </View>
                     <View style={{ flex: 1, borderWidth: 1 }}>
-                        <EditableText
-                            text={this.state.item_data[0].Discription} //required
-                            sendText={this.onFocus1.bind(this)} //required
+                        <TextInput
+                            onChangeText={value2 => this.setState({ value2 })}
+                            onBlur={() => this.onFocus1(this.state.value2, this.state.item_data[0].Item_Code)}
+                            value={this.state.value2}
+                            style={styles.inputStyle}
+                            underlineColorAndroid='transparent'
                         />
                     </View>
                 </View>
                 <View style={{ flex: 1, flexDirection: 'row', height: 40 }}>
-                    <View style={{ flex: 1, borderWidth: 1 }}>
-                        <Text>Delivery Date</Text>
+                    <View style={{ flex: 1, borderWidth: 1, justifyContent: 'center', alignItems: 'center' }}>
+                        <Text style={styles.dataStyle}>Delivery Date</Text>
                     </View>
                     <View style={{ flex: 1, borderWidth: 1 }}>
-                        <EditableText
-                            text={this.state.item_data[0].Discription} //required
-                            sendText={this.onFocus2.bind(this)} //required
-                        />
+                        {this.displayDate()}
                     </View>
                 </View>
             </View>
@@ -351,6 +487,19 @@ class ProjectDetails extends Component {
 }
 
 const styles = {
+    fullViewStyle: {
+        backgroundColor: '#fff',
+        borderRadius: 2,
+        borderBottomWidth: 0,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 2,
+        elevation: 1,
+        marginLeft: 5,
+        marginRight: 5,
+        marginTop: 10
+    },
     viewStyle: {
         padding: 5,
         justifyContent: 'flex-start',
@@ -361,6 +510,10 @@ const styles = {
         fontSize: 20,
         color: '#000',
         fontWeight: 'bold'
+    },
+    buttonTextStyle: {
+        fontSize: 17,
+        color: '#fff'
     },
     logoStyle: {
         height: '100%',
@@ -374,8 +527,7 @@ const styles = {
         color: '#000'
     },
     textBoldStyle: {
-        color: '#000',
-        fontWeight: 'bold'
+        color: '#707270'
     },
     inputStyle: {
         color: '#000',
@@ -389,10 +541,10 @@ const styles = {
         alignSelf: 'stretch',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#1DC737',
-        borderRadius: 5,
+        backgroundColor: '#16922C',
+        borderRadius: 2,
         borderWidth: 2,
-        borderColor: '#1DC737',
+        borderColor: '#16922C',
         marginLeft: 5,
         marginRight: 5
     },
@@ -402,7 +554,7 @@ const styles = {
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#D3CA0C',
-        borderRadius: 5,
+        borderRadius: 2,
         borderWidth: 2,
         borderColor: '#D3CA0C',
         marginLeft: 5,
@@ -414,7 +566,7 @@ const styles = {
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#F22D1D',
-        borderRadius: 5,
+        borderRadius: 2,
         borderWidth: 2,
         borderColor: '#F22D1D',
         marginLeft: 5,
@@ -423,7 +575,9 @@ const styles = {
     containerStyle: {
         padding: 5,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        borderBottomWidth: 2,
+        borderColor: '#056416'
     },
     cardStyle: {
         marginTop: 20,
@@ -432,6 +586,8 @@ const styles = {
         marginRight: 20,
         justifyContent: 'flex-start',
         flexDirection: 'row',
+        borderBottomWidth: 1,
+        borderBottomColor: '#CCCDCC',
         //borderColor: '#ddd',
         position: 'relative',
     },
@@ -450,6 +606,9 @@ const styles = {
         borderRadius: 60,
         paddingTop: 10,
         paddingBottom: 10
+    },
+    dataStyle: {
+        color: '#000'
     }
 }
 

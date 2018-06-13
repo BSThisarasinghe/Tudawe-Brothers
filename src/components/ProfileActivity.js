@@ -61,7 +61,7 @@ class ProfileActivity extends Component {
 
   handleAppStateChange(appState) {
     if (appState === 'background') {
-      // console.log("App is in background");
+      console.log("App is in background");
       let date = new Date(Date.now() + (60 * 1000));
 
       if (Platform.OS === 'ios') {

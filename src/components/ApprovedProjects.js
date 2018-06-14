@@ -26,7 +26,7 @@ class ApprovedProjects extends Component {
         itemVal: 0,
         package: [],
         dropDownData: ['1st Level', '2nd Level', '3rd Level', '4th Level'],
-        level: 'Select Level'
+        level: '1st Level'
     };
 
     goBack() {
@@ -51,13 +51,89 @@ class ApprovedProjects extends Component {
         });
     }
 
+    selectLevel(levelTwo, levelThree, levelFour) {
+        if (this.state.level == '1st Level') {
+            if (levelTwo == 0) {
+                return (
+                    <Text style={styles.textStyle}>1st Level</Text>
+                );
+            }else if(levelTwo != 0 && levelThree == 0) {
+                return (
+                    <Text style={styles.textStyle}>2nd Level</Text>
+                );
+            }else if(levelTwo != 0 && levelThree != 0 && levelFour == 0) {
+                return (
+                    <Text style={styles.textStyle}>3rd Level</Text>
+                );
+            }else if(levelTwo != 0 && levelThree != 0 && levelFour != 0) {
+                return (
+                    <Text style={styles.textStyle}>4th Level</Text>
+                );
+            }
+        }else if(this.state.level == '2nd Level'){
+            if (levelTwo == 0) {
+                return (
+                    <Text style={styles.textStyle}>1st Level</Text>
+                );
+            }else if(levelTwo != 0 && levelThree == 0) {
+                return (
+                    <Text style={styles.textStyle}>2nd Level</Text>
+                );
+            }else if(levelTwo != 0 && levelThree != 0 && levelFour == 0) {
+                return (
+                    <Text style={styles.textStyle}>3rd Level</Text>
+                );
+            }else if(levelTwo != 0 && levelThree != 0 && levelFour != 0) {
+                return (
+                    <Text style={styles.textStyle}>4th Level</Text>
+                );
+            }
+        }else if(this.state.level == '3rd Level'){
+            if (levelTwo == 0) {
+                return (
+                    <Text style={styles.textStyle}>1st Level</Text>
+                );
+            }else if(levelTwo != 0 && levelThree == 0) {
+                return (
+                    <Text style={styles.textStyle}>2nd Level</Text>
+                );
+            }else if(levelTwo != 0 && levelThree != 0 && levelFour == 0) {
+                return (
+                    <Text style={styles.textStyle}>3rd Level</Text>
+                );
+            }else if(levelTwo != 0 && levelThree != 0 && levelFour != 0) {
+                return (
+                    <Text style={styles.textStyle}>4th Level</Text>
+                );
+            }
+        }else if(this.state.level == '4th Level'){
+            if (levelTwo == 0) {
+                return (
+                    <Text style={styles.textStyle}>1st Level</Text>
+                );
+            }else if(levelTwo != 0 && levelThree == 0) {
+                return (
+                    <Text style={styles.textStyle}>2nd Level</Text>
+                );
+            }else if(levelTwo != 0 && levelThree != 0 && levelFour == 0) {
+                return (
+                    <Text style={styles.textStyle}>3rd Level</Text>
+                );
+            }else if(levelTwo != 0 && levelThree != 0 && levelFour != 0) {
+                return (
+                    <Text style={styles.textStyle}>4th Level</Text>
+                );
+            }
+        }
+    }
+
     renderListItem = ({ item }) => (
-        <TouchableOpacity style={styles.linkStyle} key={item.Job_Code} onPress={console.log(item)}>
+        <TouchableOpacity style={styles.linkStyle} key={item.Job_Code} onPress={console.log(item.Job_Code)}>
             <View style={{ width: '20%', height: 70, alignItems: 'flex-start', justifyContent: 'center' }}>
                 <Text style={styles.textStyle}>{item.Job_Code}</Text>
             </View>
             <View style={{ width: '60%', height: 70, alignItems: 'flex-start', justifyContent: 'center' }}>
-                <Text style={styles.textStyle}>{item[0]}</Text>
+                {this.selectLevel(item.SLevel, item.TLevel, item.FourthLevel)}
             </View>
             <View style={{ width: '20%', height: 70, justifyContent: 'center', alignItems: 'center' }}>
                 <Image source={require('./pics/right-arrow.png')} style={styles.arrowStyle} />
@@ -68,6 +144,7 @@ class ApprovedProjects extends Component {
     onSelectOpt(idx, value) {
 
         this.setState({ level: value }, function () {
+            this.setState({ loading: true });
             this.projectsList();
         });
     }
@@ -85,7 +162,7 @@ class ApprovedProjects extends Component {
 
         }).then((response) => response.json())
             .then((responseJson) => {
-                console.log(responseJson.results[0][0]);
+                // console.log(responseJson.results[0][0]);
                 this.setState({ package: responseJson.results }, function () {
                     this.setState({ loading: false });
                     // console.log(this.state.package);
@@ -138,7 +215,7 @@ class ApprovedProjects extends Component {
                             </Picker>
                         </View>
                     </View>
-                    {/* <View style={styles.containerStyle1}>
+                    <View style={styles.containerStyle1}>
                         <ModalDropdown options={this.state.dropDownData} onSelect={(idx, value) => this.onSelectOpt(idx, value)} style={{ width: '100%', backgroundColor: 'rgba(255,255,255,0.8)', height: 30, justifyContent: 'center', paddingLeft: 20 }} dropdownStyle={{ width: '80%', height: 100 }} dropdownTextStyle={{ color: '#000', fontSize: 15 }} dropdownTextHighlightStyle={{ fontWeight: 'bold' }} >
                             <View style={{ flexDirection: 'row' }}>
                                 <View style={{ width: '70%' }}>
@@ -152,7 +229,7 @@ class ApprovedProjects extends Component {
                                 </View>
                             </View>
                         </ModalDropdown>
-                    </View> */}
+                    </View>
                     <View style={styles.containerStyle}>
                         {this.completeView()}
                     </View>
@@ -168,7 +245,7 @@ const styles = {
         padding: 5,
         justifyContent: 'flex-start',
         alignItems: 'flex-end',
-        marginBottom: '30%'
+        // marginBottom: '30%'
     },
     titleStyle: {
         fontSize: 20,
@@ -190,7 +267,7 @@ const styles = {
         color: '#000'
     },
     containerStyle: {
-        borderBottomWidth: 1,
+        // borderBottomWidth: 1,
         padding: 5,
         justifyContent: 'flex-start',
         borderColor: '#ddd',
@@ -227,6 +304,16 @@ const styles = {
     downStyle: {
         width: 10,
         height: 10
+    },
+    spinnerStyle: {
+        alignSelf: 'stretch',
+        borderRadius: 5,
+        marginLeft: 20,
+        marginRight: 20,
+        borderRadius: 60,
+        paddingTop: 10,
+        paddingBottom: 10,
+        height: 100
     }
 }
 

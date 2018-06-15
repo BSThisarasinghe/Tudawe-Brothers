@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, TextInput, View, Alert, Button, Text, TouchableOpacity, Image, AppState, Platform, Picker } from 'react-native';
+import { StyleSheet, TextInput, View, Alert, Button, Text, TouchableOpacity, Image, AppState, Platform, Picker, ScrollView } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import PushNotification from 'react-native-push-notification';
 import Card from './common/Card';
@@ -67,71 +67,84 @@ class Settings extends Component {
             });
     }
 
+    focusNextField(nextField) {
+        this.refs[nextField].focus();
+    }
+
     render() {
         return (
             <View style={{ flex: 1 }}>
                 <Img1 />
-                <View style={styles.viewStyle1}>
-                    <View style={{ height: 30, width: 100, backgroundColor: '#fff' }}>
-                        <Picker
-                            selectedValue={this.state.user_email}
-                            style={{ height: 30, width: 100 }}
-                            mode='dropdown'
-                            onValueChange={(itemValue, itemIndex) => this.logoutButton(itemValue)}>
-                            <Picker.Item label={this.state.user_email} value="" />
-                            <Picker.Item label="Logout" value="Logout" />
-                        </Picker>
-                    </View>
-                </View>
-                <View style={styles.viewStyle}>
-                    <View style={styles.containerStyle}>
-                        <View style={styles.mainStyle}>
-                            <Text style={styles.titleStyle}>CHANGE YOUR PASSWORD</Text>
-                        </View>
-                        <View style={styles.mainStyle}>
-                            <TextInput
-                                secureTextEntry
-                                placeholder="Current Password"
-                                //placeholderTextColor="#fff"
-                                autoCorrect={false}
-                                onChangeText={cur_pwd => this.setState({ cur_pwd })}
-                                value={this.state.cur_pwd}
-                                style={styles.inputStyle}
-                                underlineColorAndroid='transparent'
-                            //inlineImageLeft='search_icon'
-                            />
-                        </View>
-                        <View style={styles.mainStyle}>
-                            <TextInput
-                                secureTextEntry
-                                placeholder="New Password"
-                                //placeholderTextColor="#fff"
-                                autoCorrect={false}
-                                onChangeText={new_pwd => this.setState({ new_pwd })}
-                                value={this.state.new_pwd}
-                                style={styles.inputStyle}
-                                underlineColorAndroid='transparent'
-                            />
-                        </View>
-                        <View style={styles.mainStyle}>
-                            <TextInput
-                                secureTextEntry
-                                placeholder="Confirm Password"
-                                //placeholderTextColor="#fff"
-                                autoCorrect={false}
-                                onChangeText={con_pwd => this.setState({ con_pwd })}
-                                value={this.state.con_pwd}
-                                style={styles.inputStyle}
-                                underlineColorAndroid='transparent'
-                            />
-                        </View>
-                        <View style={styles.mainStyle}>
-                            <TouchableOpacity style={styles.buttonStyle} onPress={this.onButtonPress.bind(this)}>
-                                <Text style={styles.textStyle}>CHANGE PASSWORD</Text>
-                            </TouchableOpacity>
+                <ScrollView>
+                    <View style={styles.viewStyle1}>
+                        <View style={{ height: 30, width: 100, backgroundColor: '#fff' }}>
+                            <Picker
+                                selectedValue={this.state.user_email}
+                                style={{ height: 30, width: 100 }}
+                                mode='dropdown'
+                                onValueChange={(itemValue, itemIndex) => this.logoutButton(itemValue)}>
+                                <Picker.Item label={this.state.user_email} value="" />
+                                <Picker.Item label="Logout" value="Logout" />
+                            </Picker>
                         </View>
                     </View>
-                </View>
+                    <View style={styles.viewStyle}>
+                        <View style={styles.containerStyle}>
+                            <View style={styles.mainStyle}>
+                                <Text style={styles.titleStyle}>CHANGE YOUR PASSWORD</Text>
+                            </View>
+                            <View style={styles.mainStyle}>
+                                <TextInput
+                                    secureTextEntry
+                                    placeholder="Current Password"
+                                    ref="1"
+                                    autoCorrect={false}
+                                    onChangeText={cur_pwd => this.setState({ cur_pwd })}
+                                    value={this.state.cur_pwd}
+                                    style={styles.inputStyle}
+                                    underlineColorAndroid='transparent'
+                                    returnKeyType="next"
+                                    blurOnSubmit={false}
+                                    onSubmitEditing={() => this.focusNextField('2')}
+                                />
+                            </View>
+                            <View style={styles.mainStyle}>
+                                <TextInput
+                                    secureTextEntry
+                                    placeholder="New Password"
+                                    ref="2"
+                                    autoCorrect={false}
+                                    onChangeText={new_pwd => this.setState({ new_pwd })}
+                                    value={this.state.new_pwd}
+                                    style={styles.inputStyle}
+                                    underlineColorAndroid='transparent'
+                                    returnKeyType="next"
+                                    blurOnSubmit={false}
+                                    onSubmitEditing={() => this.focusNextField('3')}
+                                />
+                            </View>
+                            <View style={styles.mainStyle}>
+                                <TextInput
+                                    secureTextEntry
+                                    placeholder="Confirm Password"
+                                    ref="3"
+                                    autoCorrect={false}
+                                    onChangeText={con_pwd => this.setState({ con_pwd })}
+                                    value={this.state.con_pwd}
+                                    style={styles.inputStyle}
+                                    underlineColorAndroid='transparent'
+                                    blurOnSubmit={true}
+                                    returnKeyType="done"
+                                />
+                            </View>
+                            <View style={styles.mainStyle}>
+                                <TouchableOpacity style={styles.buttonStyle} onPress={this.onButtonPress.bind(this)}>
+                                    <Text style={styles.textStyle}>CHANGE PASSWORD</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </View>
+                </ScrollView>
             </View>
         );
     }

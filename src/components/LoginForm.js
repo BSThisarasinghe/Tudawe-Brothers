@@ -88,6 +88,10 @@ class LoginForm extends Component {
         });
     }
 
+    focusNextField(nextField) {
+        this.refs[nextField].focus();
+    }
+
     render() {
         return (
             <View style={{ flex: 1 }}>
@@ -104,12 +108,16 @@ class LoginForm extends Component {
                             <Image source={require('./pics/user.png')} style={styles.iconStyle} />
                         </View>
                         <TextInput
+                            ref="1"
                             placeholder="Username"
                             placeholderTextColor="#fff"
                             onChangeText={user_email => this.setState({ user_email })}
                             value={this.state.user_email}
                             style={styles.inputStyle}
                             underlineColorAndroid='transparent'
+                            returnKeyType="next"
+                            blurOnSubmit={false}
+                            onSubmitEditing={() => this.focusNextField('2')}
                         />
                     </CardSection>
                     <CardSection style={styles.containerStyle}>
@@ -117,6 +125,7 @@ class LoginForm extends Component {
                             <Image source={require('./pics/pwd.png')} style={styles.iconStyle} />
                         </View>
                         <TextInput
+                            ref="2"
                             secureTextEntry
                             placeholder="Password"
                             placeholderTextColor="#fff"
@@ -125,6 +134,8 @@ class LoginForm extends Component {
                             value={this.state.user_password}
                             style={styles.inputStyle}
                             underlineColorAndroid='transparent'
+                            blurOnSubmit={true}
+                            returnKeyType="done"
                         />
                     </CardSection>
                     <Text style={styles.errorStyle}>

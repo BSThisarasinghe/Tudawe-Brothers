@@ -176,7 +176,7 @@ class ProjectDetails extends Component {
                     this.setState({ value2: this.state.item_data[0].Discription });
                     this.setState({ value3: this.state.item_data[0].Delivery_Date.date });
                     this.setState({ loading2: false });
-                    console.log(this.state.item_data[0].Discription);
+                    // console.log(this.state.item_data[0].Discription);
                 });
                 // If server response message same as Data Matched
 
@@ -415,17 +415,17 @@ class ProjectDetails extends Component {
         );
     }
 
-    displayDate() {
-        if(this.state.hideText){
-            return(
-                <Text style={styles.textStyle} onPress={this.setState({hideText: false})}>{this.state.value3}</Text>
+    displayDate(value) {
+        if (this.state.hideText) {
+            return (
+                <Text style={styles.textStyle} onPress={this.setState({ hideText: false })}>{value}</Text>
             );
-        }else{
+        } else {
             return (
                 <TextInput
-                    onChangeText={value3 => this.setState({ value3 })}
+                    onChangeText={value => this.setState({ value3: value })}
                     onBlur={() => this.onFocus2(this.state.value3, this.state.item_data[0].Item_Code)}
-                    value={this.state.value3}
+                    value={value}
                     style={styles.inputStyle}
                     underlineColorAndroid='transparent'
                 />
@@ -433,48 +433,58 @@ class ProjectDetails extends Component {
         }
     }
 
-    tableView = ({ item }) => {
+    displayCode(value) {
         return (
-            <View style={{ flex: 1, flexDirection: 'column', borderWidth: 1, marginBottom: 10 }} key={item.Item_Code}>
-                <View style={{ flex: 1, flexDirection: 'row', height: 40 }}>
-                    <View style={{ flex: 1, borderWidth: 1, justifyContent: 'center', alignItems: 'center' }}>
-                        <Text style={styles.dataStyle}>Item Code</Text>
-                    </View>
-                    <View style={{ flex: 1, borderWidth: 1 }}>
-                        <TextInput
-                            onChangeText={value1 => this.setState({ value1 })}
-                            onBlur={() => this.onFocus(this.state.value1)}
-                            value={this.state.value1}
-                            style={styles.inputStyle}
-                            underlineColorAndroid='transparent'
-                        />
-                    </View>
-                </View>
-                <View style={{ flex: 1, flexDirection: 'row', height: 40 }}>
-                    <View style={{ flex: 1, borderWidth: 1, justifyContent: 'center', alignItems: 'center' }}>
-                        <Text style={styles.dataStyle}>Description</Text>
-                    </View>
-                    <View style={{ flex: 1, borderWidth: 1 }}>
-                        <TextInput
-                            onChangeText={value2 => this.setState({ value2 })}
-                            onBlur={() => this.onFocus1(this.state.value2, this.state.item_data[0].Item_Code)}
-                            value={this.state.value2}
-                            style={styles.inputStyle}
-                            underlineColorAndroid='transparent'
-                        />
-                    </View>
-                </View>
-                <View style={{ flex: 1, flexDirection: 'row', height: 40 }}>
-                    <View style={{ flex: 1, borderWidth: 1, justifyContent: 'center', alignItems: 'center' }}>
-                        <Text style={styles.dataStyle}>Delivery Date</Text>
-                    </View>
-                    <View style={{ flex: 1, borderWidth: 1 }}>
-                        {this.displayDate()}
-                    </View>
-                </View>
-            </View>
+            <TextInput
+                onChangeText={value => this.setState({ value1: value })}
+                onBlur={() => this.onFocus(this.state.value1)}
+                value={value}
+                style={styles.inputStyle}
+                underlineColorAndroid='transparent'
+            />
         );
     }
+
+    displayDes(value) {
+        return (
+            <TextInput
+                onChangeText={value => this.setState({ value2: value })}
+                onBlur={() => this.onFocus1(this.state.value2, this.state.item_data[0].Item_Code)}
+                value={value}
+                style={styles.inputStyle}
+                underlineColorAndroid='transparent'
+            />
+        );
+    }
+
+    tableView = ({ item }) => (
+        <View style={{ flex: 1, flexDirection: 'column', borderWidth: 1, marginBottom: 10 }} key={item.Item_Code}>
+            <View style={{ flex: 1, flexDirection: 'row', height: 40 }}>
+                <View style={{ flex: 1, borderWidth: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    <Text style={styles.dataStyle}>Item Code</Text>
+                </View>
+                <View style={{ flex: 1, borderWidth: 1 }}>
+                    {this.displayCode(item.Item_Code)}
+                </View>
+            </View>
+            <View style={{ flex: 1, flexDirection: 'row', height: 40 }}>
+                <View style={{ flex: 1, borderWidth: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    <Text style={styles.dataStyle}>Description</Text>
+                </View>
+                <View style={{ flex: 1, borderWidth: 1 }}>
+                    {this.displayDes(item.Discription)}
+                </View>
+            </View>
+            <View style={{ flex: 1, flexDirection: 'row', height: 40 }}>
+                <View style={{ flex: 1, borderWidth: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    <Text style={styles.dataStyle}>Delivery Date</Text>
+                </View>
+                <View style={{ flex: 1, borderWidth: 1 }}>
+                    {this.displayDate(item.Delivery_Date.date)}
+                </View>
+            </View>
+        </View>
+    )
 
     render() {
         return (

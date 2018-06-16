@@ -11,8 +11,10 @@ import RejectedProjectsDetails from './components/RejectedProjectsDetails';
 import Settings from './components/Settings';
 import ApprovedProjects from './components/ApprovedProjects';
 import ApprovedProjectsDetails from './components/ApprovedProjectsDetails';
+import Home from './components/Home';
 
 const NavigationApp = StackNavigator({
+  Home: { screen: Home },
   First: { screen: LoginForm },
   Second: { screen: ProfileActivity },
   Third: { screen: ProjectPage },

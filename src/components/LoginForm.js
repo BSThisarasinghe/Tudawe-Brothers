@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, View, TextInput, Text, Image, YellowBox, ScrollView } from 'react-native';
+import { Alert, View, TextInput, Text, Image, YellowBox, ScrollView, BackHandler } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import Button from './common/Button';
 import Card from './common/Card';
@@ -39,7 +39,7 @@ class LoginForm extends Component {
                 //console.log("Hello");
 
                 // If server response message same as Data Matched
-                if (responseJson === 'Data Matched') {
+                if (responseJson.results[1] === 'Data Matched') {
 
                     //Then open Profile activity and send user email to profile activity.
                     navigate('Second', { Email: user_email });
@@ -47,7 +47,7 @@ class LoginForm extends Component {
 
                 }
                 else {
-                    Alert.alert(responseJson);
+                    Alert.alert(responseJson.results[1]);
                     this.setState({ loading: false });
                 }
 
@@ -61,7 +61,13 @@ class LoginForm extends Component {
 
     componentWillMount() {
         YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated']);
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
     }
+
+    handleBackButtonClick() {
+        BackHandler.exitApp();
+        return true;
+      }
 
     renderButton() {
         if (this.state.loading) {

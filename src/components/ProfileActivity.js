@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, TextInput, View, Alert, Button, Text, TouchableOpacity, Image, AppState, Platform, Picker } from 'react-native';
+import { StyleSheet, TextInput, View, Alert, Button, Text, TouchableOpacity, Image, AppState, Platform, Picker, BackHandler } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import PushNotification from 'react-native-push-notification';
 import Card from './common/Card';
@@ -8,7 +8,7 @@ import { Spinner } from './common/Spinner';
 import Notification from './common/Notification';
 import PushController from './PushController';
 import Img from './common/background';
-
+import Back from './common/BackButton';
 
 class ProfileActivity extends Component {
 
@@ -17,13 +17,15 @@ class ProfileActivity extends Component {
     {
       title: 'Tudawe Brothers(Pvt) Ltd',
       headerStyle: { backgroundColor: '#fad815' },
-      headerRight: <Notification />
+      headerRight: <Notification />,
+      headerLeft: <Back />
     };
 
   constructor(props) {
     super(props);
 
     this.handleAppStateChange = this.handleAppStateChange.bind(this);
+    this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
     this.state = { user_email: this.props.navigation.state.params.Email, user_password: '', error: '', loading: false, seconds: 5 };
   }
 
@@ -51,12 +53,22 @@ class ProfileActivity extends Component {
     navigate('Seventh', { Email: this.state.user_email });
   }
 
+  componentWillMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+  }
+
   componentDidMount() {
     AppState.addEventListener('change', this.handleAppStateChange);
   }
 
   componentWillUnmount() {
     AppState.removeEventListener('change', this.handleAppStateChange);
+    // BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+  }
+
+  handleBackButtonClick() {
+    BackHandler.exitApp();
+    return true;
   }
 
   handleAppStateChange(appState) {
@@ -76,8 +88,20 @@ class ProfileActivity extends Component {
   }
 
   goBack() {
-    const { navigate } = this.props.navigation;
-    navigate('First');
+    fetch('http://bsthisarasinghe-001-site1.1tempurl.com/logout.php')
+      .then((response) => response.json())
+      .then((responseJson) => {
+        // console.log(responseJson.results[0]);
+        if (responseJson === 'NULL') {
+          const { navigate } = this.props.navigation;
+          navigate('First');
+        }
+      }).catch((error) => {
+        console.error(error);
+        // Alert.alert(error);
+        // Alert.alert("No internet connection");
+        // this.setState({ loading: false });
+      });
   }
 
   logoutButton(itemValue) {

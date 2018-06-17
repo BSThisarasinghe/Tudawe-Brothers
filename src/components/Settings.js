@@ -9,13 +9,15 @@ import Notification from './common/Notification';
 import PushController from './PushController';
 import Img1 from './common/settingsBackground';
 
+var take;
+
 class Settings extends Component {
 
     static navigationOptions =
         {
             title: 'Settings',
             headerStyle: { backgroundColor: '#fad815' },
-            headerRight: <Notification />
+            headerRight: <Notification onPress={() => take.showNotifications()} />
         };
 
     constructor(props) {
@@ -32,21 +34,27 @@ class Settings extends Component {
         };
     }
 
+    showNotifications() {
+        // console.log("Hello Buwa");
+        const { navigate } = this.props.navigation;
+        navigate('Tenth', { Email: this.state.user_email });
+    }
+
     goBack() {
         fetch('http://bsthisarasinghe-001-site1.1tempurl.com/logout.php')
-        .then((response) => response.json())
-        .then((responseJson) => {
-          // console.log(responseJson.results[0]);
-          if (responseJson === 'NULL') {
-            const { navigate } = this.props.navigation;
-            navigate('First');
-          }
-        }).catch((error) => {
-          // console.error(error);
-          // Alert.alert(error);
-          Alert.alert("No internet connection");
-          // this.setState({ loading: false });
-        });
+            .then((response) => response.json())
+            .then((responseJson) => {
+                // console.log(responseJson.results[0]);
+                if (responseJson === 'NULL') {
+                    const { navigate } = this.props.navigation;
+                    navigate('First');
+                }
+            }).catch((error) => {
+                // console.error(error);
+                // Alert.alert(error);
+                Alert.alert("No internet connection");
+                // this.setState({ loading: false });
+            });
     }
 
     componentWillMount() {
@@ -104,6 +112,7 @@ class Settings extends Component {
     }
 
     render() {
+        take = this;
         return (
             <View style={{ flex: 1 }}>
                 <Img1 />

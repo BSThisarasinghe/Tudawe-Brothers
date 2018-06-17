@@ -7,6 +7,7 @@ import CardSection from './common/CardSection';
 import { Spinner } from './common/Spinner';
 import Notification from './common/Notification';
 
+var take;
 
 class ProjectDetails extends Component {
 
@@ -15,7 +16,7 @@ class ProjectDetails extends Component {
         {
             title: 'Project Details',
             headerStyle: { backgroundColor: '#fad815' },
-            headerRight: <Notification />
+            headerRight: <Notification onPress={() => take.showNotifications()} />
         };
 
     constructor(props) {
@@ -41,6 +42,12 @@ class ProjectDetails extends Component {
             value3: '',
             hideText: true
         };
+    }
+
+    showNotifications() {
+        // console.log("Hello Buwa");
+        const { navigate } = this.props.navigation;
+        navigate('Tenth', { Email: this.state.user_email });
     }
 
     goBack() {
@@ -516,6 +523,7 @@ class ProjectDetails extends Component {
     )
 
     render() {
+        take = this;
         return (
             <ScrollView>
                 {this.completeView()}

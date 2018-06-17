@@ -8,13 +8,15 @@ import CardSection from './common/CardSection';
 import Img from './common/background';
 import { Spinner } from './common/Spinner';
 
+var take;
+
 class ApprovedProjects extends Component {
 
     static navigationOptions =
         {
             title: 'Approved Projects',
             headerStyle: { backgroundColor: '#fad815' },
-            headerRight: <Notification />
+            headerRight: <Notification onPress={() => take.showNotifications()} />
         };
 
     constructor(props) {
@@ -34,21 +36,27 @@ class ApprovedProjects extends Component {
         };
     }
 
+    showNotifications() {
+        // console.log("Hello Buwa");
+        const { navigate } = this.props.navigation;
+        navigate('Tenth', { Email: this.state.user_email });
+    }
+
     goBack() {
         fetch('http://bsthisarasinghe-001-site1.1tempurl.com/logout.php')
-        .then((response) => response.json())
-        .then((responseJson) => {
-          // console.log(responseJson.results[0]);
-          if (responseJson === 'NULL') {
-            const { navigate } = this.props.navigation;
-            navigate('First');
-          }
-        }).catch((error) => {
-          // console.error(error);
-          // Alert.alert(error);
-          Alert.alert("No internet connection");
-          // this.setState({ loading: false });
-        });
+            .then((response) => response.json())
+            .then((responseJson) => {
+                // console.log(responseJson.results[0]);
+                if (responseJson === 'NULL') {
+                    const { navigate } = this.props.navigation;
+                    navigate('First');
+                }
+            }).catch((error) => {
+                // console.error(error);
+                // Alert.alert(error);
+                Alert.alert("No internet connection");
+                // this.setState({ loading: false });
+            });
     }
 
     logoutButton(itemValue) {
@@ -74,69 +82,69 @@ class ApprovedProjects extends Component {
                 return (
                     <Text style={styles.textStyle}>1st Level</Text>
                 );
-            }else if(levelTwo != 0 && levelThree == 0) {
+            } else if (levelTwo != 0 && levelThree == 0) {
                 return (
                     <Text style={styles.textStyle}>2nd Level</Text>
                 );
-            }else if(levelTwo != 0 && levelThree != 0 && levelFour == 0) {
+            } else if (levelTwo != 0 && levelThree != 0 && levelFour == 0) {
                 return (
                     <Text style={styles.textStyle}>3rd Level</Text>
                 );
-            }else if(levelTwo != 0 && levelThree != 0 && levelFour != 0) {
+            } else if (levelTwo != 0 && levelThree != 0 && levelFour != 0) {
                 return (
                     <Text style={styles.textStyle}>4th Level</Text>
                 );
             }
-        }else if(this.state.level == '2nd Level'){
+        } else if (this.state.level == '2nd Level') {
             if (levelTwo == 0) {
                 return (
                     <Text style={styles.textStyle}>1st Level</Text>
                 );
-            }else if(levelTwo != 0 && levelThree == 0) {
+            } else if (levelTwo != 0 && levelThree == 0) {
                 return (
                     <Text style={styles.textStyle}>2nd Level</Text>
                 );
-            }else if(levelTwo != 0 && levelThree != 0 && levelFour == 0) {
+            } else if (levelTwo != 0 && levelThree != 0 && levelFour == 0) {
                 return (
                     <Text style={styles.textStyle}>3rd Level</Text>
                 );
-            }else if(levelTwo != 0 && levelThree != 0 && levelFour != 0) {
+            } else if (levelTwo != 0 && levelThree != 0 && levelFour != 0) {
                 return (
                     <Text style={styles.textStyle}>4th Level</Text>
                 );
             }
-        }else if(this.state.level == '3rd Level'){
+        } else if (this.state.level == '3rd Level') {
             if (levelTwo == 0) {
                 return (
                     <Text style={styles.textStyle}>1st Level</Text>
                 );
-            }else if(levelTwo != 0 && levelThree == 0) {
+            } else if (levelTwo != 0 && levelThree == 0) {
                 return (
                     <Text style={styles.textStyle}>2nd Level</Text>
                 );
-            }else if(levelTwo != 0 && levelThree != 0 && levelFour == 0) {
+            } else if (levelTwo != 0 && levelThree != 0 && levelFour == 0) {
                 return (
                     <Text style={styles.textStyle}>3rd Level</Text>
                 );
-            }else if(levelTwo != 0 && levelThree != 0 && levelFour != 0) {
+            } else if (levelTwo != 0 && levelThree != 0 && levelFour != 0) {
                 return (
                     <Text style={styles.textStyle}>4th Level</Text>
                 );
             }
-        }else if(this.state.level == '4th Level'){
+        } else if (this.state.level == '4th Level') {
             if (levelTwo == 0) {
                 return (
                     <Text style={styles.textStyle}>1st Level</Text>
                 );
-            }else if(levelTwo != 0 && levelThree == 0) {
+            } else if (levelTwo != 0 && levelThree == 0) {
                 return (
                     <Text style={styles.textStyle}>2nd Level</Text>
                 );
-            }else if(levelTwo != 0 && levelThree != 0 && levelFour == 0) {
+            } else if (levelTwo != 0 && levelThree != 0 && levelFour == 0) {
                 return (
                     <Text style={styles.textStyle}>3rd Level</Text>
                 );
-            }else if(levelTwo != 0 && levelThree != 0 && levelFour != 0) {
+            } else if (levelTwo != 0 && levelThree != 0 && levelFour != 0) {
                 return (
                     <Text style={styles.textStyle}>4th Level</Text>
                 );
@@ -227,6 +235,8 @@ class ApprovedProjects extends Component {
     }
 
     render() {
+
+        take = this;
         finalPakageDetails = this.state.package;
         return (
             <View style={{ flex: 1 }}>

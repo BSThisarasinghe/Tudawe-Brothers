@@ -29,7 +29,7 @@ if($job_level == '1st Level'){
 }
 $result_set = sqlsrv_query($conn, $sql);
 if($result_set){
-    $insert = "INSERT INTO Actions(action) VALUES('" . $approve . "')";
+    $insert = "INSERT INTO Actions(action, seen) VALUES('" . $approve . "', '0')";
     $insert_set = sqlsrv_query($conn, $insert);
     $msg = "Job Approved";
     $notify = "Job is approved";
@@ -50,3 +50,4 @@ if($result_set){
     echo $SuccessMsgJson;
 }
 ?>
+

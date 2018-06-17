@@ -6,6 +6,7 @@ import Card from './common/Card';
 import CardSection from './common/CardSection';
 import Img from './common/background';
 import { Spinner } from './common/Spinner';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 class LoginForm extends Component {
 
@@ -112,7 +113,7 @@ class LoginForm extends Component {
         return (
             <View style={{ flex: 1 }}>
                 <Img />
-                <ScrollView>
+                <KeyboardAwareScrollView>
                     <View style={styles.containerStyle2}>
                         <Image source={require('./pics/ic_launcher.png')} style={styles.imageStyle} />
                     </View>
@@ -160,7 +161,7 @@ class LoginForm extends Component {
                     <View style={styles.buttonStyle}>
                         {this.renderButton()}
                     </View>
-                </ScrollView>
+                </KeyboardAwareScrollView>
             </View>
         );
     }

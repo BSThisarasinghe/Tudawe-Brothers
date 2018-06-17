@@ -53,22 +53,22 @@ class NewMessages extends Component {
         }
     }
 
-    removeNotification(id) {
-        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/updateNotification.php', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                id: id
-            })
-        })
-    }
+    // removeNotification(id) {
+    //     fetch('http://bsthisarasinghe-001-site1.1tempurl.com/updateNotification.php', {
+    //         method: 'POST',
+    //         headers: {
+    //             'Accept': 'application/json',
+    //             'Content-Type': 'application/json',
+    //         },
+    //         body: JSON.stringify({
+    //             id: id
+    //         })
+    //     })
+    // }
 
 
     renderListItem = ({ item }) => (
-        <TouchableOpacity style={styles.linkStyle} key={item.id} onPress={() => this.removeNotification(item.id)}>
+        <TouchableOpacity style={styles.linkStyle} key={item.id}>
             <View style={{ width: '100%', height: 70, alignItems: 'flex-start', justifyContent: 'center' }}>
                 <Text style={styles.textStyle}>{item.action}</Text>
             </View>

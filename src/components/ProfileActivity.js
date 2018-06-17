@@ -26,7 +26,6 @@ class ProfileActivity extends Component {
   constructor(props) {
     super(props);
 
-    // this.showNotifications = this.showNotifications.bind(this);
     this.handleAppStateChange = this.handleAppStateChange.bind(this);
     this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
     this.state = {

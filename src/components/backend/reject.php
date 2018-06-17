@@ -11,6 +11,13 @@ $job_level = $obj['job_level'];
 $job_code = $obj['job_code'];
 $text = $obj['text'];
 
+$query = "SELECT * FROM AccountUsers WHERE UserID = '" . $id . "'";
+$row_set = sqlsrv_query($conn, $query);
+$row = sqlsrv_fetch_array($row_set, SQLSRV_FETCH_ASSOC);
+$name = $row['UserName'];
+
+$reject = $name." rejected ".$job_code;
+
 // $details = array();
 if($job_level == '1st Level'){
     $sql = "UPDATE SiteRequisitionMaster SET FLReject = 1, FLRejectRemarks = '" . $text . "' WHERE Job_Code = '" . $job_code . "'";
@@ -21,6 +28,9 @@ if($job_level == '1st Level'){
 }
 $result_set = sqlsrv_query($conn, $sql);
 if($result_set){
+
+    $insert = "INSERT INTO Actions(action, seen) VALUES('" . $reject . "', '0')";
+    $insert_set = sqlsrv_query($conn, $insert);
     $msg = "Job Rejected";
     // $SuccessMsgJson = json_encode(array('results' => $details));
     $SuccessMsgJson = json_encode($msg);
@@ -33,6 +43,5 @@ if($result_set){
     // Echo the message.
     echo $SuccessMsgJson;
 }
-
 
 ?>

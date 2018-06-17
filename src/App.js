@@ -12,6 +12,7 @@ import Settings from './components/Settings';
 import ApprovedProjects from './components/ApprovedProjects';
 import ApprovedProjectsDetails from './components/ApprovedProjectsDetails';
 import Home from './components/Home';
+import NewMessages from './components/NewMessages';
 
 const NavigationApp = StackNavigator({
   Home: { screen: Home },
@@ -23,7 +24,8 @@ const NavigationApp = StackNavigator({
   Sixth: { screen: RejectedProjectsDetails },
   Seventh: { screen: Settings },
   Eighth: { screen: ApprovedProjects },
-  Ninth: { screen: ApprovedProjectsDetails }
+  Ninth: { screen: ApprovedProjectsDetails },
+  Tenth: { screen: NewMessages }
 });
 
 export default class App extends React.Component{

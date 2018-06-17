@@ -10,6 +10,8 @@ import PushController from './PushController';
 import Img from './common/background';
 import Back from './common/BackButton';
 
+var take;
+
 class ProfileActivity extends Component {
 
   // Setting up profile activity title.
@@ -17,19 +19,31 @@ class ProfileActivity extends Component {
     {
       title: 'Tudawe Brothers(Pvt) Ltd',
       headerStyle: { backgroundColor: '#fad815' },
-      headerRight: <Notification />,
+      headerRight: <Notification onPress={() => take.showNotifications()} />,
       headerLeft: <Back />
     };
 
   constructor(props) {
     super(props);
 
+    // this.showNotifications = this.showNotifications.bind(this);
     this.handleAppStateChange = this.handleAppStateChange.bind(this);
     this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
-    this.state = { user_email: this.props.navigation.state.params.Email, user_password: '', error: '', loading: false, seconds: 5 };
+    this.state = {
+      user_email: this.props.navigation.state.params.Email,
+      user_password: '',
+      error: '',
+      loading: false,
+      seconds: 5,
+      notification: ''
+    };
   }
 
-  //state = { user_email: this.props.navigation.state.params.Email, user_password: '', error: '', loading: false, seconds: 5 };
+  showNotifications() {
+    // console.log("Hello Buwa");
+    const { navigate } = this.props.navigation;
+    navigate('Tenth', { Email: this.state.user_email });
+  }
 
   viewProjects() {
     const { navigate } = this.props.navigation;
@@ -54,6 +68,7 @@ class ProfileActivity extends Component {
   }
 
   componentWillMount() {
+    this.getNotification();
     BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
   }
 
@@ -63,7 +78,7 @@ class ProfileActivity extends Component {
 
   componentWillUnmount() {
     AppState.removeEventListener('change', this.handleAppStateChange);
-    // BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
   }
 
   handleBackButtonClick() {
@@ -71,17 +86,31 @@ class ProfileActivity extends Component {
     return true;
   }
 
+  getNotification() {
+    fetch('http://bsthisarasinghe-001-site1.1tempurl.com/notification.php')
+      .then((response) => response.json())
+      .then((responseJson) => {
+        //console.log("Hello");
+        this.setState({ notification: responseJson });
+      }).catch((error) => {
+        //console.error(error);
+        // Alert.alert(error);
+        Alert.alert("No internet connection");
+        this.setState({ loading: false });
+      });
+  }
+
   handleAppStateChange(appState) {
     if (appState === 'background') {
       // console.log("App is in background");
-      let date = new Date(Date.now() + (60 * 1000));
+      let date = new Date(Date.now() + (30 * 1000));
 
       if (Platform.OS === 'ios') {
         date = date.toISOString();
       }
 
       PushNotification.localNotificationSchedule({
-        message: "My Notification Message", // (required)
+        message: this.state.notification, // (required)
         date, // in 60 secs
       });
     }
@@ -97,9 +126,9 @@ class ProfileActivity extends Component {
           navigate('First');
         }
       }).catch((error) => {
-        console.error(error);
+        // console.error(error);
         // Alert.alert(error);
-        // Alert.alert("No internet connection");
+        Alert.alert("No internet connection");
         // this.setState({ loading: false });
       });
   }
@@ -111,7 +140,7 @@ class ProfileActivity extends Component {
   }
 
   render() {
-
+    take = this;
     return (
       <View style={{ flex: 1 }}>
         <Img />
@@ -145,8 +174,8 @@ class ProfileActivity extends Component {
           <View style={{ width: '100%', height: 100, justifyContent: 'center', alignItems: 'center', flexDirection: 'row', marginBottom: 10 }}>
             <TouchableOpacity style={styles.buttonStyle} onPress={this.approvedProjects.bind(this)}>
               <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', paddingTop: 20 }}>
-                <Image source={require('./pics/approved.png')} style={styles.imageStyle} />
-                <Text style={styles.textStyle}>Approved</Text>
+                <Image source={require('./pics/pending.png')} style={styles.imageStyle} />
+                <Text style={styles.textStyle}>Pending</Text>
               </View>
             </TouchableOpacity>
             <TouchableOpacity style={styles.buttonStyle} onPress={this.settingsView.bind(this)}>

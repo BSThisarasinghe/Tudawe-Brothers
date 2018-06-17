@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, TextInput, View, Alert, Text, TouchableOpacity, Image, Picker, ScrollView, FlatList } from 'react-native';
+import { StyleSheet, TextInput, View, Alert, Text, TouchableOpacity, Image, Picker, ScrollView, FlatList, BackHandler } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import EditableText from 'react-native-inline-edit';
 import Card from './common/Card';
@@ -18,29 +18,46 @@ class ProjectDetails extends Component {
             headerRight: <Notification />
         };
 
-    state = {
-        user_email: this.props.navigation.state.params.Email,
-        user_password: '',
-        error: '',
-        loading: true,
-        loading2: true,
-        text: '',
-        item_code: 'Item Value',
-        des: 'Description',
-        editable: false,
-        editable1: false,
-        editable2: false,
-        data: [],
-        item_data: [],
-        value1: '',
-        value2: '',
-        value3: '',
-        hideText: true
-    };
+    constructor(props) {
+        super(props);
+
+        this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
+        this.state = {
+            user_email: this.props.navigation.state.params.Email,
+            user_password: '',
+            error: '',
+            loading: true,
+            loading2: true,
+            text: '',
+            item_code: 'Item Value',
+            des: 'Description',
+            editable: false,
+            editable1: false,
+            editable2: false,
+            data: [],
+            item_data: [],
+            value1: '',
+            value2: '',
+            value3: '',
+            hideText: true
+        };
+    }
 
     goBack() {
-        const { navigate } = this.props.navigation;
-        navigate('First');
+        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/logout.php')
+            .then((response) => response.json())
+            .then((responseJson) => {
+                // console.log(responseJson.results[0]);
+                if (responseJson === 'NULL') {
+                    const { navigate } = this.props.navigation;
+                    navigate('First');
+                }
+            }).catch((error) => {
+                // console.error(error);
+                // Alert.alert(error);
+                Alert.alert("No internet connection");
+                // this.setState({ loading: false });
+            });
     }
 
     logoutButton(itemValue) {
@@ -191,6 +208,18 @@ class ProjectDetails extends Component {
     componentWillMount() {
         this.fetchJobData();
         this.fetchItemData();
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+    }
+
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+    }
+
+    handleBackButtonClick() {
+        // BackHandler.exitApp();
+        const { navigate } = this.props.navigation;
+        navigate('Third');
+        return true;
     }
 
     flatListView() {
@@ -226,7 +255,7 @@ class ProjectDetails extends Component {
 
         }).then((response) => response.json())
             .then((responseJson) => {
-                Alert.alert(responseJson);
+                Alert.alert(responseJson.results[1]);
                 // console.log(responseJson);
             }).catch((error) => {
                 console.error(error);

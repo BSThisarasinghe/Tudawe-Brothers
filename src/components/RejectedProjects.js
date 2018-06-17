@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, Text, TouchableOpacity, View, Image, Button, Picker, FlatList } from 'react-native';
+import { Alert, Text, TouchableOpacity, View, Image, Button, Picker, FlatList, BackHandler } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import ModalDropdown from 'react-native-modal-dropdown';
 import Notification from './common/Notification';
@@ -17,21 +17,38 @@ class RejectedProjects extends Component {
             headerRight: <Notification />
         };
 
-    state = {
-        user_email: this.props.navigation.state.params.Email,
-        user_password: '',
-        error: '',
-        scrollEnabled: true,
-        loading: true,
-        itemVal: 0,
-        package: [],
-        dropDownData: ['1st Level', '2nd Level', '3rd Level', '4th Level'],
-        level: 'Select Level'
-    };
+    constructor(props) {
+        super(props);
+
+        this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
+        this.state = {
+            user_email: this.props.navigation.state.params.Email,
+            user_password: '',
+            error: '',
+            scrollEnabled: true,
+            loading: true,
+            itemVal: 0,
+            package: [],
+            dropDownData: ['1st Level', '2nd Level', '3rd Level', '4th Level'],
+            level: 'Select Level'
+        };
+    }
 
     goBack() {
-        const { navigate } = this.props.navigation;
-        navigate('First');
+        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/logout.php')
+        .then((response) => response.json())
+        .then((responseJson) => {
+          // console.log(responseJson.results[0]);
+          if (responseJson === 'NULL') {
+            const { navigate } = this.props.navigation;
+            navigate('First');
+          }
+        }).catch((error) => {
+          // console.error(error);
+          // Alert.alert(error);
+          Alert.alert("No internet connection");
+          // this.setState({ loading: false });
+        });
     }
 
     logoutButton(itemValue) {
@@ -99,6 +116,18 @@ class RejectedProjects extends Component {
 
     componentWillMount() {
         this.projectsList();
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+    }
+
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+    }
+
+    handleBackButtonClick() {
+        // BackHandler.exitApp();
+        const { navigate } = this.props.navigation;
+        navigate('Second');
+        return true;
     }
 
     completeView() {

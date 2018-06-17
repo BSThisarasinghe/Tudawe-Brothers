@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, TextInput, View, Alert, Button, Text, TouchableOpacity, Image, AppState, Platform, Picker, ScrollView } from 'react-native';
+import { StyleSheet, TextInput, View, Alert, Button, Text, TouchableOpacity, Image, AppState, Platform, Picker, ScrollView, BackHandler } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import PushNotification from 'react-native-push-notification';
 import Card from './common/Card';
@@ -18,18 +18,50 @@ class Settings extends Component {
             headerRight: <Notification />
         };
 
-    state = {
-        user_email: this.props.navigation.state.params.Email,
-        cur_pwd: '',
-        new_pwd: '',
-        con_pwd: '',
-        error: '',
-        loading: false
-    };
+    constructor(props) {
+        super(props);
+
+        this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
+        this.state = {
+            user_email: this.props.navigation.state.params.Email,
+            cur_pwd: '',
+            new_pwd: '',
+            con_pwd: '',
+            error: '',
+            loading: false
+        };
+    }
 
     goBack() {
+        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/logout.php')
+        .then((response) => response.json())
+        .then((responseJson) => {
+          // console.log(responseJson.results[0]);
+          if (responseJson === 'NULL') {
+            const { navigate } = this.props.navigation;
+            navigate('First');
+          }
+        }).catch((error) => {
+          // console.error(error);
+          // Alert.alert(error);
+          Alert.alert("No internet connection");
+          // this.setState({ loading: false });
+        });
+    }
+
+    componentWillMount() {
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+    }
+
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+    }
+
+    handleBackButtonClick() {
+        // BackHandler.exitApp();
         const { navigate } = this.props.navigation;
-        navigate('First');
+        navigate('Second');
+        return true;
     }
 
     logoutButton(itemValue) {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Text, TouchableOpacity, Image } from 'react-native';
 
-const Notification = ({ onPress, children }) => {
+const Notification = ({ onPress }) => {
     return (
         <TouchableOpacity onPress={onPress} style={styles.buttonStyle}>
             <Image source={require('../pics/notification.png')} style={styles.imageStyle} />

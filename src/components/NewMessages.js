@@ -1,20 +1,16 @@
 import React, { Component } from 'react';
-import { Alert, Text, TouchableOpacity, View, Image, Button, Picker, FlatList, BackHandler } from 'react-native';
-import { StackNavigator } from 'react-navigation';
-import ModalDropdown from 'react-native-modal-dropdown';
-import Notification from './common/Notification';
+import { Alert, Text, TouchableOpacity, View, Picker, FlatList, BackHandler } from 'react-native';
 import Card from './common/Card';
-import CardSection from './common/CardSection';
 import Img from './common/background';
 import { Spinner } from './common/Spinner';
 
-class ProjectPage extends Component {
+class NewMessages extends Component {
 
     static navigationOptions =
         {
-            title: 'Projects',
+            title: 'Notifications',
             headerStyle: { backgroundColor: '#fad815' },
-            headerRight: <Notification />
+            // headerRight: <Notification />
         };
 
     constructor(props) {
@@ -36,19 +32,19 @@ class ProjectPage extends Component {
 
     goBack() {
         fetch('http://bsthisarasinghe-001-site1.1tempurl.com/logout.php')
-        .then((response) => response.json())
-        .then((responseJson) => {
-          // console.log(responseJson.results[0]);
-          if (responseJson === 'NULL') {
-            const { navigate } = this.props.navigation;
-            navigate('First');
-          }
-        }).catch((error) => {
-          // console.error(error);
-          // Alert.alert(error);
-          Alert.alert("No internet connection");
-          // this.setState({ loading: false });
-        });
+            .then((response) => response.json())
+            .then((responseJson) => {
+                // console.log(responseJson.results[0]);
+                if (responseJson === 'NULL') {
+                    const { navigate } = this.props.navigation;
+                    navigate('First');
+                }
+            }).catch((error) => {
+                // console.error(error);
+                // Alert.alert(error);
+                Alert.alert("No internet connection");
+                // this.setState({ loading: false });
+            });
     }
 
     logoutButton(itemValue) {
@@ -57,28 +53,24 @@ class ProjectPage extends Component {
         }
     }
 
-    viewProjects(job_code) {
-        // console.log("Item",job_code);
-        const { user_email, itemVal } = this.state;
-
-        const { navigate } = this.props.navigation;
-        navigate('Fourth', {
-            Email: user_email,
-            code: job_code,
-            job_level: this.state.level
-        });
+    removeNotification(id) {
+        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/updateNotification.php', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                id: id
+            })
+        })
     }
 
+
     renderListItem = ({ item }) => (
-        <TouchableOpacity style={styles.linkStyle} key={item.Job_Code} onPress={() => this.viewProjects(item.Job_Code)}>
-            <View style={{ width: '20%', height: 70, alignItems: 'flex-start', justifyContent: 'center' }}>
-                <Text style={styles.textStyle}>{item.Job_Code}</Text>
-            </View>
-            <View style={{ width: '60%', height: 70, alignItems: 'flex-start', justifyContent: 'center' }}>
-                <Text style={styles.textStyle}>{item.Job_Name}</Text>
-            </View>
-            <View style={{ width: '20%', height: 70, justifyContent: 'center', alignItems: 'center' }}>
-                <Image source={require('./pics/right-arrow.png')} style={styles.arrowStyle} />
+        <TouchableOpacity style={styles.linkStyle} key={item.id} onPress={() => this.removeNotification(item.id)}>
+            <View style={{ width: '100%', height: 70, alignItems: 'flex-start', justifyContent: 'center' }}>
+                <Text style={styles.textStyle}>{item.action}</Text>
             </View>
         </TouchableOpacity>
     )
@@ -91,19 +83,10 @@ class ProjectPage extends Component {
     }
 
     projectsList() {
-        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/projects.php', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                job_level: this.state.level
-            })
-
-        }).then((response) => response.json())
+        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/newMessages.php')
+            .then((response) => response.json())
             .then((responseJson) => {
-                //console.log(responseJson.results);
+                // console.log(responseJson.results[0]);
                 this.setState({ package: responseJson.results }, function () {
                     this.setState({ loading: false });
                 });
@@ -124,7 +107,6 @@ class ProjectPage extends Component {
     }
 
     handleBackButtonClick() {
-        // BackHandler.exitApp();
         const { navigate } = this.props.navigation;
         navigate('Second');
         return true;
@@ -132,6 +114,7 @@ class ProjectPage extends Component {
 
     completeView() {
         finalPakageDetails = this.state.package;
+        console.log(finalPakageDetails);
         if (this.state.loading) {
             return (
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 100, height: 100 }}>
@@ -143,7 +126,7 @@ class ProjectPage extends Component {
             <FlatList
                 data={finalPakageDetails}
                 renderItem={this.renderListItem}
-                keyExtractor={(item, index) => item.Job_Code}
+                keyExtractor={(item, index) => item.id.toString()}
                 scrollEnabled={this.state.scrollEnabled}
             />
         );
@@ -166,21 +149,6 @@ class ProjectPage extends Component {
                                 <Picker.Item label="Logout" value="Logout" />
                             </Picker>
                         </View>
-                    </View>
-                    <View style={styles.containerStyle1}>
-                        <ModalDropdown options={this.state.dropDownData} onSelect={(idx, value) => this.onSelectOpt(idx, value)} style={{ width: '100%', backgroundColor: 'rgba(255,255,255,0.8)', height: 30, justifyContent: 'center', paddingLeft: 20 }} dropdownStyle={{ width: '80%', height: 100 }} dropdownTextStyle={{ color: '#000', fontSize: 15 }} dropdownTextHighlightStyle={{ fontWeight: 'bold' }} >
-                            <View style={{ flexDirection: 'row' }}>
-                                <View style={{ width: '70%' }}>
-                                    <Text style={{ color: '#000', fontSize: 15 }}>{this.state.level}</Text>
-                                </View>
-                                <View style={{ width: '30%', alignItems: 'flex-end', paddingRight: 10 }}>
-                                    <Image
-                                        source={require('./pics/down.png')}
-                                        style={styles.downStyle}
-                                    />
-                                </View>
-                            </View>
-                        </ModalDropdown>
                     </View>
                     <View style={styles.containerStyle}>
                         {this.completeView()}
@@ -269,4 +237,4 @@ const styles = {
     }
 }
 
-export default ProjectPage;
+export default NewMessages;

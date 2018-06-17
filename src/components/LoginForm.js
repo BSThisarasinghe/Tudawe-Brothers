@@ -15,7 +15,13 @@ class LoginForm extends Component {
             headerStyle: { backgroundColor: 'transparent', height: 0 }
         };
 
-    state = { user_email: '', user_password: '', error: '', loading: false };
+    constructor(props) {
+        super(props);
+
+        // this.handleAppStateChange = this.handleAppStateChange.bind(this);
+        this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
+        this.state = { user_email: '', user_password: '', error: '', loading: false };
+    }
 
     onButtonPress() {
         const { user_email, user_password } = this.state;
@@ -64,10 +70,14 @@ class LoginForm extends Component {
         BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
     }
 
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+    }
+
     handleBackButtonClick() {
         BackHandler.exitApp();
         return true;
-      }
+    }
 
     renderButton() {
         if (this.state.loading) {

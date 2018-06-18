@@ -13,12 +13,14 @@ var take;
 
 class Settings extends Component {
 
-    static navigationOptions =
-        {
+    static navigationOptions = ({ navigation }) => {
+        const { params = {} } = navigation.state;
+        return {
             title: 'Settings',
             headerStyle: { backgroundColor: '#fad815' },
-            headerRight: <Notification onPress={() => take.showNotifications()} />
-        };
+            headerRight: <Notification onPress={() => take.showNotifications()} count={params.countValue} />,
+        }
+    };
 
     constructor(props) {
         super(props);
@@ -30,7 +32,8 @@ class Settings extends Component {
             new_pwd: '',
             con_pwd: '',
             error: '',
-            loading: false
+            loading: false,
+            count: 0
         };
     }
 
@@ -58,6 +61,7 @@ class Settings extends Component {
     }
 
     componentWillMount() {
+        this.getCount();
         BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
     }
 
@@ -65,11 +69,34 @@ class Settings extends Component {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
     }
 
+    componentDidMount() {
+        this.props.navigation.setParams({
+            countValue: this.state.count
+        });
+    }
+
     handleBackButtonClick() {
         // BackHandler.exitApp();
         const { navigate } = this.props.navigation;
         navigate('Second');
         return true;
+    }
+
+    getCount() {
+        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/getCount.php')
+            .then((response) => response.json())
+            .then((responseJson) => {
+                // console.log(responseJson.count);
+                this.setState({ count: responseJson.count });
+                this.props.navigation.setParams({
+                    countValue: this.state.count
+                });
+            }).catch((error) => {
+                //console.error(error);
+                // Alert.alert(error);
+                Alert.alert("No internet connection");
+                this.setState({ loading: false });
+            });
     }
 
     logoutButton(itemValue) {

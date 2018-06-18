@@ -12,12 +12,14 @@ var take;
 
 class RejectedProjects extends Component {
 
-    static navigationOptions =
-        {
+    static navigationOptions = ({ navigation }) => {
+        const { params = {} } = navigation.state;
+        return {
             title: 'Rejected Projects',
             headerStyle: { backgroundColor: '#fad815' },
-            headerRight: <Notification onPress={() => take.showNotifications()} />
-        };
+            headerRight: <Notification onPress={() => take.showNotifications()} count={params.countValue} />,
+        }
+    };
 
     constructor(props) {
         super(props);
@@ -32,7 +34,8 @@ class RejectedProjects extends Component {
             itemVal: 0,
             package: [],
             dropDownData: ['1st Level', '2nd Level', '3rd Level', '4th Level'],
-            level: 'Select Level'
+            level: 'Select Level',
+            count: 0
         };
     }
 
@@ -123,8 +126,15 @@ class RejectedProjects extends Component {
     }
 
     componentWillMount() {
+        this.getCount();
         this.projectsList();
         BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+    }
+
+    componentDidMount() {
+        this.props.navigation.setParams({
+            countValue: this.state.count
+        });
     }
 
     componentWillUnmount() {
@@ -137,6 +147,24 @@ class RejectedProjects extends Component {
         navigate('Second');
         return true;
     }
+
+    getCount() {
+        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/getCount.php')
+            .then((response) => response.json())
+            .then((responseJson) => {
+                // console.log(responseJson.count);
+                this.setState({ count: responseJson.count });
+                this.props.navigation.setParams({
+                    countValue: this.state.count
+                });
+            }).catch((error) => {
+                //console.error(error);
+                // Alert.alert(error);
+                Alert.alert("No internet connection");
+                this.setState({ loading: false });
+            });
+    }
+
 
     completeView() {
         finalPakageDetails = this.state.package;

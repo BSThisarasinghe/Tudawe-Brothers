@@ -12,12 +12,14 @@ var take;
 class ProjectDetails extends Component {
 
     // Setting up profile activity title.
-    static navigationOptions =
-        {
+    static navigationOptions = ({ navigation }) => {
+        const { params = {} } = navigation.state;
+        return {
             title: 'Project Details',
             headerStyle: { backgroundColor: '#fad815' },
-            headerRight: <Notification onPress={() => take.showNotifications()} />
-        };
+            headerRight: <Notification onPress={() => take.showNotifications()} count={params.countValue} />
+        }
+    };
 
     constructor(props) {
         super(props);
@@ -40,7 +42,8 @@ class ProjectDetails extends Component {
             value1: '',
             value2: '',
             value3: '',
-            hideText: true
+            hideText: true,
+            count: 0
         };
     }
 
@@ -213,10 +216,17 @@ class ProjectDetails extends Component {
     }
 
     componentWillMount() {
+        this.getCount();
         this.fetchJobData();
         this.fetchItemData();
         BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
     }
+
+    componentDidMount() {
+        this.props.navigation.setParams({
+          countValue: this.state.count
+        });
+      }
 
     componentWillUnmount() {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
@@ -228,6 +238,23 @@ class ProjectDetails extends Component {
         navigate('Third');
         return true;
     }
+
+    getCount() {
+        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/getCount.php')
+          .then((response) => response.json())
+          .then((responseJson) => {
+            // console.log(responseJson.count);
+            this.setState({ count: responseJson.count });
+            this.props.navigation.setParams({
+              countValue: this.state.count
+            });
+          }).catch((error) => {
+            //console.error(error);
+            // Alert.alert(error);
+            Alert.alert("No internet connection");
+            this.setState({ loading: false });
+          });
+      }
 
     flatListView() {
         finalPakageDetails = this.state.item_data;

@@ -15,13 +15,15 @@ var take;
 class ProfileActivity extends Component {
 
   // Setting up profile activity title.
-  static navigationOptions =
-    {
+  static navigationOptions = ({ navigation }) => {
+    const { params = {} } = navigation.state;
+    return {
       title: 'Tudawe Brothers(Pvt) Ltd',
       headerStyle: { backgroundColor: '#fad815' },
-      headerRight: <Notification onPress={() => take.showNotifications()} />,
+      headerRight: <Notification onPress={() => take.showNotifications()} count={params.countValue} />,
       headerLeft: <Back />
-    };
+    }
+  };
 
   constructor(props) {
     super(props);
@@ -34,7 +36,8 @@ class ProfileActivity extends Component {
       error: '',
       loading: false,
       seconds: 5,
-      notification: ''
+      notification: '',
+      count: 0
     };
   }
 
@@ -67,12 +70,16 @@ class ProfileActivity extends Component {
   }
 
   componentWillMount() {
+    this.getCount();
     this.getNotification();
     BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
   }
 
   componentDidMount() {
     AppState.addEventListener('change', this.handleAppStateChange);
+    this.props.navigation.setParams({
+      countValue: this.state.count
+    });
   }
 
   componentWillUnmount() {
@@ -83,6 +90,23 @@ class ProfileActivity extends Component {
   handleBackButtonClick() {
     BackHandler.exitApp();
     return true;
+  }
+
+  getCount() {
+    fetch('http://bsthisarasinghe-001-site1.1tempurl.com/getCount.php')
+      .then((response) => response.json())
+      .then((responseJson) => {
+        // console.log(responseJson.count);
+        this.setState({ count: responseJson.count });
+        this.props.navigation.setParams({
+          countValue: this.state.count
+        });
+      }).catch((error) => {
+        //console.error(error);
+        // Alert.alert(error);
+        Alert.alert("No internet connection");
+        this.setState({ loading: false });
+      });
   }
 
   getNotification() {

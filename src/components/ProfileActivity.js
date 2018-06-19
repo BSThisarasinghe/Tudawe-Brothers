@@ -59,7 +59,6 @@ class ProfileActivity extends Component {
   }
 
   approvedProjects() {
-    // console.log("Working");
     const { navigate } = this.props.navigation;
     navigate('Eighth', { Email: this.state.user_email });
   }
@@ -67,6 +66,11 @@ class ProfileActivity extends Component {
   settingsView() {
     const { navigate } = this.props.navigation;
     navigate('Seventh', { Email: this.state.user_email });
+  }
+
+  sendMsg() {
+    const { navigate } = this.props.navigation;
+    navigate('Eleventh', { Email: this.state.user_email });
   }
 
   componentWillMount() {
@@ -124,7 +128,7 @@ class ProfileActivity extends Component {
   }
 
   handleAppStateChange(appState) {
-    if (appState === 'background') {
+    if (appState === 'background' || appState === 'inactive') {
       // console.log("App is in background");
       let date = new Date(Date.now() + (30 * 1000));
 
@@ -209,6 +213,9 @@ class ProfileActivity extends Component {
             </TouchableOpacity>
           </View>
         </Card>
+        <TouchableOpacity style={{ alignItems: 'flex-end', padding: 10 }} onPress={this.sendMsg.bind(this)}>
+          <Image source={require('./pics/msg.png')} style={styles.imageStyle} />
+        </TouchableOpacity>
       </View>
     );
   }

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { StackNavigator } from 'react-navigation';
-import { Header } from './components/common/header';
 import LoginForm from './components/LoginForm';
 import ProfileActivity from './components/ProfileActivity';
 import ProjectPage from './components/ProjectPage';
@@ -13,6 +12,7 @@ import ApprovedProjects from './components/ApprovedProjects';
 import ApprovedProjectsDetails from './components/ApprovedProjectsDetails';
 import Home from './components/Home';
 import NewMessages from './components/NewMessages';
+import SendMessage from './components/SendMessage';
 
 const NavigationApp = StackNavigator({
   Home: { screen: Home },
@@ -25,7 +25,8 @@ const NavigationApp = StackNavigator({
   Seventh: { screen: Settings },
   Eighth: { screen: ApprovedProjects },
   Ninth: { screen: ApprovedProjectsDetails },
-  Tenth: { screen: NewMessages }
+  Tenth: { screen: NewMessages },
+  Eleventh: { screen: SendMessage }
 });
 
 export default class App extends React.Component{

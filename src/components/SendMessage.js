@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, Text, TouchableOpacity, View, Image, Button, Picker, TextInput, BackHandler } from 'react-native';
+import { Alert, Text, TouchableOpacity, View, Image, FlatList, Picker, TextInput, BackHandler } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import ModalDropdown from 'react-native-modal-dropdown';
 import Notification from './common/Notification';
@@ -35,7 +35,10 @@ class SendMessage extends Component {
             package: [],
             dropDownData: ['1st Level', '2nd Level', '3rd Level', '4th Level'],
             level: 'Select Level',
-            count: 0
+            count: 0,
+            message: [],
+            color: '#D5EEF0',
+            justifyContent: 'flex-start'
         };
     }
 
@@ -69,6 +72,7 @@ class SendMessage extends Component {
     }
 
     componentWillMount() {
+        this.getMsg();
         this.getCount();
         BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
     }
@@ -89,6 +93,37 @@ class SendMessage extends Component {
         navigate('Second');
         return true;
     }
+
+    renderListItem = ({ item }) => (
+        <View style={{
+            width: '100%',
+            height: 50,
+            flexDirection: 'row',
+            marginBottom: 5,
+            justifyContent: (item.status == 'yes') ? 'flex-end' : 'flex-start',
+            alignItems: 'flex-end'
+        }} key={item.ID}>
+            <View style={{
+                width: '60%', height: 50, alignItems: 'flex-start', justifyContent: 'center', backgroundColor: (item.status == 'yes') ? '#167BFB' : '#D5EEF0', borderRadius: 20, borderWidth: 1,
+                borderRadius: 20,
+                borderColor: '#ddd',
+                borderBottomWidth: 0,
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.1,
+                shadowRadius: 2,
+                elevation: 1,
+            }}>
+                <Text style={{
+                    fontSize: 15,
+                    paddingLeft: 10,
+                    color: (item.status == 'yes') ? '#fff' : '#000'
+                }}>
+                    {item.msg}
+                </Text>
+            </View>
+        </View>
+    )
 
     getCount() {
         fetch('http://bsthisarasinghe-001-site1.1tempurl.com/getCount.php')
@@ -122,11 +157,46 @@ class SendMessage extends Component {
             .then((responseJson) => {
                 Alert.alert(responseJson);
                 this.textInput.clear();
+                this.getMsg();
             }).catch((error) => {
                 //console.error(error);
                 Alert.alert("No internet connection");
                 this.setState({ loading: false });
             });
+    }
+
+    getMsg() {
+        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/pullMessages.php')
+            .then((response) => response.json())
+            .then((responseJson) => {
+                this.setState({ message: responseJson.results }, function () {
+                    this.setState({ loading: false });
+                    console.log(responseJson.results);
+                });
+            }).catch((error) => {
+                //console.error(error);
+                Alert.alert("No internet connection");
+                this.setState({ loading: false });
+            });
+    }
+
+    completeView() {
+        finalPakageDetails = this.state.message;
+        if (this.state.loading) {
+            return (
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 100, height: 100 }}>
+                    <Spinner size="large" spinnerStyle={styles.spinnerStyle} />
+                </View>
+            );
+        }
+        return (
+            <FlatList
+                data={finalPakageDetails}
+                renderItem={this.renderListItem}
+                keyExtractor={(item, index) => item.ID.toString()}
+                scrollEnabled={this.state.scrollEnabled}
+            />
+        );
     }
 
 
@@ -148,6 +218,9 @@ class SendMessage extends Component {
                         </View>
                     </View>
                 </Card>
+                <View style={{ flex: 1 }}>
+                    {this.completeView()}
+                </View>
                 <View style={styles.containerStyle}>
                     <KeyboardAwareScrollView style={{ borderWidth: 1, position: 'absolute', bottom: 0, width: '85%', borderColor: '#D1D1D1', paddingLeft: 5, paddingRight: 5 }}>
                         <TextInput
@@ -192,6 +265,37 @@ const styles = {
     imageStyle: {
         width: 40,
         height: 40
+    },
+    spinnerStyle: {
+        alignSelf: 'stretch',
+        borderRadius: 5,
+        marginLeft: 20,
+        marginRight: 20,
+        borderRadius: 60,
+        paddingTop: 10,
+        paddingBottom: 10,
+        height: 100
+    },
+    linkStyle: {
+        width: '60%',
+        height: 50,
+        backgroundColor: 'rgba(255, 255, 255, 0.5)',
+        flexDirection: 'row',
+        marginBottom: 5,
+        borderWidth: 1,
+        borderRadius: 5,
+        borderColor: '#ddd',
+        borderBottomWidth: 0,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 2,
+        elevation: 1
+    },
+    textStyle: {
+        fontSize: 15,
+        paddingLeft: 10,
+        color: '#000'
     }
 }
 

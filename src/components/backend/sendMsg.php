@@ -9,8 +9,10 @@ $obj = json_decode($json,true);
 
 $text = $obj['text'];
 
+$status = NULL;
+
 // $details = array();
-$sql = "INSERT INTO Messages(msg) VALUES('" . $text . "')";
+$sql = "INSERT INTO Messages(msg, sender, status) VALUES('" . $text . "', '" . $id . "', '" . $status . "')";
 
 $result_set = sqlsrv_query($conn, $sql);
 

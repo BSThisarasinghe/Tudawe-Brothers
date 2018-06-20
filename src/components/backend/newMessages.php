@@ -1,8 +1,14 @@
 <?php include 'db.php'; ?>
 <?php
 session_start();
+$id = $_SESSION["id"];
 $notification = array();
-$query = "SELECT * FROM Actions WHERE seen = '0' ORDER BY id DESC";
+$query = "SELECT DISTINCT Actions.id, Actions.action, Actions.seen, Actions.job_code, Actions.member FROM Actions INNER JOIN UserDocumentAuthorization ON ((Actions.member = "
+        . "UserDocumentAuthorization.FirstLevel) OR (Actions.member = UserDocumentAuthorization.SecondLevel) "
+        . "OR (Actions.member = UserDocumentAuthorization.ThirdLevel) OR (Actions.member = "
+        . "UserDocumentAuthorization.FourthLevel)) WHERE (UserDocumentAuthorization.FirstLevel = '" . $id . "' OR "
+        . "UserDocumentAuthorization.SecondLevel = '" . $id . "' OR UserDocumentAuthorization.ThirdLevel = "
+        . "'" . $id . "' OR UserDocumentAuthorization.FourthLevel = '" . $id . "')";
 $row_set = sqlsrv_query($conn, $query);
 while($row = sqlsrv_fetch_array($row_set, SQLSRV_FETCH_ASSOC)){
     array_push($notification, $row);

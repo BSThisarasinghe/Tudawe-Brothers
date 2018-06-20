@@ -130,7 +130,7 @@ class ProfileActivity extends Component {
   handleAppStateChange(appState) {
     if (appState === 'background' || appState === 'inactive') {
       // console.log("App is in background");
-      let date = new Date(Date.now() + (30 * 1000));
+      let date = new Date(Date.now() + (60 * 1000));
 
       if (Platform.OS === 'ios') {
         date = date.toISOString();

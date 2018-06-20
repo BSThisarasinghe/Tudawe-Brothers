@@ -254,7 +254,8 @@ const styles = {
         // marginBottom: '30%'
     },
     containerStyle: {
-        flex: 1,
+        height: 60
+        // flex: 1,
         // flexDirection: 'row'
     },
     inputStyle: {

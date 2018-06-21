@@ -29,7 +29,7 @@ if($job_level == '1st Level'){
 $result_set = sqlsrv_query($conn, $sql);
 if($result_set){
 
-    $insert = "INSERT INTO Actions(action, seen) VALUES('" . $reject . "', '0')";
+    $insert = "INSERT INTO Actions(action, seen, job_code, member) VALUES('" . $reject . "', '0','" . $job_code . "','" . $id . "')";
     $insert_set = sqlsrv_query($conn, $insert);
     $msg = "Job Rejected";
     // $SuccessMsgJson = json_encode(array('results' => $details));

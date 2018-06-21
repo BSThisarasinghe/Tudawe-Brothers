@@ -21,7 +21,7 @@ $sql = "UPDATE SiteRequisitionMaster SET Cancelied = 1, CancelledRemarks = '" . 
 
 $result_set = sqlsrv_query($conn, $sql);
 if($result_set){
-    $insert = "INSERT INTO Actions(action, seen) VALUES('" . $cancel . "', '0')";
+    $insert = "INSERT INTO Actions(action, seen, job_code, member) VALUES('" . $cancel . "', '0','" . $job_code . "','" . $id . "')";
     $insert_set = sqlsrv_query($conn, $insert);
     $msg = "Job Canceled";
     // $SuccessMsgJson = json_encode(array('results' => $details));
@@ -35,6 +35,5 @@ if($result_set){
     // Echo the message.
     echo $SuccessMsgJson;
 }
-
 
 ?>

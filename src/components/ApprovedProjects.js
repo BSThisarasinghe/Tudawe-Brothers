@@ -34,7 +34,7 @@ class ApprovedProjects extends Component {
             itemVal: 0,
             package: [],
             dropDownData: ['1st Level', '2nd Level', '3rd Level', '4th Level'],
-            level: '1st Level',
+            level: 'Select Level',
             count: 0
         };
     }
@@ -79,77 +79,189 @@ class ApprovedProjects extends Component {
         });
     }
 
-    selectLevel(levelTwo, levelThree, levelFour) {
+    selectLevel(levelOne, levelTwo, levelThree, levelFour) {
         if (this.state.level == '1st Level') {
-            if (levelTwo == 0) {
+            if (levelOne == 0) {
                 return (
                     <Text style={styles.textStyle}>1st Level</Text>
                 );
-            } else if (levelTwo != 0 && levelThree == 0) {
+            } else if (levelOne != 0 && levelTwo == 0) {
                 return (
                     <Text style={styles.textStyle}>2nd Level</Text>
                 );
-            } else if (levelTwo != 0 && levelThree != 0 && levelFour == 0) {
+            } else if (levelTwo != 0 && levelThree == 0) {
                 return (
                     <Text style={styles.textStyle}>3rd Level</Text>
                 );
-            } else if (levelTwo != 0 && levelThree != 0 && levelFour != 0) {
+            } else if (levelThree != 0 && levelFour == 0) {
                 return (
                     <Text style={styles.textStyle}>4th Level</Text>
                 );
             }
         } else if (this.state.level == '2nd Level') {
-            if (levelTwo == 0) {
+            if (levelOne == 0) {
                 return (
                     <Text style={styles.textStyle}>1st Level</Text>
                 );
-            } else if (levelTwo != 0 && levelThree == 0) {
+            } else if (levelOne != 0 && levelTwo == 0) {
                 return (
                     <Text style={styles.textStyle}>2nd Level</Text>
                 );
-            } else if (levelTwo != 0 && levelThree != 0 && levelFour == 0) {
+            } else if (levelTwo != 0 && levelThree == 0) {
                 return (
                     <Text style={styles.textStyle}>3rd Level</Text>
                 );
-            } else if (levelTwo != 0 && levelThree != 0 && levelFour != 0) {
+            } else if (levelThree != 0 && levelFour == 0) {
                 return (
                     <Text style={styles.textStyle}>4th Level</Text>
                 );
             }
         } else if (this.state.level == '3rd Level') {
-            if (levelTwo == 0) {
+            if (levelOne == 0) {
                 return (
                     <Text style={styles.textStyle}>1st Level</Text>
                 );
-            } else if (levelTwo != 0 && levelThree == 0) {
+            } else if (levelOne != 0 && levelTwo == 0) {
                 return (
                     <Text style={styles.textStyle}>2nd Level</Text>
                 );
-            } else if (levelTwo != 0 && levelThree != 0 && levelFour == 0) {
+            } else if (levelTwo != 0 && levelThree == 0) {
                 return (
                     <Text style={styles.textStyle}>3rd Level</Text>
                 );
-            } else if (levelTwo != 0 && levelThree != 0 && levelFour != 0) {
+            } else if (levelThree != 0 && levelFour == 0) {
                 return (
                     <Text style={styles.textStyle}>4th Level</Text>
                 );
             }
         } else if (this.state.level == '4th Level') {
-            if (levelTwo == 0) {
+            if (levelOne == 0) {
                 return (
                     <Text style={styles.textStyle}>1st Level</Text>
                 );
-            } else if (levelTwo != 0 && levelThree == 0) {
+            } else if (levelOne != 0 && levelTwo == 0) {
                 return (
                     <Text style={styles.textStyle}>2nd Level</Text>
                 );
-            } else if (levelTwo != 0 && levelThree != 0 && levelFour == 0) {
+            } else if (levelTwo != 0 && levelThree == 0) {
                 return (
                     <Text style={styles.textStyle}>3rd Level</Text>
                 );
-            } else if (levelTwo != 0 && levelThree != 0 && levelFour != 0) {
+            } else if (levelThree != 0 && levelFour == 0) {
                 return (
                     <Text style={styles.textStyle}>4th Level</Text>
+                );
+            }
+        } else {
+            if (levelOne == 0) {
+                return (
+                    <Text style={styles.textStyle}>1st Level</Text>
+                );
+            } else if (levelOne != 0 && levelTwo == 0) {
+                return (
+                    <Text style={styles.textStyle}>2nd Level</Text>
+                );
+            } else if (levelTwo != 0 && levelThree == 0) {
+                return (
+                    <Text style={styles.textStyle}>3rd Level</Text>
+                );
+            } else if (levelThree != 0 && levelFour == 0) {
+                return (
+                    <Text style={styles.textStyle}>4th Level</Text>
+                );
+            }
+        }
+    }
+
+    pendingJobs(levelOne, levelTwo, levelThree, levelFour) {
+        if (this.state.level == '1st Level') {
+            if (levelOne == 0) {
+                return (
+                    <Text style={styles.textStyle}>Pending</Text>
+                );
+            } else if (levelOne != 0 && levelTwo == 0) {
+                return (
+                    <Text style={styles.textStyle}></Text>
+                );
+            } else if (levelTwo != 0 && levelThree == 0) {
+                return (
+                    <Text style={styles.textStyle}></Text>
+                );
+            } else if (levelThree != 0 && levelFour == 0) {
+                return (
+                    <Text style={styles.textStyle}></Text>
+                );
+            }
+        } else if (this.state.level == '2nd Level') {
+            if (levelOne == 0) {
+                return (
+                    <Text style={styles.textStyle}>Pending</Text>
+                );
+            } else if (levelOne != 0 && levelTwo == 0) {
+                return (
+                    <Text style={styles.textStyle}></Text>
+                );
+            } else if (levelTwo != 0 && levelThree == 0) {
+                return (
+                    <Text style={styles.textStyle}></Text>
+                );
+            } else if (levelThree != 0 && levelFour == 0) {
+                return (
+                    <Text style={styles.textStyle}></Text>
+                );
+            }
+        } else if (this.state.level == '3rd Level') {
+            if (levelOne == 0) {
+                return (
+                    <Text style={styles.textStyle}>Pending</Text>
+                );
+            } else if (levelOne != 0 && levelTwo == 0) {
+                return (
+                    <Text style={styles.textStyle}></Text>
+                );
+            } else if (levelTwo != 0 && levelThree == 0) {
+                return (
+                    <Text style={styles.textStyle}></Text>
+                );
+            } else if (levelThree != 0 && levelFour == 0) {
+                return (
+                    <Text style={styles.textStyle}></Text>
+                );
+            }
+        } else if (this.state.level == '4th Level') {
+            if (levelOne == 0) {
+                return (
+                    <Text style={styles.textStyle}>Pending</Text>
+                );
+            } else if (levelOne != 0 && levelTwo == 0) {
+                return (
+                    <Text style={styles.textStyle}></Text>
+                );
+            } else if (levelTwo != 0 && levelThree == 0) {
+                return (
+                    <Text style={styles.textStyle}></Text>
+                );
+            } else if (levelThree != 0 && levelFour == 0) {
+                return (
+                    <Text style={styles.textStyle}></Text>
+                );
+            }
+        } else {
+            if (levelOne == 0) {
+                return (
+                    <Text style={styles.textStyle}>Pending</Text>
+                );
+            } else if (levelOne != 0 && levelTwo == 0) {
+                return (
+                    <Text style={styles.textStyle}></Text>
+                );
+            } else if (levelTwo != 0 && levelThree == 0) {
+                return (
+                    <Text style={styles.textStyle}></Text>
+                );
+            } else if (levelThree != 0 && levelFour == 0) {
+                return (
+                    <Text style={styles.textStyle}></Text>
                 );
             }
         }
@@ -160,11 +272,11 @@ class ApprovedProjects extends Component {
             <View style={{ width: '20%', height: 70, alignItems: 'flex-start', justifyContent: 'center' }}>
                 <Text style={styles.textStyle}>{item.Job_Code}</Text>
             </View>
-            <View style={{ width: '60%', height: 70, alignItems: 'flex-start', justifyContent: 'center' }}>
-                {this.selectLevel(item.SLevel, item.TLevel, item.FourthLevel)}
+            <View style={{ width: '50%', height: 70, alignItems: 'flex-start', justifyContent: 'center' }}>
+                {this.selectLevel(item.FLevel, item.SLevel, item.TLevel, item.FourthLevel)}
             </View>
-            <View style={{ width: '20%', height: 70, justifyContent: 'center', alignItems: 'center' }}>
-                <Image source={require('./pics/right-arrow.png')} style={styles.arrowStyle} />
+            <View style={{ width: '30%', height: 70, justifyContent: 'center', alignItems: 'center', paddingRight: 10 }}>
+                {this.pendingJobs(item.FLevel, item.SLevel, item.TLevel, item.FourthLevel)}
             </View>
         </TouchableOpacity>
     )

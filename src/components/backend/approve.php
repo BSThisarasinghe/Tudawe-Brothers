@@ -19,13 +19,13 @@ $approve = $name." approved ".$job_code;
 $sql = "";
 $insert = "";
 if($job_level == '1st Level'){
-    $sql = "UPDATE SiteRequisitionMaster SET FLevel = '" . $id . "' WHERE Job_Code = '" . $job_code . "'";
+    $sql = "UPDATE SiteRequisitionMaster SET FLevel = 1 WHERE Job_Code = '" . $job_code . "'";
 }elseif($job_level == '2nd Level'){
-    $sql = "UPDATE SiteRequisitionMaster SET SLevel = '" . $id . "' WHERE Job_Code = '" . $job_code . "'";
+    $sql = "UPDATE SiteRequisitionMaster SET SLevel = 1 WHERE Job_Code = '" . $job_code . "'";
 }elseif($job_level == '3rd Level'){
-    $sql = "UPDATE SiteRequisitionMaster SET TLevel = '" . $id . "' WHERE Job_Code = '" . $job_code . "'";
+    $sql = "UPDATE SiteRequisitionMaster SET TLevel = 1 WHERE Job_Code = '" . $job_code . "'";
 }elseif($job_level == '4th Level'){
-    $sql = "UPDATE SiteRequisitionMaster SET FourthLevel = '" . $id . "' WHERE Job_Code = '" . $job_code . "'";
+    $sql = "UPDATE SiteRequisitionMaster SET FourthLevel = 1 WHERE Job_Code = '" . $job_code . "'";
 }
 $result_set = sqlsrv_query($conn, $sql);
 if($result_set){
@@ -50,4 +50,3 @@ if($result_set){
     echo $SuccessMsgJson;
 }
 ?>
-

@@ -71,14 +71,18 @@ class ProjectPage extends Component {
 
     viewProjects(job_code) {
         // console.log("Item",job_code);
-        const { user_email, itemVal } = this.state;
+        if (this.state.level != 'Select Level') {
+            const { user_email, itemVal } = this.state;
 
-        const { navigate } = this.props.navigation;
-        navigate('Fourth', {
-            Email: user_email,
-            code: job_code,
-            job_level: this.state.level
-        });
+            const { navigate } = this.props.navigation;
+            navigate('Fourth', {
+                Email: user_email,
+                code: job_code,
+                job_level: this.state.level
+            });
+        } else {
+            Alert.alert("Select a level first");
+        }
     }
 
     renderListItem = ({ item }) => (
@@ -127,8 +131,8 @@ class ProjectPage extends Component {
     }
 
     componentWillMount() {
-        this.getCount();
         this.projectsList();
+        this.getCount();
         BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
     }
 

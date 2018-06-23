@@ -39,7 +39,8 @@ class ProfileActivity extends Component {
       seconds: 5,
       notification: '',
       count: 0,
-      msg: 0
+      msg: 0,
+      projects: 0
     };
   }
 
@@ -78,6 +79,7 @@ class ProfileActivity extends Component {
   componentWillMount() {
     this.getCount();
     this.countMessages();
+    this.countProjects();
     this.getNotification();
     BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
   }
@@ -122,6 +124,20 @@ class ProfileActivity extends Component {
       .then((responseJson) => {
         // console.log(responseJson.count);
         this.setState({ msg: responseJson.count });
+      }).catch((error) => {
+        //console.error(error);
+        // Alert.alert(error);
+        Alert.alert("No internet connection");
+        this.setState({ loading: false });
+      });
+  }
+
+  countProjects() {
+    fetch('http://bsthisarasinghe-001-site1.1tempurl.com/projectsCount.php')
+      .then((response) => response.json())
+      .then((responseJson) => {
+        // console.log(responseJson.count);
+        this.setState({ projects: responseJson.count });
       }).catch((error) => {
         //console.error(error);
         // Alert.alert(error);
@@ -203,10 +219,43 @@ class ProfileActivity extends Component {
         <Card>
           <View style={{ width: '100%', height: 100, justifyContent: 'center', alignItems: 'center', flexDirection: 'row', marginBottom: 10 }}>
             <TouchableOpacity style={styles.buttonStyle} onPress={this.viewProjects.bind(this)}>
-              <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', paddingTop: 20 }}>
-                <Image source={require('./pics/projects.png')} style={styles.imageStyle} />
-                <Text style={styles.textStyle}>Projects</Text>
-              </View>
+              <IconBadge
+                MainElement={
+                  <View style={{
+                    flex: 1,
+                    height: '100%',
+                    borderRadius: 5,
+                    marginLeft: 5,
+                    marginRight: 5,
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}>
+                    <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', paddingTop: 20 }}>
+                      <Image source={require('./pics/projects.png')} style={styles.imageStyle} />
+                      <Text style={styles.textStyle}>Projects</Text>
+                    </View>
+                  </View>
+                }
+                BadgeElement={
+                  <Text style={{ color: '#FFFFFF' }}>{this.state.projects}</Text>
+                }
+                IconBadgeStyle={
+                  {
+                    width: 30,
+                    height: 30,
+                    backgroundColor: 'transparent',
+                    position: 'absolute',
+                    borderWidth: 1,
+                    borderColor: '#fff',
+                    top: 30,
+                    right: -5,
+                    borderRadius: 15,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }
+                }
+                Hidden={this.state.msg == 0}
+              />
             </TouchableOpacity>
             <TouchableOpacity style={styles.buttonStyle} onPress={this.rejectedProjects.bind(this)}>
               <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', paddingTop: 20 }}>

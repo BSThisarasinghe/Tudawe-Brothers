@@ -85,11 +85,8 @@ class RejectedProjects extends Component {
             <View style={{ width: '20%', height: 70, alignItems: 'flex-start', justifyContent: 'center' }}>
                 <Text style={styles.textStyle}>{item.Job_Code}</Text>
             </View>
-            <View style={{ width: '60%', height: 70, alignItems: 'flex-start', justifyContent: 'center' }}>
+            <View style={{ width: '80%', height: 70, alignItems: 'flex-start', justifyContent: 'center', paddingRight: 5 }}>
                 <Text style={styles.textStyle}>{item.Job_Name}</Text>
-            </View>
-            <View style={{ width: '20%', height: 70, justifyContent: 'center', alignItems: 'center' }}>
-                <Image source={require('./pics/right-arrow.png')} style={styles.arrowStyle} />
             </View>
         </TouchableOpacity>
     )

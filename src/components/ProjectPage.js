@@ -34,7 +34,7 @@ class ProjectPage extends Component {
             loading: true,
             itemVal: 0,
             package: [],
-            dropDownData: ['1st Level', '2nd Level', '3rd Level', '4th Level'],
+            dropDownData: ['1st Level', '2nd Level', '3rd Level', '4th Level', '1st Level Alternative', '2nd Level Alternative', '3rd Level Alternative', '4th Level Alternative'],
             level: 'Select Level',
             count: 0
         };

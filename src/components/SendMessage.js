@@ -38,7 +38,8 @@ class SendMessage extends Component {
             count: 0,
             message: [],
             color: '#D5EEF0',
-            justifyContent: 'flex-start'
+            justifyContent: 'flex-start',
+            seen: false
         };
     }
 

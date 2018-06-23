@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, TextInput, View, Alert, Button, Text, TouchableOpacity, Image, AppState, Platform, Picker, BackHandler } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import PushNotification from 'react-native-push-notification';
+import IconBadge from 'react-native-icon-badge';
 import Card from './common/Card';
 import CardSection from './common/CardSection';
 import { Spinner } from './common/Spinner';
@@ -37,7 +38,8 @@ class ProfileActivity extends Component {
       loading: false,
       seconds: 5,
       notification: '',
-      count: 0
+      count: 0,
+      msg: 0
     };
   }
 
@@ -75,6 +77,7 @@ class ProfileActivity extends Component {
 
   componentWillMount() {
     this.getCount();
+    this.countMessages();
     this.getNotification();
     BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
   }
@@ -105,6 +108,20 @@ class ProfileActivity extends Component {
         this.props.navigation.setParams({
           countValue: this.state.count
         });
+      }).catch((error) => {
+        //console.error(error);
+        // Alert.alert(error);
+        Alert.alert("No internet connection");
+        this.setState({ loading: false });
+      });
+  }
+
+  countMessages() {
+    fetch('http://bsthisarasinghe-001-site1.1tempurl.com/countMessages.php')
+      .then((response) => response.json())
+      .then((responseJson) => {
+        // console.log(responseJson.count);
+        this.setState({ msg: responseJson.count });
       }).catch((error) => {
         //console.error(error);
         // Alert.alert(error);
@@ -213,9 +230,24 @@ class ProfileActivity extends Component {
             </TouchableOpacity>
           </View>
         </Card>
-        <TouchableOpacity style={{ alignItems: 'flex-end', padding: 10 }} onPress={this.sendMsg.bind(this)}>
-          <Image source={require('./pics/msg.png')} style={styles.imageStyle} />
-        </TouchableOpacity>
+        <IconBadge
+          MainElement={
+            <TouchableOpacity style={{ alignItems: 'flex-end', padding: 10 }} onPress={this.sendMsg.bind(this)}>
+              <Image source={require('./pics/msg.png')} style={styles.imageStyle} />
+            </TouchableOpacity>
+          }
+          BadgeElement={
+            <Text style={{ color: '#FFFFFF' }}>{this.state.msg}</Text>
+          }
+          IconBadgeStyle={
+            {
+              width: 20,
+              height: 20,
+              backgroundColor: 'red'
+            }
+          }
+          Hidden={this.state.msg == 0}
+        />
       </View>
     );
   }

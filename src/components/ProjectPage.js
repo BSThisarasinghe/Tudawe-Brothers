@@ -100,7 +100,6 @@ class ProjectPage extends Component {
     )
 
     onSelectOpt(idx, value) {
-
         this.setState({ level: value }, function () {
             this.projectsList();
         });

@@ -33,7 +33,7 @@ class RejectedProjects extends Component {
             loading: true,
             itemVal: 0,
             package: [],
-            dropDownData: ['1st Level', '2nd Level', '3rd Level', '4th Level'],
+            dropDownData: ['1st Level', '2nd Level', '3rd Level'],
             level: 'Select Level',
             count: 0
         };

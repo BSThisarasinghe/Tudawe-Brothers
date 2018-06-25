@@ -18,6 +18,7 @@ $name = $row['UserName'];
 
 $reject = $name." rejected ".$job_code;
 
+$date = date("Y/m/d");
 // $details = array();
 if($job_level == '1st Level'){
     $sql = "UPDATE SiteRequisitionMaster SET FLReject = 1, FLRejectRemarks = '" . $text . "' WHERE Job_Code = '" . $job_code . "'";
@@ -29,7 +30,7 @@ if($job_level == '1st Level'){
 $result_set = sqlsrv_query($conn, $sql);
 if($result_set){
 
-    $insert = "INSERT INTO Actions(action, seen, job_code, member) VALUES('" . $reject . "', '0','" . $job_code . "','" . $id . "')";
+    $insert = "INSERT INTO Actions(action, task, job_code, member, action_date) VALUES('" . $reject . "', 'reject','" . $job_code . "','" . $id . "','" . $date . "')";
     $insert_set = sqlsrv_query($conn, $insert);
     $msg = "Job Rejected";
     // $SuccessMsgJson = json_encode(array('results' => $details));

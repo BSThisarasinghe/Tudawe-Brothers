@@ -16,12 +16,13 @@ $row = sqlsrv_fetch_array($row_set, SQLSRV_FETCH_ASSOC);
 $name = $row['UserName'];
 
 $cancel = $name." canceled ".$job_code;
+$date = date("Y/m/d");
 // $details = array();
 $sql = "UPDATE SiteRequisitionMaster SET Cancelied = 1, CancelledRemarks = '" . $text . "' WHERE Job_Code = '" . $job_code . "'";
 
 $result_set = sqlsrv_query($conn, $sql);
 if($result_set){
-    $insert = "INSERT INTO Actions(action, seen, job_code, member) VALUES('" . $cancel . "', '0','" . $job_code . "','" . $id . "')";
+    $insert = "INSERT INTO Actions(action, task, job_code, member, action_date) VALUES('" . $cancel . "', 'cancel','" . $job_code . "','" . $id . "','" . $date . "')";
     $insert_set = sqlsrv_query($conn, $insert);
     $msg = "Job Canceled";
     // $SuccessMsgJson = json_encode(array('results' => $details));

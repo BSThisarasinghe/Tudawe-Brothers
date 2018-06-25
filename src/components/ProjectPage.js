@@ -86,9 +86,9 @@ class ProjectPage extends Component {
     }
 
     renderListItem = ({ item }) => (
-        <TouchableOpacity style={styles.linkStyle} key={item.Job_Code} onPress={() => this.viewProjects(item.Job_Code)}>
+        <TouchableOpacity style={styles.linkStyle} key={item.SRN_No} onPress={() => this.viewProjects(item.Job_Code)}>
             <View style={{ width: '20%', height: 70, alignItems: 'flex-start', justifyContent: 'center' }}>
-                <Text style={styles.textStyle}>{item.Job_Code}</Text>
+                <Text style={styles.textStyle}>{item.SRN_No}</Text>
             </View>
             <View style={{ width: '60%', height: 70, alignItems: 'flex-start', justifyContent: 'center' }}>
                 <Text style={styles.textStyle}>{item.Job_Name}</Text>
@@ -182,7 +182,7 @@ class ProjectPage extends Component {
             <FlatList
                 data={finalPakageDetails}
                 renderItem={this.renderListItem}
-                keyExtractor={(item, index) => item.Job_Code}
+                keyExtractor={(item, index) => item.SRN_No.toString()}
                 scrollEnabled={this.state.scrollEnabled}
             />
         );

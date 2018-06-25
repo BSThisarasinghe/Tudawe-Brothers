@@ -1,10 +1,9 @@
 <?php include 'db.php'; ?>
 <?php
-
 session_start();
 $id = $_SESSION["id"];
 // $query = "SELECT TOP 1 * FROM Actions WHERE seen = '0' ORDER BY id DESC";
-$query = "SELECT DISTINCT Actions.id, Actions.action, Actions.seen, Actions.job_code, Actions.member FROM Actions INNER JOIN UserDocumentAuthorization ON ((Actions.member = "
+$query = "SELECT DISTINCT Actions.id, Actions.action, Actions.task, Actions.job_code, Actions.member, Actions.action_date FROM Actions INNER JOIN UserDocumentAuthorization ON ((Actions.member = "
         . "UserDocumentAuthorization.FirstLevel) OR (Actions.member = UserDocumentAuthorization.SecondLevel) "
         . "OR (Actions.member = UserDocumentAuthorization.ThirdLevel) OR (Actions.member = "
         . "UserDocumentAuthorization.FourthLevel)) WHERE (UserDocumentAuthorization.FirstLevel = '" . $id . "' OR "
@@ -18,4 +17,5 @@ $action = $row['action'];
 $SuccessMsgJson = json_encode($action);
 // Echo the message.
 echo $SuccessMsgJson;
+
 ?>

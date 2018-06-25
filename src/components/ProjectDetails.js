@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet, TextInput, View, Alert, Text, TouchableOpacity, Image, Picker, ScrollView, FlatList, BackHandler } from 'react-native';
+import { StyleSheet, TextInput, View, Alert, Text, TouchableOpacity, Image, Picker, ScrollView, FlatList, BackHandler, Modal, TouchableHighlight } from 'react-native';
 import { StackNavigator } from 'react-navigation';
-import EditableText from 'react-native-inline-edit';
 import Card from './common/Card';
 import CardSection from './common/CardSection';
 import { Spinner } from './common/Spinner';
@@ -25,6 +24,10 @@ class ProjectDetails extends Component {
         super(props);
 
         this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
+        this.onCancel = this.onCancel.bind(this);
+        this.setModalVisible = this.setModalVisible.bind(this);
+        this.onReject = this.onReject.bind(this);
+        this.setRejectModalVisible = this.setRejectModalVisible.bind(this);
         this.state = {
             user_email: this.props.navigation.state.params.Email,
             user_password: '',
@@ -43,7 +46,10 @@ class ProjectDetails extends Component {
             value2: '',
             value3: '',
             hideText: true,
-            count: 0
+            count: 0,
+            modalVisible: false,
+            modalVisible2: false,
+            underlineColorAndroid: 'transparent'
         };
     }
 
@@ -168,7 +174,7 @@ class ProjectDetails extends Component {
 
         }).then((response) => response.json())
             .then((responseJson) => {
-                // console.log(responseJson);
+                // console.log(responseJson.results);
                 // this.setState({ data: responseJson.results });
                 this.setState({ data: responseJson.results }, function () {
                     this.setState({ loading: false });
@@ -224,9 +230,9 @@ class ProjectDetails extends Component {
 
     componentDidMount() {
         this.props.navigation.setParams({
-          countValue: this.state.count
+            countValue: this.state.count
         });
-      }
+    }
 
     componentWillUnmount() {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
@@ -241,20 +247,20 @@ class ProjectDetails extends Component {
 
     getCount() {
         fetch('http://bsthisarasinghe-001-site1.1tempurl.com/getCount.php')
-          .then((response) => response.json())
-          .then((responseJson) => {
-            // console.log(responseJson.count);
-            this.setState({ count: responseJson.count });
-            this.props.navigation.setParams({
-              countValue: this.state.count
+            .then((response) => response.json())
+            .then((responseJson) => {
+                // console.log(responseJson.count);
+                this.setState({ count: responseJson.count });
+                this.props.navigation.setParams({
+                    countValue: this.state.count
+                });
+            }).catch((error) => {
+                //console.error(error);
+                // Alert.alert(error);
+                Alert.alert("No internet connection");
+                this.setState({ loading: false });
             });
-          }).catch((error) => {
-            //console.error(error);
-            // Alert.alert(error);
-            Alert.alert("No internet connection");
-            this.setState({ loading: false });
-          });
-      }
+    }
 
     flatListView() {
         finalPakageDetails = this.state.item_data;
@@ -299,53 +305,84 @@ class ProjectDetails extends Component {
             });
     }
 
-    onCancel() {
-        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/cancel.php', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                text: this.state.text,
-                job_code: this.props.navigation.state.params.code
-            })
 
-        }).then((response) => response.json())
-            .then((responseJson) => {
-                Alert.alert(responseJson);
-                // console.log(responseJson);
-            }).catch((error) => {
-                console.error(error);
-                // Alert.alert(error);
-                // Alert.alert("No internet connection");
-                this.setState({ loading: false });
-            });
+    setModalVisible(visible) {
+        this.setState({ modalVisible: visible });
     }
 
-    onReject() {
-        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/reject.php', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                job_level: this.props.navigation.state.params.job_level,
-                text: this.state.text,
-                job_code: this.props.navigation.state.params.code
-            })
+    onCancel(visible) {
+        const { navigate } = this.props.navigation;
+        if (this.state.text == '') {
+            this.setState({ underlineColorAndroid: 'red' });
+        } else {
+            this.setState({ underlineColorAndroid: 'transparent' });
+            this.setState({ modalVisible: visible });
+            fetch('http://bsthisarasinghe-001-site1.1tempurl.com/cancel.php', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    text: this.state.text,
+                    job_code: this.props.navigation.state.params.code
+                })
 
-        }).then((response) => response.json())
-            .then((responseJson) => {
-                Alert.alert(responseJson);
-                // console.log(responseJson);
-            }).catch((error) => {
-                console.error(error);
-                // Alert.alert(error);
-                // Alert.alert("No internet connection");
-                this.setState({ loading: false });
-            });
+            }).then((response) => response.json())
+                .then((responseJson) => {
+                    if(responseJson == 'Job Canceled'){
+                        navigate('Third', { Email: this.state.user_email });
+                    }else if(responseJson == 'Job cancelation failed'){
+                        Alert.alert(responseJson);
+                    }
+                    // console.log(responseJson);
+                }).catch((error) => {
+                    console.error(error);
+                    // Alert.alert(error);
+                    // Alert.alert("No internet connection");
+                    this.setState({ loading: false });
+                });
+        }
+    }
+
+    setRejectModalVisible(visible) {
+        this.setState({ modalVisible2: visible });
+    }
+
+    onReject(visible) {
+        const { navigate } = this.props.navigation;
+        if (this.state.text == '') {
+            this.setState({ underlineColorAndroid: 'red' });
+        } else {
+            this.setState({ underlineColorAndroid: 'transparent' });
+            this.setState({ modalVisible2: visible });
+            fetch('http://bsthisarasinghe-001-site1.1tempurl.com/reject.php', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    job_level: this.props.navigation.state.params.job_level,
+                    text: this.state.text,
+                    job_code: this.props.navigation.state.params.code
+                })
+
+            }).then((response) => response.json())
+                .then((responseJson) => {
+                    if(responseJson == 'Job Rejected'){
+                        navigate('Third', { Email: this.state.user_email });
+                    }else if(responseJson == 'Job reject failed'){
+                        Alert.alert(responseJson);
+                    }
+                    // console.log(responseJson);
+                }).catch((error) => {
+                    console.error(error);
+                    // Alert.alert(error);
+                    // Alert.alert("No internet connection");
+                    this.setState({ loading: false });
+                });
+        }
     }
 
     completeView() {
@@ -376,84 +413,132 @@ class ProjectDetails extends Component {
                 </View>
                 <View style={styles.cardStyle}>
                     <View style={{ width: '35%' }}>
-                        <Text style={styles.textBoldStyle}>Project Name: </Text>
-                    </View>
-                    <View style={{ width: '65%' }}>
-                        <Text style={styles.textStyle}>{this.state.data[0].Job_Name}</Text>
-                    </View>
-                </View>
-                <View style={styles.cardStyle}>
-                    <View style={{ width: '35%' }}>
-                        <Text style={styles.textBoldStyle}>SRN No: </Text>
-                    </View>
-                    <View style={{ width: '65%' }}>
-                        <Text style={styles.textStyle}>{this.state.data[0].SRN_No}</Text>
-                    </View>
-                </View>
-                <View style={styles.cardStyle}>
-                    <View style={{ width: '35%' }}>
-                        <Text style={styles.textBoldStyle}>SRN Date: </Text>
-                    </View>
-                    <View style={{ width: '65%' }}>
-                        <Text style={styles.textStyle}>{this.state.data[0].SRN_Date.date}</Text>
-                    </View>
-                </View>
-                <View style={styles.cardStyle}>
-                    <View style={{ width: '35%' }}>
                         <Text style={styles.textBoldStyle}>Prepared By: </Text>
                     </View>
                     <View style={{ width: '65%' }}>
-                        <Text style={styles.textStyle}>{this.state.data[0].FLevel}</Text>
+                        <Text style={styles.textStyle}>{this.state.data[0].UserName}</Text>
                     </View>
                 </View>
-                <View style={styles.cardStyle}>
-                    <View style={{ width: '35%' }}>
-                        <Text style={styles.textBoldStyle}>Site Eng/Mgr: </Text>
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    presentationStyle='overFullScreen'
+                    visible={this.state.modalVisible}
+                    onRequestClose={() => {
+                        alert('Window has been closed.');
+                    }}>
+                    <View style={{ marginTop: 100, height: 200, width: '80%', backgroundColor: '#fff', borderRadius: 5, alignSelf: 'center' }}>
+                        <View style={styles.cardStyle}>
+                            <View style={{ width: '35%', height: 50, justifyContent: 'center', alignItems: 'center' }}>
+                                <Text style={styles.textBoldStyle}>Note: </Text>
+                            </View>
+                            <View style={{ width: '65%', height: 50 }}>
+                                <TextInput
+                                    multiline={true}
+                                    numberOfLines={4}
+                                    autoCorrect={true}
+                                    onChangeText={text => this.setState({ text })}
+                                    value={this.state.text}
+                                    placeholder="Enter a note"
+                                    style={styles.inputStyle}
+                                    underlineColorAndroid={this.state.underlineColorAndroid}
+                                />
+                            </View>
+                        </View>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+                            <TouchableOpacity style={{
+                                width: 100,
+                                height: 30,
+                                alignSelf: 'stretch',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                backgroundColor: '#fff',
+                                borderRadius: 2,
+                                borderWidth: 1,
+                                borderColor: '#022B96',
+                                marginLeft: 5,
+                                marginRight: 5
+                            }} onPress={() => this.setModalVisible(!this.state.modalVisible)}>
+                                <Text>Cancel</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={{
+                                width: 100,
+                                height: 30,
+                                alignSelf: 'stretch',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                backgroundColor: '#022B96',
+                                borderRadius: 2,
+                                borderWidth: 1,
+                                borderColor: '#022B96',
+                                marginLeft: 5,
+                                marginRight: 5
+                            }} onPress={() => this.onCancel(!this.state.modalVisible)}>
+                                <Text style={{ color: '#fff' }}>OK</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
-                    <View style={{ width: '65%' }}>
-                        <Text style={styles.textStyle}>{this.state.data[0].SLevel}</Text>
+                </Modal>
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    presentationStyle='overFullScreen'
+                    visible={this.state.modalVisible2}
+                    onRequestClose={() => {
+                        alert('Window has been closed.');
+                    }}>
+                    <View style={{ marginTop: 100, height: 200, width: '80%', backgroundColor: '#fff', borderRadius: 5, alignSelf: 'center' }}>
+                        <View style={styles.cardStyle}>
+                            <View style={{ width: '35%', height: 50, justifyContent: 'center', alignItems: 'center' }}>
+                                <Text style={styles.textBoldStyle}>Note: </Text>
+                            </View>
+                            <View style={{ width: '65%', height: 50 }}>
+                                <TextInput
+                                    multiline={true}
+                                    numberOfLines={4}
+                                    autoCorrect={true}
+                                    onChangeText={text => this.setState({ text })}
+                                    value={this.state.text}
+                                    placeholder="Enter a note"
+                                    style={styles.inputStyle}
+                                    underlineColorAndroid={this.state.underlineColorAndroid}
+                                />
+                            </View>
+                        </View>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+                            <TouchableOpacity style={{
+                                width: 100,
+                                height: 30,
+                                alignSelf: 'stretch',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                backgroundColor: '#fff',
+                                borderRadius: 2,
+                                borderWidth: 1,
+                                borderColor: '#022B96',
+                                marginLeft: 5,
+                                marginRight: 5
+                            }} onPress={() => this.setRejectModalVisible(!this.state.modalVisible2)}>
+                                <Text>Cancel</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={{
+                                width: 100,
+                                height: 30,
+                                alignSelf: 'stretch',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                backgroundColor: '#022B96',
+                                borderRadius: 2,
+                                borderWidth: 1,
+                                borderColor: '#022B96',
+                                marginLeft: 5,
+                                marginRight: 5
+                            }} onPress={() => this.onReject(!this.state.modalVisible2)}>
+                                <Text style={{ color: '#fff' }}>OK</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
-                </View>
-                <View style={styles.cardStyle}>
-                    <View style={{ width: '35%' }}>
-                        <Text style={styles.textBoldStyle}>Coordinator: </Text>
-                    </View>
-                    <View style={{ width: '65%' }}>
-                        <Text style={styles.textStyle}>{this.state.data[0].TLevel}</Text>
-                    </View>
-                </View>
-                <View style={styles.cardStyle}>
-                    <View style={{ width: '35%' }}>
-                        <Text style={styles.textBoldStyle}>Site QS: </Text>
-                    </View>
-                    <View style={{ width: '65%' }}>
-                        <Text style={styles.textStyle}>{this.state.data[0].FLevel}</Text>
-                    </View>
-                </View>
-                <View style={styles.cardStyle}>
-                    <View style={{ width: '35%' }}>
-                        <Text style={styles.textBoldStyle}>Remarks: </Text>
-                    </View>
-                    <View style={{ width: '65%' }}>
-                        <Text style={styles.textStyle}>{this.state.data[0].Remarks}</Text>
-                    </View>
-                </View>
-                <View style={styles.cardStyle}>
-                    <View style={{ width: '35%', height: 50 }}>
-                        <Text style={styles.textBoldStyle}>Note: </Text>
-                    </View>
-                    <View style={{ width: '65%', height: 50 }}>
-                        <TextInput
-                            multiline={true}
-                            numberOfLines={4}
-                            autoCorrect={true}
-                            onChangeText={text => this.setState({ text })}
-                            value={this.state.text}
-                            placeholder="Enter a note"
-                            style={styles.inputStyle}
-                        />
-                    </View>
-                </View>
+                </Modal>
                 <View style={{ flex: 1, flexDirection: 'row', marginTop: 20, paddingLeft: 5, paddingRight: 5 }}>
                     <View style={{ flex: 1, flexDirection: 'row' }}>
                         <TouchableOpacity style={styles.approveStyle} onPress={this.onApprove.bind(this)}>
@@ -461,12 +546,12 @@ class ProjectDetails extends Component {
                         </TouchableOpacity>
                     </View>
                     <View style={{ flex: 1, flexDirection: 'row' }}>
-                        <TouchableOpacity style={styles.cancelStyle} onPress={this.onCancel.bind(this)}>
+                        <TouchableOpacity style={styles.cancelStyle} onPress={() => this.setModalVisible(true)}>
                             <Text style={styles.buttonTextStyle}>CANCEL</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={{ flex: 1, flexDirection: 'row' }}>
-                        <TouchableOpacity style={styles.rejectStyle} onPress={this.onReject.bind(this)}>
+                        <TouchableOpacity style={styles.rejectStyle} onPress={() => this.setRejectModalVisible(true)}>
                             <Text style={styles.buttonTextStyle}>REJECT</Text>
                         </TouchableOpacity>
                     </View>
@@ -660,8 +745,6 @@ const styles = {
         marginRight: 20,
         justifyContent: 'flex-start',
         flexDirection: 'row',
-        borderBottomWidth: 1,
-        borderBottomColor: '#CCCDCC',
         //borderColor: '#ddd',
         position: 'relative',
     },

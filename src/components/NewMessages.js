@@ -68,9 +68,28 @@ class NewMessages extends Component {
 
 
     renderListItem = ({ item }) => (
-        <TouchableOpacity style={styles.linkStyle} key={item.id}>
-            <View style={{ width: '100%', height: 70, alignItems: 'flex-start', justifyContent: 'center' }}>
+        <TouchableOpacity style={{
+            width: '100%',
+            height: 70,
+            // backgroundColor: 'rgba(255, 255, 255, 0.5)',
+            backgroundColor: (item.task == 'approve') ? 'rgba(17, 179, 9, 0.5)' : (item.task == 'cancel') ? 'rgba(251, 20, 9, 0.5)' : 'rgba(234, 241, 14, 0.5)',
+            flexDirection: 'row',
+            marginBottom: 10,
+            borderWidth: 1,
+            borderRadius: 5,
+            borderColor: '#ddd',
+            borderBottomWidth: 0,
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.1,
+            shadowRadius: 2,
+            elevation: 1,
+        }} key={item.id}>
+            <View style={{ width: '60%', height: 70, alignItems: 'flex-start', justifyContent: 'center' }}>
                 <Text style={styles.textStyle}>{item.action}</Text>
+            </View>
+            <View style={{ width: '40%', height: 70, justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={styles.textStyle}>{item.action_date}</Text>
             </View>
         </TouchableOpacity>
     )
@@ -86,7 +105,7 @@ class NewMessages extends Component {
         fetch('http://bsthisarasinghe-001-site1.1tempurl.com/newMessages.php')
             .then((response) => response.json())
             .then((responseJson) => {
-                // console.log(responseJson.results[0]);
+                // console.log(responseJson.results[0].task);
                 this.setState({ package: responseJson.results }, function () {
                     this.setState({ loading: false });
                 });
@@ -114,7 +133,7 @@ class NewMessages extends Component {
 
     completeView() {
         finalPakageDetails = this.state.package;
-        console.log(finalPakageDetails);
+        // console.log(finalPakageDetails);
         if (this.state.loading) {
             return (
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 100, height: 100 }}>

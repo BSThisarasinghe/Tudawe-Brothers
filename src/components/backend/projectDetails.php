@@ -11,7 +11,11 @@ $job_code = $obj['job_code'];
 
 $details = array();
 
-$sql = "SELECT * FROM JobMaster INNER JOIN SiteRequisitionMaster ON JobMaster.Job_Code = SiteRequisitionMaster.Job_Code WHERE JobMaster.Job_Code = '" . $job_code . "'";
+$sql = "SELECT * FROM (((JobMaster 
+INNER JOIN SiteRequisitionMaster ON JobMaster.Job_Code = SiteRequisitionMaster.Job_Code)
+INNER JOIN UserSRNJobPermission ON UserSRNJobPermission.AccountCode  = JobMaster.Job_Code)
+INNER JOIN AccountUsers ON UserSRNJobPermission.UserID  = AccountUsers.UserID)
+ WHERE JobMaster.Job_Code = '" . $job_code . "'";
 $result_set = sqlsrv_query($conn, $sql);
 $result = sqlsrv_fetch_array($result_set, SQLSRV_FETCH_ASSOC);
 
@@ -22,30 +26,3 @@ $SuccessMsgJson = json_encode(array('results' => $details));
 echo $SuccessMsgJson; 
 //echo '<p>'.$result['Owner'].'</p>'; 
 ?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

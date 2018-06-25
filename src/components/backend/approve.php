@@ -10,6 +10,8 @@ $detail_arr = array();
 $job_level = $obj['job_level'];
 $job_code = $obj['job_code'];
 
+$date = date("Y/m/d");
+
 $query = "SELECT * FROM AccountUsers WHERE UserID = '" . $id . "'";
 $row_set = sqlsrv_query($conn, $query);
 $row = sqlsrv_fetch_array($row_set, SQLSRV_FETCH_ASSOC);
@@ -29,7 +31,7 @@ if($job_level == '1st Level'){
 }
 $result_set = sqlsrv_query($conn, $sql);
 if($result_set){
-    $insert = "INSERT INTO Actions(action, seen, job_code, member) VALUES('" . $approve . "', '0','" . $job_code . "','" . $id . "')";
+    $insert = "INSERT INTO Actions(action, task, job_code, member, action_date) VALUES('" . $approve . "', 'approve','" . $job_code . "','" . $id . "','" . $date . "')";
     $insert_set = sqlsrv_query($conn, $insert);
     $msg = "Job Approved";
     $notify = "Job is approved";

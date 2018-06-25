@@ -111,9 +111,9 @@ class ProfileActivity extends Component {
           countValue: this.state.count
         });
       }).catch((error) => {
-        //console.error(error);
+        console.error(error);
         // Alert.alert(error);
-        Alert.alert("No internet connection");
+        // Alert.alert("No internet connection");
         this.setState({ loading: false });
       });
   }
@@ -125,9 +125,9 @@ class ProfileActivity extends Component {
         // console.log(responseJson.count);
         this.setState({ msg: responseJson.count });
       }).catch((error) => {
-        //console.error(error);
+        console.error(error);
         // Alert.alert(error);
-        Alert.alert("No internet connection");
+        // Alert.alert("No internet connection");
         this.setState({ loading: false });
       });
   }
@@ -139,9 +139,9 @@ class ProfileActivity extends Component {
         // console.log(responseJson.count);
         this.setState({ projects: responseJson.count });
       }).catch((error) => {
-        //console.error(error);
+        console.error(error);
         // Alert.alert(error);
-        Alert.alert("No internet connection");
+        // Alert.alert("No internet connection");
         this.setState({ loading: false });
       });
   }
@@ -153,9 +153,9 @@ class ProfileActivity extends Component {
         //console.log("Hello");
         this.setState({ notification: responseJson });
       }).catch((error) => {
-        //console.error(error);
+        console.error(error);
         // Alert.alert(error);
-        Alert.alert("No internet connection");
+        // Alert.alert("No internet connection");
         this.setState({ loading: false });
       });
   }
@@ -186,9 +186,9 @@ class ProfileActivity extends Component {
           navigate('First');
         }
       }).catch((error) => {
-        // console.error(error);
+        console.error(error);
         // Alert.alert(error);
-        Alert.alert("No internet connection");
+        // Alert.alert("No internet connection");
         // this.setState({ loading: false });
       });
   }
@@ -219,48 +219,57 @@ class ProfileActivity extends Component {
         <Card>
           <View style={{ width: '100%', height: 100, justifyContent: 'center', alignItems: 'center', flexDirection: 'row', marginBottom: 10 }}>
             <TouchableOpacity style={styles.buttonStyle} onPress={this.viewProjects.bind(this)}>
-              <IconBadge
-                MainElement={
-                  <View style={{
-                    flex: 1,
-                    height: '100%',
-                    borderRadius: 5,
-                    marginLeft: 5,
-                    marginRight: 5,
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                  }}>
-                    <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', paddingTop: 20 }}>
-                      <Image source={require('./pics/projects.png')} style={styles.imageStyle} />
-                      <Text style={styles.textStyle}>Projects</Text>
-                    </View>
-                  </View>
-                }
-                BadgeElement={
-                  <Text style={{ color: '#FFFFFF' }}>{this.state.projects}</Text>
-                }
-                IconBadgeStyle={
-                  {
-                    width: 30,
-                    height: 30,
-                    backgroundColor: 'transparent',
-                    position: 'absolute',
-                    borderWidth: 1,
-                    borderColor: '#fff',
-                    top: 30,
-                    right: -5,
-                    borderRadius: 15,
-                    alignItems: 'center',
-                    justifyContent: 'center',
+              <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', paddingTop: 20 }}>
+                <IconBadge
+                  MainElement={
+                    <Image source={require('./pics/projects.png')} style={styles.imageStyle} />
                   }
-                }
-                Hidden={this.state.msg == 0}
-              />
+                  BadgeElement={
+                    <Text style={{ color: '#000' }}>{this.state.projects}</Text>
+                  }
+                  IconBadgeStyle={
+                    {
+                      width: 30,
+                      height: 30,
+                      backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                      position: 'absolute',
+                      top: -10,
+                      right: -10
+                    }
+                  }
+                  Hidden={this.state.msg == 0}
+                />
+                <Text style={styles.textStyle}>Pending Approvals</Text>
+              </View>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.buttonStyle} onPress={this.rejectedProjects.bind(this)}>
+            {/* <TouchableOpacity style={styles.buttonStyle} onPress={this.rejectedProjects.bind(this)}>
               <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', paddingTop: 20 }}>
                 <Image source={require('./pics/rejected.png')} style={styles.imageStyle} />
                 <Text style={styles.textStyle}>Rejected</Text>
+              </View>
+            </TouchableOpacity> */}
+            <TouchableOpacity style={styles.buttonStyle} onPress={this.sendMsg.bind(this)}>
+              <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', paddingTop: 20 }}>
+                <IconBadge
+                  MainElement={
+                    <Image source={require('./pics/message.png')} style={styles.imageStyle} />
+                  }
+                  BadgeElement={
+                    <Text style={{ color: '#000' }}>{this.state.msg}</Text>
+                  }
+                  IconBadgeStyle={
+                    {
+                      width: 30,
+                      height: 30,
+                      backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                      position: 'absolute',
+                      top: -10,
+                      right: -10
+                    }
+                  }
+                  Hidden={this.state.msg == 0}
+                />
+                <Text style={styles.textStyle}>Messages</Text>
               </View>
             </TouchableOpacity>
           </View>
@@ -268,7 +277,7 @@ class ProfileActivity extends Component {
             <TouchableOpacity style={styles.buttonStyle} onPress={this.approvedProjects.bind(this)}>
               <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', paddingTop: 20 }}>
                 <Image source={require('./pics/pending.png')} style={styles.imageStyle} />
-                <Text style={styles.textStyle}>Pending</Text>
+                <Text style={styles.textStyle}>SRN Status</Text>
               </View>
             </TouchableOpacity>
             <TouchableOpacity style={styles.buttonStyle} onPress={this.settingsView.bind(this)}>
@@ -279,7 +288,7 @@ class ProfileActivity extends Component {
             </TouchableOpacity>
           </View>
         </Card>
-        <IconBadge
+        {/* <IconBadge
           MainElement={
             <TouchableOpacity style={{ alignItems: 'flex-end', padding: 10 }} onPress={this.sendMsg.bind(this)}>
               <Image source={require('./pics/msg.png')} style={styles.imageStyle} />
@@ -296,7 +305,7 @@ class ProfileActivity extends Component {
             }
           }
           Hidden={this.state.msg == 0}
-        />
+        /> */}
       </View>
     );
   }

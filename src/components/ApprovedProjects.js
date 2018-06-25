@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, Text, TouchableOpacity, View, Image, Button, Picker, FlatList, BackHandler } from 'react-native';
+import { Alert, Text, TouchableOpacity, View, Image, Button, Picker, FlatList, BackHandler, TextInput } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import ModalDropdown from 'react-native-modal-dropdown';
 import Notification from './common/Notification';
@@ -35,7 +35,8 @@ class ApprovedProjects extends Component {
             package: [],
             dropDownData: ['1st Level', '2nd Level', '3rd Level', '4th Level'],
             level: 'Select Level',
-            count: 0
+            count: 0,
+            search_value: ''
         };
     }
 
@@ -354,6 +355,38 @@ class ApprovedProjects extends Component {
         return true;
     }
 
+    onSearch(value) {
+        // this.setState({ package: [] });
+        this.setState({ search_value: value });
+        this.setState({ loading: true });
+        // console.log(value);
+        if (value != '') {
+            fetch('http://bsthisarasinghe-001-site1.1tempurl.com/search_srn_status.php', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    search_value: value
+                })
+
+            }).then((response) => response.json())
+                .then((responseJson) => {
+                    // console.log(responseJson.results);
+                    this.setState({ package: responseJson.results }, function () {
+                        this.setState({ loading: false });
+                    });
+                }).catch((error) => {
+                    //console.error(error);
+                    Alert.alert("No internet connection");
+                    this.setState({ loading: false });
+                });
+        } else {
+            this.projectsList();
+        }
+    }
+
     completeView() {
         finalPakageDetails = this.state.package;
         if (this.state.loading) {
@@ -392,6 +425,21 @@ class ApprovedProjects extends Component {
                                 <Picker.Item label="Logout" value="Logout" />
                             </Picker>
                         </View>
+                    </View>
+                    <View style={styles.mainStyle}>
+                        <View style={{ height: 50, justifyContent: 'center', alignItems: 'center' }}>
+                            <Image source={require('./pics/search.png')} style={styles.iconStyle} />
+                        </View>
+                        <TextInput
+                            placeholder="Search..."
+                            autoCorrect={false}
+                            onChangeText={search_value => this.onSearch(search_value)}
+                            value={this.state.search_value}
+                            style={styles.inputStyle}
+                            underlineColorAndroid='transparent'
+                            returnKeyType="next"
+                            blurOnSubmit={false}
+                        />
                     </View>
                     <View style={styles.containerStyle1}>
                         <ModalDropdown options={this.state.dropDownData} onSelect={(idx, value) => this.onSelectOpt(idx, value)} style={{ width: '100%', backgroundColor: 'rgba(255,255,255,0.8)', height: 30, justifyContent: 'center', paddingLeft: 20 }} dropdownStyle={{ width: '80%', height: 100 }} dropdownTextStyle={{ color: '#000', fontSize: 15 }} dropdownTextHighlightStyle={{ fontWeight: 'bold' }} >
@@ -492,6 +540,33 @@ const styles = {
         paddingTop: 10,
         paddingBottom: 10,
         height: 100
+    },
+    inputStyle: {
+        color: '#000',
+        paddingRight: 5,
+        paddingLeft: 5,
+        fontSize: 18,
+        lineHeight: 23,
+        flex: 1,
+        backgroundColor: '#fff',
+        borderRadius: 5,
+    },
+    mainStyle: {
+        // padding: 5,
+        backgroundColor: '#fff',
+        marginLeft: 5,
+        marginRight: 5,
+        justifyContent: 'flex-start',
+        flexDirection: 'row',
+        position: 'relative',
+        marginTop: 10,
+        borderRadius: 5
+    },
+    iconStyle: {
+        height: 30,
+        width: 30,
+        marginRight: 30,
+        marginLeft: 30
     }
 }
 

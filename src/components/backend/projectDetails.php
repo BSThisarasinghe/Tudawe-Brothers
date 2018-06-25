@@ -23,6 +23,6 @@ array_push($details, $result);
 
 $SuccessMsgJson = json_encode(array('results' => $details));
 // Echo the message.
-echo $SuccessMsgJson; 
+echo $SuccessMsgJson;
 //echo '<p>'.$result['Owner'].'</p>'; 
 ?>

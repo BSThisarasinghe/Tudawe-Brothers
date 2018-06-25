@@ -202,7 +202,7 @@ class ProjectDetails extends Component {
 
         }).then((response) => response.json())
             .then((responseJson) => {
-                // console.log(responseJson);
+                console.log(responseJson);
                 // this.setState({ data: responseJson.results });
                 this.setState({ item_data: responseJson.results }, function () {
                     this.setState({ value1: this.state.item_data[0].Item_Code });
@@ -282,6 +282,7 @@ class ProjectDetails extends Component {
     }
 
     onApprove() {
+        const { navigate } = this.props.navigation;
         fetch('http://bsthisarasinghe-001-site1.1tempurl.com/approve.php', {
             method: 'POST',
             headers: {
@@ -295,7 +296,12 @@ class ProjectDetails extends Component {
 
         }).then((response) => response.json())
             .then((responseJson) => {
-                Alert.alert(responseJson.results[1]);
+                if (responseJson.results[1] == 'Job Approved') {
+                    navigate('Third', { Email: this.state.user_email });
+                } else if (responseJson.results[1] == 'Job Approve failed') {
+                    Alert.alert(responseJson.results[1]);
+                }
+                // Alert.alert(responseJson.results[1]);
                 // console.log(responseJson);
             }).catch((error) => {
                 console.error(error);
@@ -330,9 +336,9 @@ class ProjectDetails extends Component {
 
             }).then((response) => response.json())
                 .then((responseJson) => {
-                    if(responseJson == 'Job Canceled'){
+                    if (responseJson == 'Job Canceled') {
                         navigate('Third', { Email: this.state.user_email });
-                    }else if(responseJson == 'Job cancelation failed'){
+                    } else if (responseJson == 'Job cancelation failed') {
                         Alert.alert(responseJson);
                     }
                     // console.log(responseJson);
@@ -370,9 +376,9 @@ class ProjectDetails extends Component {
 
             }).then((response) => response.json())
                 .then((responseJson) => {
-                    if(responseJson == 'Job Rejected'){
+                    if (responseJson == 'Job Rejected') {
                         navigate('Third', { Email: this.state.user_email });
-                    }else if(responseJson == 'Job reject failed'){
+                    } else if (responseJson == 'Job reject failed') {
                         Alert.alert(responseJson);
                     }
                     // console.log(responseJson);
@@ -556,6 +562,20 @@ class ProjectDetails extends Component {
                         </TouchableOpacity>
                     </View>
                 </View>
+                <View style={{ flex: 1, flexDirection: 'row', marginTop: 20, paddingLeft: 16, paddingRight: 16 }}>
+                    <View style={{ flex: 1, borderWidth: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#CFD8EF' }}>
+                        <Text style={styles.dataStyle}>Item Code</Text>
+                    </View>
+                    <View style={{ flex: 1, borderWidth: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#CFD8EF' }}>
+                        <Text style={styles.dataStyle}>Description</Text>
+                    </View>
+                    <View style={{ flex: 1, borderWidth: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#CFD8EF' }}>
+                        <Text style={styles.dataStyle}>Delivery Date</Text>
+                    </View>
+                    <View style={{ flex: 1, borderWidth: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#CFD8EF' }}>
+                        <Text style={styles.dataStyle}>Quantity</Text>
+                    </View>
+                </View>
                 <View style={styles.container}>
                     {this.flatListView()}
                 </View>
@@ -606,30 +626,18 @@ class ProjectDetails extends Component {
     }
 
     tableView = ({ item }) => (
-        <View style={{ flex: 1, flexDirection: 'column', borderWidth: 1, marginBottom: 10 }} key={item.Item_Code}>
-            <View style={{ flex: 1, flexDirection: 'row', height: 40 }}>
-                <View style={{ flex: 1, borderWidth: 1, justifyContent: 'center', alignItems: 'center' }}>
-                    <Text style={styles.dataStyle}>Item Code</Text>
-                </View>
-                <View style={{ flex: 1, borderWidth: 1 }}>
-                    {this.displayCode(item.Item_Code)}
-                </View>
+        <View style={{ flex: 1, flexDirection: 'row', borderWidth: 1 }} key={item.Item_Code}>
+            <View style={{ flex: 1, borderWidth: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={styles.dataStyle}>{item.Item_Code}</Text>
             </View>
-            <View style={{ flex: 1, flexDirection: 'row', height: 40 }}>
-                <View style={{ flex: 1, borderWidth: 1, justifyContent: 'center', alignItems: 'center' }}>
-                    <Text style={styles.dataStyle}>Description</Text>
-                </View>
-                <View style={{ flex: 1, borderWidth: 1 }}>
-                    {this.displayDes(item.Discription)}
-                </View>
+            <View style={{ flex: 1, borderWidth: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={styles.dataStyle}>{item.Item_Description}</Text>
             </View>
-            <View style={{ flex: 1, flexDirection: 'row', height: 40 }}>
-                <View style={{ flex: 1, borderWidth: 1, justifyContent: 'center', alignItems: 'center' }}>
-                    <Text style={styles.dataStyle}>Delivery Date</Text>
-                </View>
-                <View style={{ flex: 1, borderWidth: 1 }}>
-                    {this.displayDate(item.Delivery_Date.date)}
-                </View>
+            <View style={{ flex: 1, borderWidth: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={styles.dataStyle}>{item.Delivery_Date.date}</Text>
+            </View>
+            <View style={{ flex: 1, borderWidth: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={styles.dataStyle}>{item.Qty_Required}</Text>
             </View>
         </View>
     )
@@ -750,8 +758,9 @@ const styles = {
     },
     container: {
         flex: 1,
-        padding: 16,
-        paddingTop: 30,
+        paddingLeft: 16,
+        paddingRight: 16,
+        // paddingTop: 30,
         backgroundColor: '#fff'
     },
     spinnerStyle: {

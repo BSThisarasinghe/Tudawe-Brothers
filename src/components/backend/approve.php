@@ -20,13 +20,18 @@ $name = $row['UserName'];
 $approve = $name." approved ".$job_code;
 $sql = "";
 $insert = "";
-if($job_level == '1st Level'){
+
+
+$q = "SELECT * FROM SiteRequisitionMaster WHERE Job_Code = '" . $job_code . "'";
+$r_set = sqlsrv_query($conn, $q);
+$r = sqlsrv_fetch_array($r_set, SQLSRV_FETCH_ASSOC);
+if($r['FLevel'] == 0){
     $sql = "UPDATE SiteRequisitionMaster SET FLevel = 1 WHERE Job_Code = '" . $job_code . "'";
-}elseif($job_level == '2nd Level'){
+}elseif($r['FLevel'] == 1 && $r['SLevel'] == 0){
     $sql = "UPDATE SiteRequisitionMaster SET SLevel = 1 WHERE Job_Code = '" . $job_code . "'";
-}elseif($job_level == '3rd Level'){
+}elseif($r['FLevel'] == 1 && $r['SLevel'] == 1 && $r['TLevel'] == 0){
     $sql = "UPDATE SiteRequisitionMaster SET TLevel = 1 WHERE Job_Code = '" . $job_code . "'";
-}elseif($job_level == '4th Level'){
+}elseif($r['FLevel'] == 1 && $r['SLevel'] == 1 && $r['TLevel'] == 1 && $r['FourthLevel'] == 0){
     $sql = "UPDATE SiteRequisitionMaster SET FourthLevel = 1 WHERE Job_Code = '" . $job_code . "'";
 }
 $result_set = sqlsrv_query($conn, $sql);

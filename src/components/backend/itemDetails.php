@@ -12,9 +12,10 @@ $job_code = $obj['job_code'];
 $details = array();
 
 $sql = "SELECT *
-FROM ((JobMaster
-INNER JOIN SiteRequisitionMaster ON SiteRequisitionMaster.Job_Code = JobMaster.Job_Code)
-INNER JOIN SiteRequisitionDetails ON SiteRequisitionDetails.SRN_No = SiteRequisitionMaster.SRN_No)
+FROM (((SiteRequisitionDetails
+INNER JOIN SiteRequisitionMaster ON SiteRequisitionDetails.SRN_No = SiteRequisitionMaster.SRN_No)
+INNER JOIN JobMaster ON SiteRequisitionMaster.Job_Code = JobMaster.Job_Code)
+INNER JOIN ItemMaster ON ItemMaster.Item_Code = SiteRequisitionDetails.Item_Code)
 WHERE SiteRequisitionMaster.Job_Code='" . $job_code . "'";
 $result_set = sqlsrv_query($conn, $sql);
 while($result = sqlsrv_fetch_array($result_set, SQLSRV_FETCH_ASSOC)){

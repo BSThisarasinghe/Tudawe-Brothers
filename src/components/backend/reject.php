@@ -19,12 +19,17 @@ $name = $row['UserName'];
 $reject = $name." rejected ".$job_code;
 
 $date = date("Y/m/d");
+
+$q = "SELECT * FROM SiteRequisitionMaster WHERE Job_Code = '" . $job_code . "'";
+$r_set = sqlsrv_query($conn, $q);
+$r = sqlsrv_fetch_array($r_set, SQLSRV_FETCH_ASSOC);
+
 // $details = array();
-if($job_level == '1st Level'){
+if($r['FLevel'] == 0){
     $sql = "UPDATE SiteRequisitionMaster SET FLReject = 1, FLRejectRemarks = '" . $text . "' WHERE Job_Code = '" . $job_code . "'";
-}elseif($job_level == '2nd Level'){
+}elseif($r['FLevel'] == 1 && $r['SLevel'] == 0){
     $sql = "UPDATE SiteRequisitionMaster SET SLReject = 1, SLRejectRemarks = '" . $text . "' WHERE Job_Code = '" . $job_code . "'";
-}elseif($job_level == '3rd Level'){
+}elseif($r['FLevel'] == 1 && $r['SLevel'] == 1 && $r['TLevel'] == 0){
     $sql = "UPDATE SiteRequisitionMaster SET TLReject = 1, TLRejectRemarks = '" . $text . "' WHERE Job_Code = '" . $job_code . "'";
 }
 $result_set = sqlsrv_query($conn, $sql);

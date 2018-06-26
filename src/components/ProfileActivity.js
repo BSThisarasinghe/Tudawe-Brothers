@@ -3,6 +3,7 @@ import { StyleSheet, TextInput, View, Alert, Button, Text, TouchableOpacity, Ima
 import { StackNavigator } from 'react-navigation';
 import PushNotification from 'react-native-push-notification';
 import IconBadge from 'react-native-icon-badge';
+import DeviceInfo from 'react-native-device-info';
 import Card from './common/Card';
 import CardSection from './common/CardSection';
 import { Spinner } from './common/Spinner';
@@ -12,6 +13,8 @@ import Img from './common/background';
 import Back from './common/BackButton';
 
 var take;
+
+const deviceId = DeviceInfo.getDeviceId();
 
 class ProfileActivity extends Component {
 
@@ -77,6 +80,7 @@ class ProfileActivity extends Component {
   }
 
   componentWillMount() {
+    console.log(deviceId);
     this.getCount();
     this.countMessages();
     this.countProjects();
@@ -102,11 +106,20 @@ class ProfileActivity extends Component {
   }
 
   getCount() {
-    fetch('http://bsthisarasinghe-001-site1.1tempurl.com/getCount.php')
-      .then((response) => response.json())
+    fetch('http://bsthisarasinghe-001-site1.1tempurl.com/getCount.php', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        deviceId: deviceId
+      })
+
+    }).then((response) => response.json())
       .then((responseJson) => {
-        // console.log(responseJson.count);
-        this.setState({ count: responseJson.count });
+        // console.log(responseJson);
+        this.setState({ count: responseJson });
         this.props.navigation.setParams({
           countValue: this.state.count
         });

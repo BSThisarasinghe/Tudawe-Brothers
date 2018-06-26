@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, TextInput, View, Alert, Button, Text, TouchableOpacity, Image, AppState, Platform, Picker, ScrollView, BackHandler } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import PushNotification from 'react-native-push-notification';
+import DeviceInfo from 'react-native-device-info';
 import Card from './common/Card';
 import CardSection from './common/CardSection';
 import { Spinner } from './common/Spinner';
@@ -10,6 +11,8 @@ import PushController from './PushController';
 import Img1 from './common/settingsBackground';
 
 var take;
+
+const deviceId = DeviceInfo.getDeviceId();
 
 class Settings extends Component {
 
@@ -83,21 +86,30 @@ class Settings extends Component {
     }
 
     getCount() {
-        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/getCount.php')
-            .then((response) => response.json())
-            .then((responseJson) => {
-                // console.log(responseJson.count);
-                this.setState({ count: responseJson.count });
-                this.props.navigation.setParams({
-                    countValue: this.state.count
-                });
-            }).catch((error) => {
-                //console.error(error);
-                // Alert.alert(error);
-                Alert.alert("No internet connection");
-                this.setState({ loading: false });
+        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/getCount.php', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            deviceId: deviceId
+          })
+    
+        }).then((response) => response.json())
+          .then((responseJson) => {
+            // console.log(responseJson);
+            this.setState({ count: responseJson });
+            this.props.navigation.setParams({
+              countValue: this.state.count
             });
-    }
+          }).catch((error) => {
+            console.error(error);
+            // Alert.alert(error);
+            // Alert.alert("No internet connection");
+            this.setState({ loading: false });
+          });
+      }
 
     logoutButton(itemValue) {
         if (itemValue === "Logout") {

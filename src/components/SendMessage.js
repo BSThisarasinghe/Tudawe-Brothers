@@ -2,12 +2,15 @@ import React, { Component } from 'react';
 import { Alert, Text, TouchableOpacity, View, Image, FlatList, Picker, TextInput, BackHandler } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import ModalDropdown from 'react-native-modal-dropdown';
+import DeviceInfo from 'react-native-device-info';
 import Notification from './common/Notification';
 import Card from './common/Card';
 import CardSection from './common/CardSection';
 import Img from './common/background';
 import { Spinner } from './common/Spinner';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+
+const deviceId = DeviceInfo.getDeviceId();
 
 class SendMessage extends Component {
 
@@ -127,21 +130,30 @@ class SendMessage extends Component {
     )
 
     getCount() {
-        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/getCount.php')
-            .then((response) => response.json())
-            .then((responseJson) => {
-                // console.log(responseJson.count);
-                this.setState({ count: responseJson.count });
-                this.props.navigation.setParams({
-                    countValue: this.state.count
-                });
-            }).catch((error) => {
-                //console.error(error);
-                // Alert.alert(error);
-                Alert.alert("No internet connection");
-                this.setState({ loading: false });
+        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/getCount.php', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            deviceId: deviceId
+          })
+    
+        }).then((response) => response.json())
+          .then((responseJson) => {
+            // console.log(responseJson);
+            this.setState({ count: responseJson });
+            this.props.navigation.setParams({
+              countValue: this.state.count
             });
-    }
+          }).catch((error) => {
+            console.error(error);
+            // Alert.alert(error);
+            // Alert.alert("No internet connection");
+            this.setState({ loading: false });
+          });
+      }
 
     sendMsg() {
         fetch('http://bsthisarasinghe-001-site1.1tempurl.com/sendMsg.php', {

@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import { Alert, Text, TouchableOpacity, View, Picker, FlatList, BackHandler } from 'react-native';
+import DeviceInfo from 'react-native-device-info';
 import Card from './common/Card';
 import Img from './common/background';
 import { Spinner } from './common/Spinner';
+
+const deviceId = DeviceInfo.getDeviceId();
 
 class NewMessages extends Component {
 
@@ -53,18 +56,20 @@ class NewMessages extends Component {
         }
     }
 
-    // removeNotification(id) {
-    //     fetch('http://bsthisarasinghe-001-site1.1tempurl.com/updateNotification.php', {
-    //         method: 'POST',
-    //         headers: {
-    //             'Accept': 'application/json',
-    //             'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify({
-    //             id: id
-    //         })
-    //     })
-    // }
+    removeNotification(id, device) {
+        // console.log(id, ",", device);
+        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/updateNotification.php', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                id: id,
+                device: device
+            })
+        })
+    }
 
 
     renderListItem = ({ item }) => (
@@ -72,7 +77,7 @@ class NewMessages extends Component {
             width: '100%',
             height: 70,
             // backgroundColor: 'rgba(255, 255, 255, 0.5)',
-            backgroundColor: (item.task == 'approve') ? 'rgba(17, 179, 9, 0.5)' : (item.task == 'cancel') ? 'rgba(251, 20, 9, 0.5)' : 'rgba(234, 241, 14, 0.5)',
+            backgroundColor: (item.task == 'approve') ? 'rgba(15, 178, 10, 0.5)' : (item.task == 'cancel') ? 'rgba(171, 51, 10, 0.5)' : 'rgba(235, 238, 7, 0.5)',
             flexDirection: 'row',
             marginBottom: 10,
             borderWidth: 1,
@@ -84,7 +89,7 @@ class NewMessages extends Component {
             shadowOpacity: 0.1,
             shadowRadius: 2,
             elevation: 1,
-        }} key={item.id}>
+        }} key={item.id} onPress={() => this.removeNotification(item.id, deviceId)}>
             <View style={{ width: '60%', height: 70, alignItems: 'flex-start', justifyContent: 'center' }}>
                 <Text style={styles.textStyle}>{item.action}</Text>
             </View>

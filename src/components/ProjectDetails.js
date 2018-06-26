@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import { StyleSheet, TextInput, View, Alert, Text, TouchableOpacity, Image, Picker, ScrollView, FlatList, BackHandler, Modal, TouchableHighlight } from 'react-native';
 import { StackNavigator } from 'react-navigation';
+import DeviceInfo from 'react-native-device-info';
 import Card from './common/Card';
 import CardSection from './common/CardSection';
 import { Spinner } from './common/Spinner';
 import Notification from './common/Notification';
 
 var take;
+
+const deviceId = DeviceInfo.getDeviceId();
 
 class ProjectDetails extends Component {
 
@@ -83,7 +86,7 @@ class ProjectDetails extends Component {
     }
 
     onFocus(value) {
-        console.log(value);
+        // console.log(value);
         fetch('http://bsthisarasinghe-001-site1.1tempurl.com/changeItem.php', {
             method: 'POST',
             headers: {
@@ -119,16 +122,17 @@ class ProjectDetails extends Component {
                 des: value
             })
 
-        }).then((response) => response.json())
-            .then((responseJson) => {
-                Alert.alert(responseJson);
-                // console.log(responseJson);
-            }).catch((error) => {
-                console.error(error);
-                // Alert.alert(error);
-                // Alert.alert("No internet connection");
-                this.setState({ loading: false });
-            });
+        })
+        // .then((response) => response.json())
+        //     .then((responseJson) => {
+        //         Alert.alert(responseJson);
+        //         // console.log(responseJson);
+        //     }).catch((error) => {
+        //         console.error(error);
+        //         // Alert.alert(error);
+        //         // Alert.alert("No internet connection");
+        //         this.setState({ loading: false });
+        //     });
     }
 
 
@@ -206,7 +210,7 @@ class ProjectDetails extends Component {
                 // this.setState({ data: responseJson.results });
                 this.setState({ item_data: responseJson.results }, function () {
                     this.setState({ value1: this.state.item_data[0].Item_Code });
-                    this.setState({ value2: this.state.item_data[0].Discription });
+                    this.setState({ value2: this.state.item_data[0].Item_Description });
                     this.setState({ value3: this.state.item_data[0].Delivery_Date.date });
                     this.setState({ loading2: false });
                     // console.log(this.state.item_data[0].Discription);
@@ -246,21 +250,30 @@ class ProjectDetails extends Component {
     }
 
     getCount() {
-        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/getCount.php')
-            .then((response) => response.json())
-            .then((responseJson) => {
-                // console.log(responseJson.count);
-                this.setState({ count: responseJson.count });
-                this.props.navigation.setParams({
-                    countValue: this.state.count
-                });
-            }).catch((error) => {
-                //console.error(error);
-                // Alert.alert(error);
-                Alert.alert("No internet connection");
-                this.setState({ loading: false });
+        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/getCount.php', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            deviceId: deviceId
+          })
+    
+        }).then((response) => response.json())
+          .then((responseJson) => {
+            // console.log(responseJson);
+            this.setState({ count: responseJson });
+            this.props.navigation.setParams({
+              countValue: this.state.count
             });
-    }
+          }).catch((error) => {
+            console.error(error);
+            // Alert.alert(error);
+            // Alert.alert("No internet connection");
+            this.setState({ loading: false });
+          });
+      }
 
     flatListView() {
         finalPakageDetails = this.state.item_data;
@@ -564,16 +577,16 @@ class ProjectDetails extends Component {
                 </View>
                 <View style={{ flex: 1, flexDirection: 'row', marginTop: 20, paddingLeft: 16, paddingRight: 16 }}>
                     <View style={{ flex: 1, borderWidth: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#CFD8EF' }}>
-                        <Text style={styles.dataStyle}>Item Code</Text>
-                    </View>
-                    <View style={{ flex: 1, borderWidth: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#CFD8EF' }}>
-                        <Text style={styles.dataStyle}>Description</Text>
-                    </View>
-                    <View style={{ flex: 1, borderWidth: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#CFD8EF' }}>
-                        <Text style={styles.dataStyle}>Delivery Date</Text>
+                        <Text style={styles.dataStyle}>Item Description</Text>
                     </View>
                     <View style={{ flex: 1, borderWidth: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#CFD8EF' }}>
                         <Text style={styles.dataStyle}>Quantity</Text>
+                    </View>
+                    <View style={{ flex: 1, borderWidth: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#CFD8EF' }}>
+                        <Text style={styles.dataStyle}>UOM</Text>
+                    </View>
+                    <View style={{ flex: 1, borderWidth: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#CFD8EF' }}>
+                        <Text style={styles.dataStyle}>Delivery Date</Text>
                     </View>
                 </View>
                 <View style={styles.container}>
@@ -583,10 +596,15 @@ class ProjectDetails extends Component {
         );
     }
 
+    hideText(){
+        console.log("Hide Text");
+        this.setState({ hideText: false });
+    }
+
     displayDate(value) {
         if (this.state.hideText) {
             return (
-                <Text style={styles.textStyle} onPress={this.setState({ hideText: false })}>{value}</Text>
+                <Text style={styles.textStyle} onPress={() => this.hideText()}>{value}</Text>
             );
         } else {
             return (
@@ -614,6 +632,7 @@ class ProjectDetails extends Component {
     }
 
     displayDes(value) {
+        console.log(value);
         return (
             <TextInput
                 onChangeText={value => this.setState({ value2: value })}
@@ -628,16 +647,29 @@ class ProjectDetails extends Component {
     tableView = ({ item }) => (
         <View style={{ flex: 1, flexDirection: 'row', borderWidth: 1 }} key={item.Item_Code}>
             <View style={{ flex: 1, borderWidth: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={styles.dataStyle}>{item.Item_Code}</Text>
-            </View>
-            <View style={{ flex: 1, borderWidth: 1, justifyContent: 'center', alignItems: 'center' }}>
                 <Text style={styles.dataStyle}>{item.Item_Description}</Text>
             </View>
             <View style={{ flex: 1, borderWidth: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={styles.dataStyle}>{item.Delivery_Date.date}</Text>
+                <TextInput
+                    onChangeText={value => this.setState({ value2: value })}
+                    onBlur={() => this.onFocus1(this.state.value2, item.Item_Code)}
+                    value={item.Qty_Required.toString()}
+                    // style={styles.inputStyle}
+                    underlineColorAndroid='transparent'
+                />
             </View>
             <View style={{ flex: 1, borderWidth: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={styles.dataStyle}>{item.Qty_Required}</Text>
+                <Text style={styles.dataStyle}>{item.UnitofMeasure}</Text>
+            </View>
+            <View style={{ flex: 1, borderWidth: 1, justifyContent: 'center', alignItems: 'center' }}>
+                {this.displayDate(item.Delivery_Date.date.toString())}
+                {/* <TextInput
+                    onChangeText={val => this.setState({ value3: val })}
+                    onBlur={() => this.onFocus2(this.state.value3, item.Item_Code)}
+                    value={item.Delivery_Date.date.toString()}
+                    style={styles.inputStyle}
+                    underlineColorAndroid='transparent'
+                /> */}
             </View>
         </View>
     )

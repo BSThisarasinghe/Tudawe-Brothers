@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Alert, Text, TouchableOpacity, View, Image, Button, Picker, FlatList, BackHandler, TextInput } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import ModalDropdown from 'react-native-modal-dropdown';
+import DeviceInfo from 'react-native-device-info';
 import Notification from './common/Notification';
 import Card from './common/Card';
 import CardSection from './common/CardSection';
@@ -9,6 +10,8 @@ import Img from './common/background';
 import { Spinner } from './common/Spinner';
 
 var take;
+
+const deviceId = DeviceInfo.getDeviceId();
 
 class ApprovedProjects extends Component {
 
@@ -332,21 +335,30 @@ class ApprovedProjects extends Component {
     }
 
     getCount() {
-        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/getCount.php')
-            .then((response) => response.json())
-            .then((responseJson) => {
-                // console.log(responseJson.count);
-                this.setState({ count: responseJson.count });
-                this.props.navigation.setParams({
-                    countValue: this.state.count
-                });
-            }).catch((error) => {
-                //console.error(error);
-                // Alert.alert(error);
-                Alert.alert("No internet connection");
-                this.setState({ loading: false });
+        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/getCount.php', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            deviceId: deviceId
+          })
+    
+        }).then((response) => response.json())
+          .then((responseJson) => {
+            // console.log(responseJson);
+            this.setState({ count: responseJson });
+            this.props.navigation.setParams({
+              countValue: this.state.count
             });
-    }
+          }).catch((error) => {
+            console.error(error);
+            // Alert.alert(error);
+            // Alert.alert("No internet connection");
+            this.setState({ loading: false });
+          });
+      }
 
     handleBackButtonClick() {
         // BackHandler.exitApp();

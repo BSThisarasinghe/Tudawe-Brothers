@@ -11,7 +11,7 @@ $job_code = $obj['job_code'];
 
 $details = array();
 
-$sql = "SELECT *
+$sql = "SELECT DISTINCT SiteRequisitionDetails.Item_Code, ItemMaster.Item_Description, ItemMaster.UnitofMeasure, CONVERT(date, SiteRequisitionDetails.Delivery_Date) as Delivery_Date, SiteRequisitionDetails.Qty_Required 
 FROM (((SiteRequisitionDetails
 INNER JOIN SiteRequisitionMaster ON SiteRequisitionDetails.SRN_No = SiteRequisitionMaster.SRN_No)
 INNER JOIN JobMaster ON SiteRequisitionMaster.Job_Code = JobMaster.Job_Code)

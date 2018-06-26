@@ -7,10 +7,11 @@ $json = file_get_contents('php://input');
 
 $obj = json_decode($json,true);
 
-$id = $obj['id'];
+$notification_id = $obj['id'];
+$device = $obj['device'];
 
 // $details = array();
-$sql = "UPDATE Actions SET seen  = '1' WHERE id = '" . $id . "'";
+$sql = "INSERT INTO device_info(notification_id, device_id) VALUES('" . $notification_id . "','" . $device . "')";
 
 $result_set = sqlsrv_query($conn, $sql);
 ?>

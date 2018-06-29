@@ -11,7 +11,7 @@ $notification_id = $obj['id'];
 $device = $obj['device'];
 
 // $details = array();
-$sql = "INSERT INTO device_info(notification_id, device_id) VALUES('" . $notification_id . "','" . $device . "')";
+$sql = "INSERT INTO notification_info(notification_id, users_id) VALUES('" . $notification_id  . "','" . $id . "')";
 
 $result_set = sqlsrv_query($conn, $sql);
 ?>

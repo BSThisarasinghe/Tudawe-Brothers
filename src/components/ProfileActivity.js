@@ -75,12 +75,23 @@ class ProfileActivity extends Component {
   }
 
   sendMsg() {
-    const { navigate } = this.props.navigation;
-    navigate('Eleventh', { Email: this.state.user_email });
+    fetch('http://bsthisarasinghe-001-site1.1tempurl.com/seenMessages.php')
+      .then((response) => response.json())
+      .then((responseJson) => {
+        console.log(responseJson);
+        const { navigate } = this.props.navigation;
+        navigate('Eleventh', { Email: this.state.user_email });
+
+      }).catch((error) => {
+        console.error(error);
+        // Alert.alert(error);
+        // Alert.alert("No internet connection");
+        this.setState({ loading: false });
+      });
   }
 
   componentWillMount() {
-    console.log(deviceId);
+    // console.log(deviceId);
     this.getCount();
     this.countMessages();
     this.countProjects();
@@ -242,15 +253,16 @@ class ProfileActivity extends Component {
                   }
                   IconBadgeStyle={
                     {
-                      width: 30,
-                      height: 30,
+                      width: 40,
+                      height: 40,
                       backgroundColor: 'rgba(255, 255, 255, 0.8)',
                       position: 'absolute',
-                      top: -10,
-                      right: -10
+                      top: -18,
+                      right: -20,
+                      borderRadius: 50
                     }
                   }
-                  Hidden={this.state.msg == 0}
+                  Hidden={this.state.projects == 0}
                 />
                 <Text style={styles.textStyle}>Pending Approvals</Text>
               </View>

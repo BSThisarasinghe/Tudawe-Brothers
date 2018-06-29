@@ -12,7 +12,7 @@ $text = $obj['text'];
 $status = NULL;
 
 // $details = array();
-$sql = "INSERT INTO Messages(msg, sender, status) VALUES('" . $text . "', '" . $id . "', '" . $status . "')";
+$sql = "INSERT INTO Messages(msg, sender, status, seenBy) VALUES('" . $text . "', '" . $id . "', '" . $status . "','" . $id . "')";
 
 $result_set = sqlsrv_query($conn, $sql);
 

@@ -19,7 +19,7 @@ $name = $row['UserName'];
 $approve = $name." approved ".$job_code;
 $sql = "";
 $insert = "";
-
+$reason = "";
 
 $q = "SELECT * FROM SiteRequisitionMaster WHERE SRN_No = '" . $srn_no . "'";
 $r_set = sqlsrv_query($conn, $q);
@@ -35,7 +35,7 @@ if($r['FLevel'] == 0){
 }
 $result_set = sqlsrv_query($conn, $sql);
 if($result_set){
-    $insert = "INSERT INTO Actions(action, task, job_code, member, action_date) VALUES('" . $approve . "', 'approve','" . $job_code . "','" . $id . "','" . $date . "')";
+    $insert = "INSERT INTO Actions(action, task, job_code, member, action_date, reason) VALUES('" . $approve . "', 'approve','" . $job_code . "','" . $id . "','" . $date . "','" . $reason . "')";
     $insert_set = sqlsrv_query($conn, $insert);
     $msg = "Job Approved";
 

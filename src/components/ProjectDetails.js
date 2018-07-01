@@ -609,16 +609,16 @@ class ProjectDetails extends Component {
                     </View>
                 </View>
                 <View style={{ flex: 1, flexDirection: 'row', marginTop: 20, paddingLeft: 16, paddingRight: 16 }}>
-                    <View style={{ flex: 1, borderWidth: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#CFD8EF' }}>
+                    <View style={{ flex: 3, borderWidth: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#CFD8EF' }}>
                         <Text style={styles.dataStyle}>Item Description</Text>
                     </View>
                     <View style={{ flex: 1, borderWidth: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#CFD8EF' }}>
-                        <Text style={styles.dataStyle}>Quantity</Text>
+                        <Text style={styles.dataStyle}>QTY</Text>
                     </View>
                     <View style={{ flex: 1, borderWidth: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#CFD8EF' }}>
                         <Text style={styles.dataStyle}>UOM</Text>
                     </View>
-                    <View style={{ flex: 1, borderWidth: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#CFD8EF' }}>
+                    <View style={{ flex: 2, borderWidth: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#CFD8EF' }}>
                         <Text style={styles.dataStyle}>Delivery Date</Text>
                     </View>
                 </View>
@@ -630,7 +630,7 @@ class ProjectDetails extends Component {
     }
 
     hideText(){
-        // console.log("Hide Text");
+        console.log("Hide Text");
         this.setState({ hideText: false });
     }
 
@@ -680,7 +680,7 @@ class ProjectDetails extends Component {
 
     tableView = ({ item }) => (
         <View style={{ flex: 1, flexDirection: 'row', borderWidth: 1 }} key={item.Item_Code}>
-            <View style={{ flex: 1, borderWidth: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <View style={{ flex: 3, borderWidth: 1, justifyContent: 'center', alignItems: 'center' }}>
                 <Text style={styles.dataStyle}>{item.Item_Description}</Text>
             </View>
             <View style={{ flex: 1, borderWidth: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -695,7 +695,7 @@ class ProjectDetails extends Component {
             <View style={{ flex: 1, borderWidth: 1, justifyContent: 'center', alignItems: 'center' }}>
                 <Text style={styles.dataStyle}>{item.UnitofMeasure}</Text>
             </View>
-            <View style={{ flex: 1, borderWidth: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <View style={{ flex: 2, borderWidth: 1, justifyContent: 'center', alignItems: 'center' }}>
                 {this.displayDate(item.Delivery_Date.date.toString())}
                 {/* <TextInput
                     onChangeText={val => this.setState({ value3: val })}

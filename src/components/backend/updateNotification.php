@@ -14,4 +14,16 @@ $device = $obj['device'];
 $sql = "INSERT INTO notification_info(notification_id, users_id) VALUES('" . $notification_id  . "','" . $id . "')";
 
 $result_set = sqlsrv_query($conn, $sql);
+
+if($result_set){
+    $msg = "success";
+    $SuccessMsgJson = json_encode($msg);
+    // Echo the message.
+    echo $SuccessMsgJson; 
+}else{
+    $msg = "fail";
+    $SuccessMsgJson = json_encode($msg);
+    // Echo the message.
+    echo $SuccessMsgJson; 
+}
 ?>

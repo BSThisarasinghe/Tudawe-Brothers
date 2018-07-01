@@ -57,7 +57,7 @@ class NewMessages extends Component {
         }
     }
 
-    removeNotification(id, device) {
+    removeNotification(id, device, action, action_date, job_code, member, reason, task) {
         // console.log(id, ",", device);
         fetch('http://bsthisarasinghe-001-site1.1tempurl.com/updateNotification.php', {
             method: 'POST',
@@ -69,7 +69,27 @@ class NewMessages extends Component {
                 id: id,
                 device: device
             })
-        })
+        }).then((response) => response.json())
+            .then((responseJson) => {
+                if (responseJson == 'success') {
+                    const { navigate } = this.props.navigation;
+                    navigate('Twelwth', {
+                        Email: this.state.user_email,
+                        Action: action,
+                        date: action_date,
+                        code: job_code,
+                        member: member,
+                        reason: reason,
+                        task: task
+                    });
+                } else {
+
+                }
+            }).catch((error) => {
+                console.error(error);
+                // Alert.alert("No internet connection");
+                this.setState({ loading: false });
+            });
     }
 
 
@@ -90,12 +110,13 @@ class NewMessages extends Component {
             shadowOpacity: 0.1,
             shadowRadius: 2,
             elevation: 1,
-        }} key={item.id} onPress={() => this.removeNotification(item.id, deviceId)}>
-            <View style={{ width: '60%', height: 70, alignItems: 'flex-start', justifyContent: 'center' }}>
+        }} key={item.id} onPress={() => this.removeNotification(item.id, deviceId, item.action, item.action_date, item.job_code, item.member, item.reason, item.task)}>
+            <View style={{ width: '80%', height: 70, alignItems: 'flex-start', justifyContent: 'center', flexDirection: 'column' }}>
                 <Text style={styles.textStyle}>{item.action}</Text>
+                <Text style={styles.dateStyle}>{item.action_date}</Text>
             </View>
-            <View style={{ width: '40%', height: 70, justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={styles.textStyle}>{item.action_date}</Text>
+            <View style={{ width: '20%', height: 70, justifyContent: 'center', alignItems: 'center' }}>
+                <Image source={require('./pics/right-arrow.png')} style={styles.arrowStyle} />
             </View>
         </TouchableOpacity>
     )
@@ -333,6 +354,11 @@ const styles = {
         width: 30,
         marginRight: 10,
         marginLeft: 10
+    },
+    dateStyle: {
+        fontSize: 10,
+        paddingLeft: 10,
+        color: '#000'
     }
 }
 

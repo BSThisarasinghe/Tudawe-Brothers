@@ -3,7 +3,7 @@
 session_start();
 $id = $_SESSION["id"];
 $notification = array();
-$query = "SELECT DISTINCT Actions.id, Actions.action, Actions.task, Actions.job_code, Actions.member, Actions.action_date FROM Actions INNER JOIN UserDocumentAuthorization ON ((Actions.member = "
+$query = "SELECT DISTINCT Actions.id, Actions.action, Actions.task, Actions.job_code, Actions.member, Actions.action_date, Actions.reason FROM Actions INNER JOIN UserDocumentAuthorization ON ((Actions.member = "
         . "UserDocumentAuthorization.FirstLevel) OR (Actions.member = UserDocumentAuthorization.SecondLevel) "
         . "OR (Actions.member = UserDocumentAuthorization.ThirdLevel) OR (Actions.member = "
         . "UserDocumentAuthorization.FourthLevel)) WHERE (UserDocumentAuthorization.FirstLevel = '" . $id . "' OR "

@@ -272,9 +272,9 @@ class ApprovedProjects extends Component {
     }
 
     renderListItem = ({ item }) => (
-        <TouchableOpacity style={styles.linkStyle} key={item.Job_Code} onPress={console.log(item.Job_Code)}>
+        <TouchableOpacity style={styles.linkStyle} key={item.SRN_No} onPress={console.log(item.SRN_No)}>
             <View style={{ width: '20%', height: 70, alignItems: 'flex-start', justifyContent: 'center' }}>
-                <Text style={styles.textStyle}>{item.Job_Code}</Text>
+                <Text style={styles.textStyle}>{item.SRN_No}</Text>
             </View>
             <View style={{ width: '50%', height: 70, alignItems: 'flex-start', justifyContent: 'center' }}>
                 {this.selectLevel(item.FLevel, item.SLevel, item.TLevel, item.FourthLevel)}
@@ -412,7 +412,7 @@ class ApprovedProjects extends Component {
             <FlatList
                 data={finalPakageDetails}
                 renderItem={this.renderListItem}
-                keyExtractor={(item, index) => item.Job_Code}
+                keyExtractor={(item, index) => item.SRN_No}
                 scrollEnabled={this.state.scrollEnabled}
             />
         );
@@ -537,7 +537,7 @@ const styles = {
         justifyContent: 'flex-start',
         borderColor: '#ddd',
         position: 'relative',
-        marginBottom: '20%'
+        marginBottom: 10
     },
     downStyle: {
         width: 10,

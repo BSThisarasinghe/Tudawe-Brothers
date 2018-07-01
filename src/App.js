@@ -13,6 +13,7 @@ import ApprovedProjectsDetails from './components/ApprovedProjectsDetails';
 import Home from './components/Home';
 import NewMessages from './components/NewMessages';
 import SendMessage from './components/SendMessage';
+import NotificationDetails from './components/NotificationDetails';
 
 const NavigationApp = StackNavigator({
   Home: { screen: Home },
@@ -26,7 +27,8 @@ const NavigationApp = StackNavigator({
   Eighth: { screen: ApprovedProjects },
   Ninth: { screen: ApprovedProjectsDetails },
   Tenth: { screen: NewMessages },
-  Eleventh: { screen: SendMessage }
+  Eleventh: { screen: SendMessage },
+  Twelwth: { screen: NotificationDetails }
 });
 
 export default class App extends React.Component{

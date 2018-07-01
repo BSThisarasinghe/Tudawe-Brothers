@@ -17,7 +17,7 @@ class ProjectDetails extends Component {
     static navigationOptions = ({ navigation }) => {
         const { params = {} } = navigation.state;
         return {
-            title: 'Project Details',
+            title: 'Job Details',
             headerStyle: { backgroundColor: '#fad815' },
             headerRight: <Notification onPress={() => take.showNotifications()} count={params.countValue} />
         }
@@ -52,7 +52,9 @@ class ProjectDetails extends Component {
             count: 0,
             modalVisible: false,
             modalVisible2: false,
-            underlineColorAndroid: 'transparent'
+            underlineColorAndroid: 'transparent',
+            job_level: '',
+            job_code: ''
         };
     }
 
@@ -123,16 +125,16 @@ class ProjectDetails extends Component {
             })
 
         })
-        // .then((response) => response.json())
-        //     .then((responseJson) => {
-        //         Alert.alert(responseJson);
-        //         // console.log(responseJson);
-        //     }).catch((error) => {
-        //         console.error(error);
-        //         // Alert.alert(error);
-        //         // Alert.alert("No internet connection");
-        //         this.setState({ loading: false });
-        //     });
+        .then((response) => response.json())
+            .then((responseJson) => {
+                Alert.alert(responseJson);
+                // console.log(responseJson);
+            }).catch((error) => {
+                console.error(error);
+                // Alert.alert(error);
+                // Alert.alert("No internet connection");
+                this.setState({ loading: false });
+            });
     }
 
 
@@ -206,7 +208,7 @@ class ProjectDetails extends Component {
 
         }).then((response) => response.json())
             .then((responseJson) => {
-                console.log(responseJson);
+                // console.log(responseJson);
                 // this.setState({ data: responseJson.results });
                 this.setState({ item_data: responseJson.results }, function () {
                     this.setState({ value1: this.state.item_data[0].Item_Code });
@@ -226,6 +228,7 @@ class ProjectDetails extends Component {
     }
 
     componentWillMount() {
+        // console.log(this.props.navigation.state.params.code);
         this.getCount();
         this.fetchJobData();
         this.fetchItemData();
@@ -295,6 +298,11 @@ class ProjectDetails extends Component {
     }
 
     onApprove() {
+        // console.log("Approve");
+        this.setState({
+            job_level: this.props.navigation.state.params.job_level,
+            job_code: this.props.navigation.state.params.code
+        });
         const { navigate } = this.props.navigation;
         fetch('http://bsthisarasinghe-001-site1.1tempurl.com/approve.php', {
             method: 'POST',
@@ -303,16 +311,16 @@ class ProjectDetails extends Component {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                job_level: this.props.navigation.state.params.job_level,
+                srn_no: this.props.navigation.state.params.srn_no,
                 job_code: this.props.navigation.state.params.code
             })
 
         }).then((response) => response.json())
             .then((responseJson) => {
-                if (responseJson.results[1] == 'Job Approved') {
+                if (responseJson == 'Job Approved') {
                     navigate('Third', { Email: this.state.user_email });
-                } else if (responseJson.results[1] == 'Job Approve failed') {
-                    Alert.alert(responseJson.results[1]);
+                } else if (responseJson == 'Job Approve failed') {
+                    Alert.alert(responseJson);
                 }
                 // Alert.alert(responseJson.results[1]);
                 // console.log(responseJson);
@@ -344,7 +352,8 @@ class ProjectDetails extends Component {
                 },
                 body: JSON.stringify({
                     text: this.state.text,
-                    job_code: this.props.navigation.state.params.code
+                    job_code: this.props.navigation.state.params.code,
+                    srn_no: this.props.navigation.state.params.srn_no
                 })
 
             }).then((response) => response.json())
@@ -382,7 +391,7 @@ class ProjectDetails extends Component {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    job_level: this.props.navigation.state.params.job_level,
+                    srn_no: this.props.navigation.state.params.srn_no,
                     text: this.state.text,
                     job_code: this.props.navigation.state.params.code
                 })
@@ -429,6 +438,30 @@ class ProjectDetails extends Component {
                 </View>
                 <View style={styles.containerStyle}>
                     <Text style={styles.titleStyle}>MATERIAL REQUISITION</Text>
+                </View>
+                <View style={styles.cardStyle}>
+                    <View style={{ width: '35%' }}>
+                        <Text style={styles.textBoldStyle}>Project Name: </Text>
+                    </View>
+                    <View style={{ width: '65%' }}>
+                        <Text style={styles.textStyle}>{this.state.data[0].Job_Name}</Text>
+                    </View>
+                </View>
+                <View style={styles.cardStyle}>
+                    <View style={{ width: '35%' }}>
+                        <Text style={styles.textBoldStyle}>SRN No: </Text>
+                    </View>
+                    <View style={{ width: '65%' }}>
+                        <Text style={styles.textStyle}>{this.state.data[0].SRN_No}</Text>
+                    </View>
+                </View>
+                <View style={styles.cardStyle}>
+                    <View style={{ width: '35%' }}>
+                        <Text style={styles.textBoldStyle}>SRN Date: </Text>
+                    </View>
+                    <View style={{ width: '65%' }}>
+                        <Text style={styles.textStyle}>{this.state.data[0].SRN_Date.date}</Text>
+                    </View>
                 </View>
                 <View style={styles.cardStyle}>
                     <View style={{ width: '35%' }}>
@@ -597,11 +630,12 @@ class ProjectDetails extends Component {
     }
 
     hideText(){
-        console.log("Hide Text");
+        // console.log("Hide Text");
         this.setState({ hideText: false });
     }
 
     displayDate(value) {
+        // console.log(value);
         if (this.state.hideText) {
             return (
                 <Text style={styles.textStyle} onPress={() => this.hideText()}>{value}</Text>
@@ -632,7 +666,7 @@ class ProjectDetails extends Component {
     }
 
     displayDes(value) {
-        console.log(value);
+        // console.log(value);
         return (
             <TextInput
                 onChangeText={value => this.setState({ value2: value })}

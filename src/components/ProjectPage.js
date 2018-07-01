@@ -19,7 +19,7 @@ class ProjectPage extends Component {
     static navigationOptions = ({ navigation }) => {
         const { params = {} } = navigation.state;
         return {
-            title: 'Projects',
+            title: 'Pending Approvals',
             headerStyle: { backgroundColor: '#fad815' },
             headerRight: <Notification onPress={() => take.showNotifications()} count={params.countValue} />,
         }
@@ -74,7 +74,7 @@ class ProjectPage extends Component {
         }
     }
 
-    viewProjects(job_code) {
+    viewProjects(job_code, SRN_No) {
         // console.log("Item",job_code);
         // if (this.state.level != 'Select Level') {
         const { user_email, itemVal } = this.state;
@@ -83,6 +83,7 @@ class ProjectPage extends Component {
         navigate('Fourth', {
             Email: user_email,
             code: job_code,
+            srn_no: SRN_No,
             job_level: this.state.level
         });
         // } else {
@@ -91,7 +92,7 @@ class ProjectPage extends Component {
     }
 
     renderListItem = ({ item }) => (
-        <TouchableOpacity style={styles.linkStyle} key={item.SRN_No} onPress={() => this.viewProjects(item.Job_Code)}>
+        <TouchableOpacity style={styles.linkStyle} key={item.SRN_No} onPress={() => this.viewProjects(item.Job_Code, item.SRN_No)}>
             <View style={{ width: '20%', height: 70, alignItems: 'flex-start', justifyContent: 'center' }}>
                 <Text style={styles.textStyle}>{item.SRN_No}</Text>
             </View>

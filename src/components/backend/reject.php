@@ -7,7 +7,7 @@ $json = file_get_contents('php://input');
 
 $obj = json_decode($json,true);
 
-$job_level = $obj['job_level'];
+$srn_no = $obj['srn_no'];
 $job_code = $obj['job_code'];
 $text = $obj['text'];
 
@@ -20,17 +20,17 @@ $reject = $name." rejected ".$job_code;
 
 $date = date("Y/m/d");
 
-$q = "SELECT * FROM SiteRequisitionMaster WHERE Job_Code = '" . $job_code . "'";
+$q = "SELECT * FROM SiteRequisitionMaster WHERE SRN_No = '" . $srn_no . "'";
 $r_set = sqlsrv_query($conn, $q);
 $r = sqlsrv_fetch_array($r_set, SQLSRV_FETCH_ASSOC);
 
 // $details = array();
 if($r['FLevel'] == 0){
-    $sql = "UPDATE SiteRequisitionMaster SET FLReject = 1, FLRejectRemarks = '" . $text . "' WHERE Job_Code = '" . $job_code . "'";
+    $sql = "UPDATE SiteRequisitionMaster SET FLReject = 1, FLRejectRemarks = '" . $text . "' WHERE SRN_No = '" . $srn_no . "'";
 }elseif($r['FLevel'] == 1 && $r['SLevel'] == 0){
-    $sql = "UPDATE SiteRequisitionMaster SET SLReject = 1, SLRejectRemarks = '" . $text . "' WHERE Job_Code = '" . $job_code . "'";
+    $sql = "UPDATE SiteRequisitionMaster SET SLReject = 1, SLRejectRemarks = '" . $text . "' WHERE SRN_No = '" . $srn_no . "'";
 }elseif($r['FLevel'] == 1 && $r['SLevel'] == 1 && $r['TLevel'] == 0){
-    $sql = "UPDATE SiteRequisitionMaster SET TLReject = 1, TLRejectRemarks = '" . $text . "' WHERE Job_Code = '" . $job_code . "'";
+    $sql = "UPDATE SiteRequisitionMaster SET TLReject = 1, TLRejectRemarks = '" . $text . "' WHERE SRN_No = '" . $srn_no . "'";
 }
 $result_set = sqlsrv_query($conn, $sql);
 if($result_set){

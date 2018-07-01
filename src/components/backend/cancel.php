@@ -9,6 +9,7 @@ $obj = json_decode($json,true);
 
 $text = $obj['text'];
 $job_code = $obj['job_code'];
+$srn_no = $obj['srn_no'];
 
 $query = "SELECT * FROM AccountUsers WHERE UserID = '" . $id . "'";
 $row_set = sqlsrv_query($conn, $query);
@@ -18,7 +19,7 @@ $name = $row['UserName'];
 $cancel = $name." canceled ".$job_code;
 $date = date("Y/m/d");
 // $details = array();
-$sql = "UPDATE SiteRequisitionMaster SET Cancelied = 1, CancelledRemarks = '" . $text . "' WHERE Job_Code = '" . $job_code . "'";
+$sql = "UPDATE SiteRequisitionMaster SET Cancelied = 1, CancelledRemarks = '" . $text . "' WHERE SRN_No = '" . $srn_no . "'";
 
 $result_set = sqlsrv_query($conn, $sql);
 if($result_set){

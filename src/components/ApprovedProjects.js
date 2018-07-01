@@ -18,7 +18,7 @@ class ApprovedProjects extends Component {
     static navigationOptions = ({ navigation }) => {
         const { params = {} } = navigation.state;
         return {
-            title: 'Approved Projects',
+            title: 'SRN Status',
             headerStyle: { backgroundColor: '#fad815' },
             headerRight: <Notification onPress={() => take.showNotifications()} count={params.countValue} />,
         }

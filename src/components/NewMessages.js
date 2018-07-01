@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, Text, TouchableOpacity, View, Picker, FlatList, BackHandler } from 'react-native';
+import { Alert, Text, TouchableOpacity, View, Picker, FlatList, BackHandler, Image, TextInput } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import Card from './common/Card';
 import Img from './common/background';
@@ -29,7 +29,8 @@ class NewMessages extends Component {
             itemVal: 0,
             package: [],
             dropDownData: ['1st Level', '2nd Level', '3rd Level', '4th Level'],
-            level: 'Select Level'
+            level: 'Select Level',
+            search_value: ''
         };
     }
 
@@ -156,6 +157,38 @@ class NewMessages extends Component {
         );
     }
 
+    onSearch(value) {
+        // this.setState({ package: [] });
+        this.setState({ search_value: value });
+        this.setState({ loading: true });
+        // console.log(value);
+        if (value != '') {
+            fetch('http://bsthisarasinghe-001-site1.1tempurl.com/search_notifications.php', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    search_value: value
+                })
+
+            }).then((response) => response.json())
+                .then((responseJson) => {
+                    // console.log(responseJson.results);
+                    this.setState({ package: responseJson.results }, function () {
+                        this.setState({ loading: false });
+                    });
+                }).catch((error) => {
+                    //console.error(error);
+                    Alert.alert("No internet connection");
+                    this.setState({ loading: false });
+                });
+        } else {
+            this.projectsList();
+        }
+    }
+
     render() {
         finalPakageDetails = this.state.package;
         return (
@@ -173,6 +206,21 @@ class NewMessages extends Component {
                                 <Picker.Item label="Logout" value="Logout" />
                             </Picker>
                         </View>
+                    </View>
+                    <View style={styles.mainStyle}>
+                        <View style={{ height: 50, justifyContent: 'center', alignItems: 'center' }}>
+                            <Image source={require('./pics/search.png')} style={styles.iconStyle} />
+                        </View>
+                        <TextInput
+                            placeholder="Search..."
+                            autoCorrect={false}
+                            onChangeText={search_value => this.onSearch(search_value)}
+                            value={this.state.search_value}
+                            style={styles.inputStyle}
+                            underlineColorAndroid='transparent'
+                            returnKeyType="next"
+                            blurOnSubmit={false}
+                        />
                     </View>
                     <View style={styles.containerStyle}>
                         {this.completeView()}
@@ -258,6 +306,33 @@ const styles = {
         paddingTop: 10,
         paddingBottom: 10,
         height: 100
+    },
+    mainStyle: {
+        // padding: 5,
+        backgroundColor: '#fff',
+        marginLeft: 5,
+        marginRight: 5,
+        justifyContent: 'flex-start',
+        flexDirection: 'row',
+        position: 'relative',
+        marginTop: 10,
+        borderRadius: 5
+    },
+    inputStyle: {
+        color: '#000',
+        paddingRight: 5,
+        paddingLeft: 5,
+        fontSize: 18,
+        lineHeight: 23,
+        flex: 1,
+        backgroundColor: '#fff',
+        borderRadius: 5,
+    },
+    iconStyle: {
+        height: 30,
+        width: 30,
+        marginRight: 10,
+        marginLeft: 10
     }
 }
 

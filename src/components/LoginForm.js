@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, View, TextInput, Text, Image, YellowBox, ScrollView, BackHandler } from 'react-native';
+import { Alert, View, TextInput, Text, Image, YellowBox, ScrollView, BackHandler, KeyboardAvoidingView } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import Button from './common/Button';
 import Card from './common/Card';
@@ -113,55 +113,57 @@ class LoginForm extends Component {
         return (
             <View style={{ flex: 1 }}>
                 <Img />
-                <KeyboardAwareScrollView>
-                    <View style={styles.containerStyle2}>
-                        <Image source={require('./pics/ic_launcher.png')} style={styles.imageStyle} />
-                    </View>
-                    <View style={{ height: 50, justifyContent: 'center', alignItems: 'center' }}>
-                        <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold' }}>Tudawe Brothers(Pvt) Ltd</Text>
-                    </View>
-                    <CardSection style={styles.containerStyle}>
-                        <View style={{ height: 40, justifyContent: 'center', alignItems: 'center' }}>
-                            <Image source={require('./pics/user.png')} style={styles.iconStyle} />
+                <ScrollView keyboardShouldPersistTaps='always'>
+                    <KeyboardAvoidingView behavior="padding" enabled>
+                        <View style={styles.containerStyle2}>
+                            <Image source={require('./pics/ic_launcher.png')} style={styles.imageStyle} />
                         </View>
-                        <TextInput
-                            ref="1"
-                            placeholder="Username"
-                            placeholderTextColor="#fff"
-                            onChangeText={user_email => this.setState({ user_email })}
-                            value={this.state.user_email}
-                            style={styles.inputStyle}
-                            underlineColorAndroid='transparent'
-                            returnKeyType="next"
-                            blurOnSubmit={false}
-                            onSubmitEditing={() => this.focusNextField('2')}
-                        />
-                    </CardSection>
-                    <CardSection style={styles.containerStyle}>
-                        <View style={{ height: 40, justifyContent: 'center', alignItems: 'center' }}>
-                            <Image source={require('./pics/pwd.png')} style={styles.iconStyle} />
+                        <View style={{ height: 50, justifyContent: 'center', alignItems: 'center' }}>
+                            <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold' }}>Tudawe Brothers(Pvt) Ltd</Text>
                         </View>
-                        <TextInput
-                            ref="2"
-                            secureTextEntry
-                            placeholder="Password"
-                            placeholderTextColor="#fff"
-                            autoCorrect={false}
-                            onChangeText={user_password => this.setState({ user_password })}
-                            value={this.state.user_password}
-                            style={styles.inputStyle}
-                            underlineColorAndroid='transparent'
-                            blurOnSubmit={true}
-                            returnKeyType="done"
-                        />
-                    </CardSection>
-                    <Text style={styles.errorStyle}>
-                        {this.state.error}
-                    </Text>
-                    <View style={styles.buttonStyle}>
-                        {this.renderButton()}
-                    </View>
-                </KeyboardAwareScrollView>
+                        <CardSection style={styles.containerStyle}>
+                            <View style={{ height: 40, justifyContent: 'center', alignItems: 'center' }}>
+                                <Image source={require('./pics/user.png')} style={styles.iconStyle} />
+                            </View>
+                            <TextInput
+                                ref="1"
+                                placeholder="Username"
+                                placeholderTextColor="#fff"
+                                onChangeText={user_email => this.setState({ user_email })}
+                                value={this.state.user_email}
+                                style={styles.inputStyle}
+                                underlineColorAndroid='transparent'
+                                returnKeyType="next"
+                                blurOnSubmit={false}
+                                onSubmitEditing={() => this.focusNextField('2')}
+                            />
+                        </CardSection>
+                        <CardSection style={styles.containerStyle}>
+                            <View style={{ height: 40, justifyContent: 'center', alignItems: 'center' }}>
+                                <Image source={require('./pics/pwd.png')} style={styles.iconStyle} />
+                            </View>
+                            <TextInput
+                                ref="2"
+                                secureTextEntry
+                                placeholder="Password"
+                                placeholderTextColor="#fff"
+                                autoCorrect={false}
+                                onChangeText={user_password => this.setState({ user_password })}
+                                value={this.state.user_password}
+                                style={styles.inputStyle}
+                                underlineColorAndroid='transparent'
+                                blurOnSubmit={true}
+                                returnKeyType="done"
+                            />
+                        </CardSection>
+                        <Text style={styles.errorStyle}>
+                            {this.state.error}
+                        </Text>
+                        <View style={styles.buttonStyle}>
+                            {this.renderButton()}
+                        </View>
+                    </KeyboardAvoidingView>
+                </ScrollView>
             </View>
         );
     }
@@ -174,9 +176,10 @@ const styles = {
         paddingLeft: 5,
         fontSize: 18,
         lineHeight: 23,
-        flex: 2
+        flex: 2,
         // borderBottomColor: 'transparent'
-        //backgroundColor: 'transparent'
+        // backgroundColor: 'red',
+        // width: '100%'
     },
     labelStyle: {
         fontSize: 18,

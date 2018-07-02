@@ -8,17 +8,18 @@ $json = file_get_contents('php://input');
 $obj = json_decode($json,true);
 
 $item_code = $obj['item_code'];
-$new_value = $obj['new_value'];
+$qty = $obj['qty'];
+$date = $obj['date'];
 
-$change_query = "UPDATE SiteRequisitionDetails SET Item_Code = '" . $new_value . "' WHERE Item_Code = '" . $item_code . "'";
+$change_query = "UPDATE SiteRequisitionDetails SET Qty_Required = '" . $qty . "', Delivery_Date = '" . $date . "' WHERE Item_Code = '" . $item_code . "'";
 $query = sqlsrv_query($conn, $change_query);
 if($query){
-    $msg = "Item Code changed successfully!";
+    $msg = "success";
     $SuccessMsgJson = json_encode($msg);
     // Echo the message.
     echo $SuccessMsgJson; 
 }else{
-    $msg = "Item Code change failed!";
+    $msg = "fail";
     $SuccessMsgJson = json_encode($msg);
     // Echo the message.
     echo $SuccessMsgJson; 

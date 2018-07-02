@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, TextInput, View, Alert, Text, TouchableOpacity, Image, Picker, ScrollView, FlatList, BackHandler, Modal, TouchableHighlight } from 'react-native';
+import { StyleSheet, TextInput, View, Alert, Text, TouchableOpacity, Image, Picker, ScrollView, FlatList, BackHandler, Modal, TouchableHighlight, Button } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import DeviceInfo from 'react-native-device-info';
 import Card from './common/Card';
@@ -29,6 +29,7 @@ class ProjectDetails extends Component {
         this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
         this.onCancel = this.onCancel.bind(this);
         this.setModalVisible = this.setModalVisible.bind(this);
+        this.setEditModalVisible = this.setEditModalVisible.bind(this);
         this.onReject = this.onReject.bind(this);
         this.setRejectModalVisible = this.setRejectModalVisible.bind(this);
         this.state = {
@@ -52,9 +53,13 @@ class ProjectDetails extends Component {
             count: 0,
             modalVisible: false,
             modalVisible2: false,
+            modalVisible3: false,
             underlineColorAndroid: 'transparent',
             job_level: '',
-            job_code: ''
+            job_code: '',
+            qty: '',
+            Delivery_Date: '',
+            code: ''
         };
     }
 
@@ -87,7 +92,7 @@ class ProjectDetails extends Component {
         }
     }
 
-    onFocus(value) {
+    onFocus(visible) {
         // console.log(value);
         fetch('http://bsthisarasinghe-001-site1.1tempurl.com/changeItem.php', {
             method: 'POST',
@@ -96,14 +101,16 @@ class ProjectDetails extends Component {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                item_code: this.state.item_data[0].Item_Code,
-                new_value: value
+                item_code: this.state.code,
+                qty: this.state.qty,
+                date: this.state.Delivery_Date
             })
 
         }).then((response) => response.json())
             .then((responseJson) => {
-                Alert.alert(responseJson);
-                // console.log(responseJson);
+                this.setState({ modalVisible3: visible });
+                console.log(responseJson);
+                this.fetchItemData();
             }).catch((error) => {
                 console.error(error);
                 // Alert.alert(error);
@@ -125,7 +132,7 @@ class ProjectDetails extends Component {
             })
 
         })
-        .then((response) => response.json())
+            .then((response) => response.json())
             .then((responseJson) => {
                 Alert.alert(responseJson);
                 // console.log(responseJson);
@@ -175,7 +182,8 @@ class ProjectDetails extends Component {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                job_code: this.props.navigation.state.params.code
+                job_code: this.props.navigation.state.params.code,
+                srn_no: this.props.navigation.state.params.srn_no
             })
 
         }).then((response) => response.json())
@@ -203,19 +211,20 @@ class ProjectDetails extends Component {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                job_code: this.props.navigation.state.params.code
+                job_code: this.props.navigation.state.params.code,
+                srn_no: this.props.navigation.state.params.srn_no
             })
 
         }).then((response) => response.json())
             .then((responseJson) => {
-                // console.log(responseJson);
+
                 // this.setState({ data: responseJson.results });
                 this.setState({ item_data: responseJson.results }, function () {
                     this.setState({ value1: this.state.item_data[0].Item_Code });
                     this.setState({ value2: this.state.item_data[0].Item_Description });
-                    this.setState({ value3: this.state.item_data[0].Delivery_Date.date });
+                    // this.setState({ value3: this.state.item_data[0].Delivery_Date.date });
                     this.setState({ loading2: false });
-                    // console.log(this.state.item_data[0].Discription);
+
                 });
                 // If server response message same as Data Matched
 
@@ -254,29 +263,29 @@ class ProjectDetails extends Component {
 
     getCount() {
         fetch('http://bsthisarasinghe-001-site1.1tempurl.com/getCount.php', {
-          method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            deviceId: deviceId
-          })
-    
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                deviceId: deviceId
+            })
+
         }).then((response) => response.json())
-          .then((responseJson) => {
-            // console.log(responseJson);
-            this.setState({ count: responseJson });
-            this.props.navigation.setParams({
-              countValue: this.state.count
+            .then((responseJson) => {
+                // console.log(responseJson);
+                this.setState({ count: responseJson });
+                this.props.navigation.setParams({
+                    countValue: this.state.count
+                });
+            }).catch((error) => {
+                console.error(error);
+                // Alert.alert(error);
+                // Alert.alert("No internet connection");
+                this.setState({ loading: false });
             });
-          }).catch((error) => {
-            console.error(error);
-            // Alert.alert(error);
-            // Alert.alert("No internet connection");
-            this.setState({ loading: false });
-          });
-      }
+    }
 
     flatListView() {
         finalPakageDetails = this.state.item_data;
@@ -335,6 +344,24 @@ class ProjectDetails extends Component {
 
     setModalVisible(visible) {
         this.setState({ modalVisible: visible });
+    }
+
+    setEditModalVisible(visible, qtyVal, date, item_code) {
+        var date = new Date(date);
+        var day = date.getDate();
+        var month = date.getMonth() + 1;
+        var year = date.getFullYear();
+        var fullDate = day + "/" + month + "/" + year;
+        this.setState({ qty: qtyVal, Delivery_Date: fullDate, code: item_code }, function () {
+            if (this.state.qty != '' && this.state.Delivery_Date != '' && this.state.code != '') {
+                this.setState({ modalVisible3: visible });
+            }
+        });
+        // console.log(date);
+    }
+
+    removeEditModalVisible(visible) {
+        this.setState({ modalVisible3: visible });
     }
 
     onCancel(visible) {
@@ -479,7 +506,7 @@ class ProjectDetails extends Component {
                     onRequestClose={() => {
                         alert('Window has been closed.');
                     }}>
-                    <View style={{ marginTop: 100, height: 200, width: '80%', backgroundColor: '#fff', borderRadius: 5, alignSelf: 'center' }}>
+                    <View style={{ marginTop: 100, height: 200, width: '80%', backgroundColor: '#fff', borderRadius: 5, alignSelf: 'center', shadowColor: '#000', shadowOffset: { width: 2, height: 2 }, shadowOpacity: 0.3, borderColor: '#AFAEAE', borderWidth: 1 }}>
                         <View style={styles.cardStyle}>
                             <View style={{ width: '35%', height: 50, justifyContent: 'center', alignItems: 'center' }}>
                                 <Text style={styles.textBoldStyle}>Note: </Text>
@@ -608,6 +635,83 @@ class ProjectDetails extends Component {
                         </TouchableOpacity>
                     </View>
                 </View>
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    presentationStyle='overFullScreen'
+                    visible={this.state.modalVisible3}
+                    onRequestClose={() => {
+                        alert('Window has been closed.');
+                    }}>
+                    <View style={{ marginTop: 100, height: 300, width: '80%', backgroundColor: '#fff', borderRadius: 5, alignSelf: 'center', flexDirection: 'column' }}>
+                        <View style={styles.cardStyle}>
+                            <View style={{ width: '35%', height: 50, justifyContent: 'center', alignItems: 'center' }}>
+                                <Text style={styles.textBoldStyle}>Qty: </Text>
+                            </View>
+                            <View style={{ width: '65%', height: 50 }}>
+                                <TextInput
+                                    multiline={true}
+                                    numberOfLines={4}
+                                    autoCorrect={true}
+                                    onChangeText={qty => this.setState({ qty })}
+                                    value={this.state.qty.toString()}
+                                    placeholder="Enter a note"
+                                    style={styles.inputStyle}
+                                    underlineColorAndroid={this.state.underlineColorAndroid}
+                                />
+                            </View>
+                        </View>
+                        <View style={styles.cardStyle}>
+                            <View style={{ width: '35%', height: 50, justifyContent: 'center', alignItems: 'center' }}>
+                                <Text style={styles.textBoldStyle}>Delivery date: </Text>
+                            </View>
+                            <View style={{ width: '65%', height: 50 }}>
+                                <TextInput
+                                    multiline={true}
+                                    numberOfLines={4}
+                                    autoCorrect={true}
+                                    onChangeText={Delivery_Date => this.setState({ Delivery_Date })}
+                                    value={this.state.Delivery_Date.toString()}
+                                    placeholder="Enter a note"
+                                    style={styles.inputStyle}
+                                    underlineColorAndroid={this.state.underlineColorAndroid}
+                                />
+                            </View>
+                        </View>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+                            <TouchableOpacity style={{
+                                width: 100,
+                                height: 30,
+                                alignSelf: 'stretch',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                backgroundColor: '#fff',
+                                borderRadius: 2,
+                                borderWidth: 1,
+                                borderColor: '#022B96',
+                                marginLeft: 5,
+                                marginRight: 5
+                            }} onPress={() => this.removeEditModalVisible(!this.state.modalVisible3)}>
+                                <Text>Cancel</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={{
+                                width: 100,
+                                height: 30,
+                                alignSelf: 'stretch',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                backgroundColor: '#022B96',
+                                borderRadius: 2,
+                                borderWidth: 1,
+                                borderColor: '#022B96',
+                                marginLeft: 5,
+                                marginRight: 5
+                            }} onPress={() => this.onFocus(!this.state.modalVisible3)}>
+                                <Text style={{ color: '#fff' }}>Update</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </Modal>
                 <View style={{ flex: 1, flexDirection: 'row', marginTop: 20, paddingLeft: 16, paddingRight: 16 }}>
                     <View style={{ flex: 3, borderWidth: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#CFD8EF' }}>
                         <Text style={styles.dataStyle}>Item Description</Text>
@@ -621,6 +725,9 @@ class ProjectDetails extends Component {
                     <View style={{ flex: 2, borderWidth: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#CFD8EF' }}>
                         <Text style={styles.dataStyle}>Delivery Date</Text>
                     </View>
+                    <View style={{ flex: 2, borderWidth: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#CFD8EF' }}>
+                        <Text style={styles.dataStyle}></Text>
+                    </View>
                 </View>
                 <View style={styles.container}>
                     {this.flatListView()}
@@ -629,23 +736,39 @@ class ProjectDetails extends Component {
         );
     }
 
-    hideText(){
+    hideText() {
         console.log("Hide Text");
         this.setState({ hideText: false });
     }
 
     displayDate(value) {
-        // console.log(value);
+        var parts = value;
+        var mydate = new Date(parts[0], parts[1] - 1, parts[2]);
+        var date = mydate.toDateString();
+        var date = new Date(date);
+        var day = date.getDate();
+        // console.log(day);
+        var month = date.getMonth() + 1;
+        var year = date.getFullYear();
+        var fullDate = day + "/" + month + "/" + year;
+        // console.log(fullDate);
         if (this.state.hideText) {
             return (
-                <Text style={styles.textStyle} onPress={() => this.hideText()}>{value}</Text>
+                // <Text style={styles.textStyle} onPress={() => this.hideText()}>{fullDate}</Text>
+                <TextInput
+                    onChangeText={newDate => this.setState({ value3: newDate })}
+                    onBlur={() => this.onFocus2(this.state.value3, this.state.item_data[0].Item_Code)}
+                    value={fullDate}
+                    style={styles.inputStyle}
+                    underlineColorAndroid='transparent'
+                />
             );
         } else {
             return (
                 <TextInput
-                    onChangeText={value => this.setState({ value3: value })}
+                    onChangeText={newDate => this.setState({ value3: newDate })}
                     onBlur={() => this.onFocus2(this.state.value3, this.state.item_data[0].Item_Code)}
-                    value={value}
+                    value={fullDate}
                     style={styles.inputStyle}
                     underlineColorAndroid='transparent'
                 />
@@ -684,19 +807,21 @@ class ProjectDetails extends Component {
                 <Text style={styles.dataStyle}>{item.Item_Description}</Text>
             </View>
             <View style={{ flex: 1, borderWidth: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <TextInput
+                <Text style={styles.dataStyle}>{item.Qty_Required}</Text>
+                {/* <TextInput
                     onChangeText={value => this.setState({ value2: value })}
                     onBlur={() => this.onFocus1(this.state.value2, item.Item_Code)}
                     value={item.Qty_Required.toString()}
                     // style={styles.inputStyle}
                     underlineColorAndroid='transparent'
-                />
+                /> */}
             </View>
             <View style={{ flex: 1, borderWidth: 1, justifyContent: 'center', alignItems: 'center' }}>
                 <Text style={styles.dataStyle}>{item.UnitofMeasure}</Text>
             </View>
             <View style={{ flex: 2, borderWidth: 1, justifyContent: 'center', alignItems: 'center' }}>
-                {this.displayDate(item.Delivery_Date.date.toString())}
+                {/* {this.displayDate(item.Delivery_Date.date)} */}
+                <Text style={styles.dataStyle}>{item.Delivery_Date.date}</Text>
                 {/* <TextInput
                     onChangeText={val => this.setState({ value3: val })}
                     onBlur={() => this.onFocus2(this.state.value3, item.Item_Code)}
@@ -704,6 +829,9 @@ class ProjectDetails extends Component {
                     style={styles.inputStyle}
                     underlineColorAndroid='transparent'
                 /> */}
+            </View>
+            <View style={{ flex: 2, borderWidth: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <Button title="Edit" color='#841584' onPress={() => this.setEditModalVisible(!this.state.modalVisible3, item.Qty_Required, item.Delivery_Date.date, item.Item_Code)} />
             </View>
         </View>
     )

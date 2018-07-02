@@ -101,8 +101,8 @@ class Notification extends Component {
                     }
                     IconBadgeStyle={
                         {
-                            width: 20,
-                            height: 20,
+                            width: 21,
+                            height: 21,
                             backgroundColor: 'red'
                         }
                     }

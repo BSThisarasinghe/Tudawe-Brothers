@@ -3,6 +3,8 @@
 
 session_start();
 
+
+clearstatcache();
 if (isset($_SESSION['id'])) {
     $InvalidMSG = 'session is set';
     $user_email = $_SESSION['email'];

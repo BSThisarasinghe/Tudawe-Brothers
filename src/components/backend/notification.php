@@ -8,7 +8,7 @@ $query = "SELECT a.id, a.action, a.task, a.job_code, a.member, a.action_date, a.
 (Actions.member = UserDocumentAuthorization.ThirdLevel) OR (Actions.member = UserDocumentAuthorization.FourthLevel)) 
 FULL OUTER JOIN notification_info ON notification_info.notification_id = Actions.id WHERE 
 (UserDocumentAuthorization.FirstLevel = '" . $id . "' OR UserDocumentAuthorization.SecondLevel = '" . $id . "' OR UserDocumentAuthorization.ThirdLevel = '" . $id . "' OR 
-UserDocumentAuthorization.FourthLevel = '" . $id . "')) a WHERE users_id IS NULL OR users_id != '" . $id . "'";
+UserDocumentAuthorization.FourthLevel = '" . $id . "')) a WHERE users_id IS NULL OR users_id != '" . $id . "' ORDER BY id DESC";
 $row_set = sqlsrv_query($conn, $query);
 $row = sqlsrv_fetch_array($row_set, SQLSRV_FETCH_ASSOC);
 $action = $row['action'];

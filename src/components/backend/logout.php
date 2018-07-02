@@ -11,4 +11,6 @@ if ($_SESSION["id"] == NULL && $_SESSION["email"] == NULL) {
     $logout_json = json_encode($logout);
     echo $logout_json;
 }
+
+clearstatcache();
 ?>

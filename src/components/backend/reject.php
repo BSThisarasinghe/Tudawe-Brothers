@@ -26,11 +26,11 @@ $r = sqlsrv_fetch_array($r_set, SQLSRV_FETCH_ASSOC);
 
 // $details = array();
 if($r['FLevel'] == 0){
-    $sql = "UPDATE SiteRequisitionMaster SET FLReject = 1, FLRejectRemarks = '" . $text . "' WHERE SRN_No = '" . $srn_no . "'";
+    $sql = "UPDATE SiteRequisitionMaster SET FLevel = 0, SLevel = 0, TLevel = 0, FourthLevel = 0, FLRejectRemarks = '" . $text . "' WHERE SRN_No = '" . $srn_no . "'";
 }elseif($r['FLevel'] == 1 && $r['SLevel'] == 0){
-    $sql = "UPDATE SiteRequisitionMaster SET SLReject = 1, SLRejectRemarks = '" . $text . "' WHERE SRN_No = '" . $srn_no . "'";
+    $sql = "UPDATE SiteRequisitionMaster SET FLevel = 0, SLevel = 0, TLevel = 0, FourthLevel = 0, SLRejectRemarks = '" . $text . "' WHERE SRN_No = '" . $srn_no . "'";
 }elseif($r['FLevel'] == 1 && $r['SLevel'] == 1 && $r['TLevel'] == 0){
-    $sql = "UPDATE SiteRequisitionMaster SET TLReject = 1, TLRejectRemarks = '" . $text . "' WHERE SRN_No = '" . $srn_no . "'";
+    $sql = "UPDATE SiteRequisitionMaster SET FLevel = 0, SLevel = 0, TLevel = 0, FourthLevel = 0, TLRejectRemarks = '" . $text . "' WHERE SRN_No = '" . $srn_no . "'";
 }
 $result_set = sqlsrv_query($conn, $sql);
 if($result_set){

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, Text, TouchableOpacity, View, Image, FlatList, Picker, TextInput, BackHandler } from 'react-native';
+import { Alert, Text, TouchableOpacity, View, Image, FlatList, ScrollView, TextInput, BackHandler } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import ModalDropdown from 'react-native-modal-dropdown';
 import DeviceInfo from 'react-native-device-info';
@@ -131,29 +131,29 @@ class SendMessage extends Component {
 
     getCount() {
         fetch('http://bsthisarasinghe-001-site1.1tempurl.com/getCount.php', {
-          method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            deviceId: deviceId
-          })
-    
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                deviceId: deviceId
+            })
+
         }).then((response) => response.json())
-          .then((responseJson) => {
-            // console.log(responseJson);
-            this.setState({ count: responseJson });
-            this.props.navigation.setParams({
-              countValue: this.state.count
+            .then((responseJson) => {
+                // console.log(responseJson);
+                this.setState({ count: responseJson });
+                this.props.navigation.setParams({
+                    countValue: this.state.count
+                });
+            }).catch((error) => {
+                console.error(error);
+                // Alert.alert(error);
+                // Alert.alert("No internet connection");
+                this.setState({ loading: false });
             });
-          }).catch((error) => {
-            console.error(error);
-            // Alert.alert(error);
-            // Alert.alert("No internet connection");
-            this.setState({ loading: false });
-          });
-      }
+    }
 
     sendMsg() {
         fetch('http://bsthisarasinghe-001-site1.1tempurl.com/sendMsg.php', {
@@ -217,9 +217,12 @@ class SendMessage extends Component {
         take = this;
         return (
             <View style={{ flex: 1 }}>
-                <View style={{ flex: 1 }}>
+                <ScrollView ref={ref => this.scrollView = ref}
+                    onContentSizeChange={(contentWidth, contentHeight) => {
+                        this.scrollView.scrollToEnd({ animated: true });
+                    }}>
                     {this.completeView()}
-                </View>
+                </ScrollView>
                 <View style={styles.containerStyle}>
                     <KeyboardAwareScrollView style={{ borderWidth: 1, position: 'absolute', bottom: 0, width: '85%', borderColor: '#D1D1D1', paddingLeft: 5, paddingRight: 5 }}>
                         <TextInput

@@ -314,6 +314,7 @@ const styles = {
         justifyContent: 'flex-start',
         borderColor: '#ddd',
         position: 'relative',
+        paddingBottom: 40
     },
     containerStyle1: {
         borderBottomWidth: 1,

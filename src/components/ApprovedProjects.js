@@ -498,6 +498,7 @@ const styles = {
         justifyContent: 'flex-start',
         borderColor: '#ddd',
         position: 'relative',
+        paddingBottom: 40
     },
     iconStyle: {
         height: 40,

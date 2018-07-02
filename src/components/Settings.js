@@ -155,7 +155,7 @@ class Settings extends Component {
         return (
             <View style={{ flex: 1 }}>
                 <Img1 />
-                <ScrollView>
+                <ScrollView keyboardShouldPersistTaps='always'>
                     <View style={styles.viewStyle}>
                         <View style={styles.containerStyle}>
                             <View style={styles.mainStyle}>

@@ -4,7 +4,7 @@ session_start();
 $id=$_SESSION["id"];
 
 $arr = array();
-$sql = "SELECT * FROM Messages";
+$sql = "SELECT TOP 100 * FROM Messages";
 $result_set = sqlsrv_query($conn, $sql);
 
 while($result = sqlsrv_fetch_array($result_set, SQLSRV_FETCH_ASSOC)){
@@ -24,24 +24,3 @@ while($result = sqlsrv_fetch_array($result_set, SQLSRV_FETCH_ASSOC)){
     echo $SuccessLoginJson;  
 
 ?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

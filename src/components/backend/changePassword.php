@@ -15,7 +15,31 @@ $sql = "SELECT * FROM AccountUsers WHERE UserID = '" . $id . "'";
 $result_set = sqlsrv_query($conn, $sql);
 $result = sqlsrv_fetch_array($result_set, SQLSRV_FETCH_ASSOC);
 
-if ($cur_pwd != $result['UserPassword']){
+if ($cur_pwd == ''){
+    $msg = 'Current password is required';
+    
+    // Converting the message into JSON format.
+   $SuccessMsgJson = json_encode($msg);
+    
+   // Echo the message.
+    echo $SuccessMsgJson; 
+}else if ($new_pwd == ''){
+    $msg = 'New password is required';
+    
+    // Converting the message into JSON format.
+   $SuccessMsgJson = json_encode($msg);
+    
+   // Echo the message.
+    echo $SuccessMsgJson; 
+}else if ($con_pwd == ''){
+    $msg = 'Please confirmm the password';
+    
+    // Converting the message into JSON format.
+   $SuccessMsgJson = json_encode($msg);
+    
+   // Echo the message.
+    echo $SuccessMsgJson; 
+}else if ($cur_pwd != $result['UserPassword']){
     $msg = 'Current password is wrong';
     
     // Converting the message into JSON format.

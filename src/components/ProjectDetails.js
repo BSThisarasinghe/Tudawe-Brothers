@@ -827,7 +827,7 @@ class ProjectDetails extends Component {
     render() {
         take = this;
         return (
-            <ScrollView>
+            <ScrollView keyboardShouldPersistTaps='always'>
                 {this.completeView()}
             </ScrollView>
         );

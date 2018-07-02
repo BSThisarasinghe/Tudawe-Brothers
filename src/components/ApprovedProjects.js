@@ -20,7 +20,7 @@ class ApprovedProjects extends Component {
         return {
             title: 'SRN Status',
             headerStyle: { backgroundColor: '#fad815' },
-            headerRight: <Notification onPress={() => take.showNotifications()} count={params.countValue} />,
+            headerRight: <Notification onPress={() => take.showNotifications()} count={params.countValue} navigation={navigation} />,
         }
     };
 
@@ -412,7 +412,7 @@ class ApprovedProjects extends Component {
             <FlatList
                 data={finalPakageDetails}
                 renderItem={this.renderListItem}
-                keyExtractor={(item, index) => item.SRN_No}
+                keyExtractor={(item, index) => item.SRN_No.toString()}
                 scrollEnabled={this.state.scrollEnabled}
             />
         );
@@ -426,18 +426,6 @@ class ApprovedProjects extends Component {
             <View style={{ flex: 1 }}>
                 <Img />
                 <Card>
-                    <View style={styles.viewStyle}>
-                        <View style={{ height: 30, width: 100, backgroundColor: '#fff' }}>
-                            <Picker
-                                selectedValue={this.state.user_email}
-                                style={{ height: 30, width: 100 }}
-                                mode='dropdown'
-                                onValueChange={(itemValue, itemIndex) => this.logoutButton(itemValue)}>
-                                <Picker.Item label={this.state.user_email} value="" />
-                                <Picker.Item label="Logout" value="Logout" />
-                            </Picker>
-                        </View>
-                    </View>
                     <View style={styles.mainStyle}>
                         <View style={{ height: 50, justifyContent: 'center', alignItems: 'center' }}>
                             <Image source={require('./pics/search.png')} style={styles.iconStyle} />

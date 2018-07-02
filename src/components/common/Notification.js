@@ -1,28 +1,119 @@
 import React, { Component } from 'react';
-import { Text, TouchableOpacity, Image } from 'react-native';
+import { View, Text, TouchableOpacity, Image, Alert } from 'react-native';
 import IconBadge from 'react-native-icon-badge';
+import ModalDropdown from 'react-native-modal-dropdown';
+import { StackNavigator } from 'react-navigation';
+import { Spinner } from './Spinner';
 
-const Notification = ({ onPress, count }) => {
-    return (
-        <IconBadge
-            MainElement={
-                <TouchableOpacity onPress={onPress} style={styles.buttonStyle}>
-                    <Image source={require('../pics/notification.png')} style={styles.imageStyle} />
-                </TouchableOpacity>
-            }
-            BadgeElement={
-                <Text style={{ color: '#FFFFFF' }}>{count}</Text>
-            }
-            IconBadgeStyle={
-                {
-                    width: 20,
-                    height: 20,
-                    backgroundColor: 'red'
+class Notification extends Component {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            user_name: 'label',
+            loading: true,
+            level: ''
+        };
+    }
+
+    getUser() {
+        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/showUser.php')
+            .then((response) => response.json())
+            .then((responseJson) => {
+                this.setState({ user_name: responseJson }, function () {
+                    if (this.state.user_name != 'label') {
+                        this.setState({ loading: false });
+                    }
+                });
+            }).catch((error) => {
+                console.error(error);
+                // Alert.alert(error);
+                // Alert.alert("No internet connection");
+                this.setState({ loading: false });
+            });
+    }
+
+    componentWillMount() {
+        this.getUser();
+    }
+
+    onSelectOpt(idx, value) {
+        this.setState({ level: value });
+        if (value === "Logout") {
+            { this.goBack() }
+        }
+    }
+
+    goBack() {
+        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/logout.php')
+            .then((response) => response.json())
+            .then((responseJson) => {
+                // console.log(responseJson.results[0]);
+                if (responseJson === 'NULL') {
+                    const { navigate } = this.props.navigation;
+                    navigate('First');
                 }
-            }
-            Hidden={count == 0}
-        />
-    )
+            }).catch((error) => {
+                console.error(error);
+                // Alert.alert(error);
+                // Alert.alert("No internet connection");
+                // this.setState({ loading: false });
+            });
+    }
+
+    showLogout() {
+        if (this.state.loading) {
+            return (
+                <ModalDropdown options={['', 'Logout']} onSelect={(idx, value) => this.onSelectOpt(idx, value)} style={{ width: '100%', height: 30, justifyContent: 'center', paddingLeft: 20 }} dropdownStyle={{ width: 100, height: 100 }} dropdownTextStyle={{ color: '#000', fontSize: 15 }} dropdownTextHighlightStyle={{ fontWeight: 'bold' }} >
+                    <View style={{ height: 30, width: 60, alignItems: 'center', paddingRight: 10 }}>
+                        <Image
+                            source={require('../pics/logout.png')}
+                            style={styles.downStyle}
+                        />
+                    </View>
+                </ModalDropdown>
+            );
+        }
+        return (
+            <ModalDropdown options={[this.state.user_name, 'Logout']} onSelect={(idx, value) => this.onSelectOpt(idx, value)} style={{ width: '100%', height: 30, justifyContent: 'center', paddingLeft: 20 }} dropdownStyle={{ width: 100, height: 100 }} dropdownTextStyle={{ color: '#000', fontSize: 15 }} dropdownTextHighlightStyle={{ fontWeight: 'bold' }} >
+                <View style={{ height: 30, width: 60, alignItems: 'center', paddingRight: 20 }}>
+                    <Image
+                        source={require('../pics/logout.png')}
+                        style={styles.downStyle}
+                    />
+                </View>
+            </ModalDropdown>
+        );
+    }
+
+    render() {
+        return (
+            <View style={{ flexDirection: 'row', paddingRight: 10 }}>
+                <IconBadge
+                    MainElement={
+                        < TouchableOpacity onPress={this.props.onPress} style={styles.buttonStyle} >
+                            <Image source={require('../pics/notification.png')} style={styles.imageStyle} />
+                        </TouchableOpacity>
+                    }
+                    BadgeElement={
+                        < Text style={{ color: '#FFFFFF' }}> {this.props.count}</Text >
+                    }
+                    IconBadgeStyle={
+                        {
+                            width: 20,
+                            height: 20,
+                            backgroundColor: 'red'
+                        }
+                    }
+                    Hidden={this.props.count == 0}
+                />
+                <View style={{ height: 30, width: 60, backgroundColor: 'transparent' }}>
+                    {this.showLogout()}
+                </View>
+            </View>
+        )
+    }
 }
 
 
@@ -33,7 +124,21 @@ const styles = {
     },
     buttonStyle: {
         marginLeft: 5,
-        marginRight: 10
+        marginRight: 7
+    },
+    spinnerStyle: {
+        alignSelf: 'stretch',
+        borderRadius: 5,
+        marginLeft: 20,
+        marginRight: 20,
+        borderRadius: 60,
+        paddingTop: 10,
+        paddingBottom: 10,
+        height: 100
+    },
+    downStyle: {
+        width: 30,
+        height: 30
     }
 }
 

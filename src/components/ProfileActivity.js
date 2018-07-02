@@ -22,9 +22,9 @@ class ProfileActivity extends Component {
   static navigationOptions = ({ navigation }) => {
     const { params = {} } = navigation.state;
     return {
-      title: 'Tudawe Brothers(Pvt) Ltd',
+      title: 'Tudawe Brothers',
       headerStyle: { backgroundColor: '#fad815' },
-      headerRight: <Notification onPress={() => take.showNotifications()} count={params.countValue} />,
+      headerRight: <Notification onPress={() => take.showNotifications()} count={params.countValue} navigation={navigation} />,
       headerLeft: <Back />
     }
   };
@@ -228,89 +228,79 @@ class ProfileActivity extends Component {
     return (
       <View style={{ flex: 1 }}>
         <Img />
-        <View style={styles.viewStyle}>
-          <View style={{ height: 30, width: 100, backgroundColor: '#fff' }}>
-            <Picker
-              selectedValue={this.state.user_email}
-              style={{ height: 30, width: 100 }}
-              mode='dropdown'
-              onValueChange={(itemValue, itemIndex) => this.logoutButton(itemValue)}>
-              <Picker.Item label={this.state.user_email} value="" />
-              <Picker.Item label="Logout" value="Logout" />
-            </Picker>
-          </View>
-        </View>
         <Card>
-          <View style={{ width: '100%', height: 100, justifyContent: 'center', alignItems: 'center', flexDirection: 'row', marginBottom: 10 }}>
-            <TouchableOpacity style={styles.buttonStyle} onPress={this.viewProjects.bind(this)}>
-              <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', paddingTop: 20 }}>
-                <IconBadge
-                  MainElement={
-                    <Image source={require('./pics/projects.png')} style={styles.imageStyle} />
-                  }
-                  BadgeElement={
-                    <Text style={{ color: '#000' }}>{this.state.projects}</Text>
-                  }
-                  IconBadgeStyle={
-                    {
-                      width: 40,
-                      height: 40,
-                      backgroundColor: 'rgba(255, 255, 255, 0.8)',
-                      position: 'absolute',
-                      top: -18,
-                      right: -20,
-                      borderRadius: 50
+          <View style={{ height: '100%', justifyContent: 'center', alignItems: 'center' }}>
+            <View style={{ width: '100%', height: 100, justifyContent: 'center', alignItems: 'center', flexDirection: 'row', marginBottom: 10 }}>
+              <TouchableOpacity style={styles.buttonStyle} onPress={this.viewProjects.bind(this)}>
+                <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', paddingTop: 20 }}>
+                  <IconBadge
+                    MainElement={
+                      <Image source={require('./pics/projects.png')} style={styles.imageStyle} />
                     }
-                  }
-                  Hidden={this.state.projects == 0}
-                />
-                <Text style={styles.textStyle}>Pending Approvals</Text>
-              </View>
-            </TouchableOpacity>
-            {/* <TouchableOpacity style={styles.buttonStyle} onPress={this.rejectedProjects.bind(this)}>
+                    BadgeElement={
+                      <Text style={{ color: '#000' }}>{this.state.projects}</Text>
+                    }
+                    IconBadgeStyle={
+                      {
+                        width: 40,
+                        height: 40,
+                        backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                        position: 'absolute',
+                        top: -18,
+                        right: -20,
+                        borderRadius: 50
+                      }
+                    }
+                    Hidden={this.state.projects == 0}
+                  />
+                  <Text style={styles.textStyle}>Pending Approvals</Text>
+                </View>
+              </TouchableOpacity>
+              {/* <TouchableOpacity style={styles.buttonStyle} onPress={this.rejectedProjects.bind(this)}>
               <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', paddingTop: 20 }}>
                 <Image source={require('./pics/rejected.png')} style={styles.imageStyle} />
                 <Text style={styles.textStyle}>Rejected</Text>
               </View>
             </TouchableOpacity> */}
-            <TouchableOpacity style={styles.buttonStyle} onPress={this.sendMsg.bind(this)}>
-              <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', paddingTop: 20 }}>
-                <IconBadge
-                  MainElement={
-                    <Image source={require('./pics/message.png')} style={styles.imageStyle} />
-                  }
-                  BadgeElement={
-                    <Text style={{ color: '#000' }}>{this.state.msg}</Text>
-                  }
-                  IconBadgeStyle={
-                    {
-                      width: 30,
-                      height: 30,
-                      backgroundColor: 'rgba(255, 255, 255, 0.8)',
-                      position: 'absolute',
-                      top: -10,
-                      right: -10
+              <TouchableOpacity style={styles.buttonStyle} onPress={this.sendMsg.bind(this)}>
+                <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', paddingTop: 20 }}>
+                  <IconBadge
+                    MainElement={
+                      <Image source={require('./pics/message.png')} style={styles.imageStyle} />
                     }
-                  }
-                  Hidden={this.state.msg == 0}
-                />
-                <Text style={styles.textStyle}>Messages</Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-          <View style={{ width: '100%', height: 100, justifyContent: 'center', alignItems: 'center', flexDirection: 'row', marginBottom: 10 }}>
-            <TouchableOpacity style={styles.buttonStyle} onPress={this.approvedProjects.bind(this)}>
-              <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', paddingTop: 20 }}>
-                <Image source={require('./pics/pending.png')} style={styles.imageStyle} />
-                <Text style={styles.textStyle}>SRN Status</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.buttonStyle} onPress={this.settingsView.bind(this)}>
-              <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', paddingTop: 20 }}>
-                <Image source={require('./pics/settings.png')} style={styles.imageStyle} />
-                <Text style={styles.textStyle}>Settings</Text>
-              </View>
-            </TouchableOpacity>
+                    BadgeElement={
+                      <Text style={{ color: '#000' }}>{this.state.msg}</Text>
+                    }
+                    IconBadgeStyle={
+                      {
+                        width: 30,
+                        height: 30,
+                        backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                        position: 'absolute',
+                        top: -10,
+                        right: -10
+                      }
+                    }
+                    Hidden={this.state.msg == 0}
+                  />
+                  <Text style={styles.textStyle}>Messages</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+            <View style={{ width: '100%', height: 100, justifyContent: 'center', alignItems: 'center', flexDirection: 'row', marginBottom: 10 }}>
+              <TouchableOpacity style={styles.buttonStyle} onPress={this.approvedProjects.bind(this)}>
+                <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', paddingTop: 20 }}>
+                  <Image source={require('./pics/pending.png')} style={styles.imageStyle} />
+                  <Text style={styles.textStyle}>SRN Status</Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.buttonStyle} onPress={this.settingsView.bind(this)}>
+                <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', paddingTop: 20 }}>
+                  <Image source={require('./pics/settings.png')} style={styles.imageStyle} />
+                  <Text style={styles.textStyle}>Settings</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
           </View>
         </Card>
         {/* <IconBadge

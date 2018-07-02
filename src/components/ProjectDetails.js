@@ -19,7 +19,7 @@ class ProjectDetails extends Component {
         return {
             title: 'Job Details',
             headerStyle: { backgroundColor: '#fad815' },
-            headerRight: <Notification onPress={() => take.showNotifications()} count={params.countValue} />
+            headerRight: <Notification onPress={() => take.showNotifications()} count={params.countValue} navigation={navigation} />
         }
     };
 
@@ -451,18 +451,6 @@ class ProjectDetails extends Component {
         }
         return (
             <View style={styles.fullViewStyle}>
-                <View style={styles.viewStyle}>
-                    <View style={{ height: 30, width: 100, backgroundColor: '#fff' }}>
-                        <Picker
-                            selectedValue={this.state.user_email}
-                            style={{ height: 30, width: 100 }}
-                            mode='dropdown'
-                            onValueChange={(itemValue, itemIndex) => this.logoutButton(itemValue)}>
-                            <Picker.Item label={this.state.user_email} value="" />
-                            <Picker.Item label="Logout" value="Logout" />
-                        </Picker>
-                    </View>
-                </View>
                 <View style={styles.containerStyle}>
                     <Text style={styles.titleStyle}>MATERIAL REQUISITION</Text>
                 </View>
@@ -831,7 +819,7 @@ class ProjectDetails extends Component {
                 /> */}
             </View>
             <View style={{ flex: 2, borderWidth: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Button title="Edit" color='#841584' onPress={() => this.setEditModalVisible(!this.state.modalVisible3, item.Qty_Required, item.Delivery_Date.date, item.Item_Code)} />
+                <Button title="Edit" color='#6FC7FA' onPress={() => this.setEditModalVisible(!this.state.modalVisible3, item.Qty_Required, item.Delivery_Date.date, item.Item_Code)} />
             </View>
         </View>
     )

@@ -19,7 +19,7 @@ class SendMessage extends Component {
         return {
             title: 'Message',
             headerStyle: { backgroundColor: '#fad815' },
-            headerRight: <Notification onPress={() => take.showNotifications()} count={params.countValue} />,
+            headerRight: <Notification onPress={() => take.showNotifications()} count={params.countValue} navigation={navigation} />,
         }
     };
 
@@ -217,20 +217,6 @@ class SendMessage extends Component {
         take = this;
         return (
             <View style={{ flex: 1 }}>
-                <Card>
-                    <View style={styles.viewStyle}>
-                        <View style={{ height: 30, width: 100, backgroundColor: '#fff' }}>
-                            <Picker
-                                selectedValue={this.state.user_email}
-                                style={{ height: 30, width: 100 }}
-                                mode='dropdown'
-                                onValueChange={(itemValue, itemIndex) => this.logoutButton(itemValue)}>
-                                <Picker.Item label={this.state.user_email} value="" />
-                                <Picker.Item label="Logout" value="Logout" />
-                            </Picker>
-                        </View>
-                    </View>
-                </Card>
                 <View style={{ flex: 1 }}>
                     {this.completeView()}
                 </View>

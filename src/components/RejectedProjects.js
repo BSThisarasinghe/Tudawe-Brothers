@@ -20,7 +20,7 @@ class RejectedProjects extends Component {
         return {
             title: 'Rejected Projects',
             headerStyle: { backgroundColor: '#fad815' },
-            headerRight: <Notification onPress={() => take.showNotifications()} count={params.countValue} />,
+            headerRight: <Notification onPress={() => take.showNotifications()} count={params.countValue} navigation={navigation} />,
         }
     };
 
@@ -201,18 +201,6 @@ class RejectedProjects extends Component {
             <View style={{ flex: 1 }}>
                 <Img />
                 <Card>
-                    <View style={styles.viewStyle}>
-                        <View style={{ height: 30, width: 100, backgroundColor: '#fff' }}>
-                            <Picker
-                                selectedValue={this.state.user_email}
-                                style={{ height: 30, width: 100 }}
-                                mode='dropdown'
-                                onValueChange={(itemValue, itemIndex) => this.logoutButton(itemValue)}>
-                                <Picker.Item label={this.state.user_email} value="" />
-                                <Picker.Item label="Logout" value="Logout" />
-                            </Picker>
-                        </View>
-                    </View>
                     <View style={styles.containerStyle1}>
                         <ModalDropdown options={this.state.dropDownData} onSelect={(idx, value) => this.onSelectOpt(idx, value)} style={{ width: '100%', backgroundColor: 'rgba(255,255,255,0.8)', height: 30, justifyContent: 'center', paddingLeft: 20 }} dropdownStyle={{ width: '80%', height: 100 }} dropdownTextStyle={{ color: '#000', fontSize: 15 }} dropdownTextHighlightStyle={{ fontWeight: 'bold' }} >
                             <View style={{ flexDirection: 'row' }}>

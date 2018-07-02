@@ -216,18 +216,6 @@ class NewMessages extends Component {
             <View style={{ flex: 1 }}>
                 <Img />
                 <Card>
-                    <View style={styles.viewStyle}>
-                        <View style={{ height: 30, width: 100, backgroundColor: '#fff' }}>
-                            <Picker
-                                selectedValue={this.state.user_email}
-                                style={{ height: 30, width: 100 }}
-                                mode='dropdown'
-                                onValueChange={(itemValue, itemIndex) => this.logoutButton(itemValue)}>
-                                <Picker.Item label={this.state.user_email} value="" />
-                                <Picker.Item label="Logout" value="Logout" />
-                            </Picker>
-                        </View>
-                    </View>
                     <View style={styles.mainStyle}>
                         <View style={{ height: 50, justifyContent: 'center', alignItems: 'center' }}>
                             <Image source={require('./pics/search.png')} style={styles.iconStyle} />

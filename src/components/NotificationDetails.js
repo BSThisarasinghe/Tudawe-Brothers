@@ -214,20 +214,6 @@ class NotificationDetails extends Component {
         take = this;
         return (
             <View style={{ flex: 1, backgroundColor: '#fff' }}>
-                <Card>
-                    <View style={styles.viewStyle}>
-                        <View style={{ height: 30, width: 100, backgroundColor: '#fff' }}>
-                            <Picker
-                                selectedValue={this.state.user_email}
-                                style={{ height: 30, width: 100 }}
-                                mode='dropdown'
-                                onValueChange={(itemValue, itemIndex) => this.logoutButton(itemValue)}>
-                                <Picker.Item label={this.state.user_email} value="" />
-                                <Picker.Item label="Logout" value="Logout" />
-                            </Picker>
-                        </View>
-                    </View>
-                </Card>
                 <ScrollView>
                     {this.completeView()}
                 </ScrollView>

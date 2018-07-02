@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, TextInput, View, Alert, Text, TouchableOpacity, Image, Picker, ScrollView, FlatList, BackHandler, Modal, TouchableHighlight, Button } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import DeviceInfo from 'react-native-device-info';
+import Moment from 'moment';
 import Card from './common/Card';
 import CardSection from './common/CardSection';
 import { Spinner } from './common/Spinner';
@@ -347,11 +348,10 @@ class ProjectDetails extends Component {
     }
 
     setEditModalVisible(visible, qtyVal, date, item_code) {
-        var date = new Date(date);
-        var day = date.getDate();
-        var month = date.getMonth() + 1;
-        var year = date.getFullYear();
-        var fullDate = day + "/" + month + "/" + year;
+        console.log(date);
+        Moment.locale('en');
+        var fullDate = Moment(date).format('YYYY/MM/DD');
+
         this.setState({ qty: qtyVal, Delivery_Date: fullDate, code: item_code }, function () {
             if (this.state.qty != '' && this.state.Delivery_Date != '' && this.state.code != '') {
                 this.setState({ modalVisible3: visible });
@@ -494,10 +494,10 @@ class ProjectDetails extends Component {
                     onRequestClose={() => {
                         alert('Window has been closed.');
                     }}>
-                    <View style={{ marginTop: 100, height: 200, width: '80%', backgroundColor: '#fff', borderRadius: 5, alignSelf: 'center', shadowColor: '#000', shadowOffset: { width: 2, height: 2 }, shadowOpacity: 0.3, borderColor: '#AFAEAE', borderWidth: 1 }}>
+                    <View style={{ marginTop: 100, height: 200, width: '80%', backgroundColor: '#dde7f9', borderRadius: 5, alignSelf: 'center', shadowColor: '#000', shadowOffset: { width: 2, height: 2 }, shadowOpacity: 0.3, borderColor: '#AFAEAE', borderWidth: 1 }}>
                         <View style={styles.cardStyle}>
-                            <View style={{ width: '35%', height: 50, justifyContent: 'center', alignItems: 'center' }}>
-                                <Text style={styles.textBoldStyle}>Note: </Text>
+                            <View style={{ width: '35%', height: 50, justifyContent: 'center', alignItems: 'flex-start' }}>
+                                <Text style={{ color: '#000' }}>Note: </Text>
                             </View>
                             <View style={{ width: '65%', height: 50 }}>
                                 <TextInput
@@ -554,10 +554,10 @@ class ProjectDetails extends Component {
                     onRequestClose={() => {
                         alert('Window has been closed.');
                     }}>
-                    <View style={{ marginTop: 100, height: 200, width: '80%', backgroundColor: '#fff', borderRadius: 5, alignSelf: 'center' }}>
+                    <View style={{ marginTop: 100, height: 200, width: '80%', backgroundColor: '#dde7f9', borderRadius: 5, alignSelf: 'center', borderColor: '#AFAEAE', borderWidth: 1 }}>
                         <View style={styles.cardStyle}>
-                            <View style={{ width: '35%', height: 50, justifyContent: 'center', alignItems: 'center' }}>
-                                <Text style={styles.textBoldStyle}>Note: </Text>
+                            <View style={{ width: '35%', height: 50, justifyContent: 'center', alignItems: 'flex-start' }}>
+                                <Text style={{ color: '#000' }}>Note: </Text>
                             </View>
                             <View style={{ width: '65%', height: 50 }}>
                                 <TextInput
@@ -631,9 +631,9 @@ class ProjectDetails extends Component {
                     onRequestClose={() => {
                         alert('Window has been closed.');
                     }}>
-                    <View style={{ marginTop: 100, height: 300, width: '80%', backgroundColor: '#fff', borderRadius: 5, alignSelf: 'center', flexDirection: 'column' }}>
+                    <View style={{ marginTop: 100, height: 300, width: '80%', backgroundColor: '#dde7f9', borderRadius: 5, alignSelf: 'center', flexDirection: 'column', borderColor: '#AFAEAE', borderWidth: 1 }}>
                         <View style={styles.cardStyle}>
-                            <View style={{ width: '35%', height: 50, justifyContent: 'center', alignItems: 'center' }}>
+                            <View style={{ width: '35%', height: 50, justifyContent: 'center', alignItems: 'flex-start' }}>
                                 <Text style={styles.textBoldStyle}>Qty: </Text>
                             </View>
                             <View style={{ width: '65%', height: 50 }}>
@@ -650,7 +650,7 @@ class ProjectDetails extends Component {
                             </View>
                         </View>
                         <View style={styles.cardStyle}>
-                            <View style={{ width: '35%', height: 50, justifyContent: 'center', alignItems: 'center' }}>
+                            <View style={{ width: '35%', height: 50, justifyContent: 'center', alignItems: 'flex-start' }}>
                                 <Text style={styles.textBoldStyle}>Delivery date: </Text>
                             </View>
                             <View style={{ width: '65%', height: 50 }}>
@@ -883,7 +883,11 @@ const styles = {
         paddingRight: 5,
         paddingLeft: 5,
         fontSize: 14,
-        lineHeight: 23
+        lineHeight: 23,
+        backgroundColor: '#fff',
+        borderWidth: 1,
+        borderColor: '#c8cbcf',
+        borderRadius: 2
     },
     approveStyle: {
         flex: 1,

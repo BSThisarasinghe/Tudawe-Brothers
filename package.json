@@ -9,6 +9,7 @@
   "dependencies": {
     "@uuau99999/react-native-icon-badge": "^1.2.1",
     "axios": "^0.18.0",
+    "moment": "^2.22.2",
     "react": "16.3.1",
     "react-inline-editing": "^1.0.10",
     "react-native": "0.55.4",

@@ -113,9 +113,9 @@ class ProjectDetails extends Component {
                 console.log(responseJson);
                 this.fetchItemData();
             }).catch((error) => {
-                console.error(error);
+                // console.error(error);
                 // Alert.alert(error);
-                // Alert.alert("No internet connection");
+                Alert.alert("No internet connection");
                 this.setState({ loading: false });
             });
     }
@@ -138,9 +138,9 @@ class ProjectDetails extends Component {
                 Alert.alert(responseJson);
                 // console.log(responseJson);
             }).catch((error) => {
-                console.error(error);
+                // console.error(error);
                 // Alert.alert(error);
-                // Alert.alert("No internet connection");
+                Alert.alert("No internet connection");
                 this.setState({ loading: false });
             });
     }
@@ -163,9 +163,9 @@ class ProjectDetails extends Component {
                 Alert.alert(responseJson);
                 // console.log(responseJson);
             }).catch((error) => {
-                console.error(error);
+                // console.error(error);
                 // Alert.alert(error);
-                // Alert.alert("No internet connection");
+                Alert.alert("No internet connection");
                 this.setState({ loading: false });
             });
     }
@@ -281,9 +281,9 @@ class ProjectDetails extends Component {
                     countValue: this.state.count
                 });
             }).catch((error) => {
-                console.error(error);
+                // console.error(error);
                 // Alert.alert(error);
-                // Alert.alert("No internet connection");
+                Alert.alert("No internet connection");
                 this.setState({ loading: false });
             });
     }
@@ -335,9 +335,9 @@ class ProjectDetails extends Component {
                 // Alert.alert(responseJson.results[1]);
                 // console.log(responseJson);
             }).catch((error) => {
-                console.error(error);
+                // console.error(error);
                 // Alert.alert(error);
-                // Alert.alert("No internet connection");
+                Alert.alert("No internet connection");
                 this.setState({ loading: false });
             });
     }
@@ -392,9 +392,9 @@ class ProjectDetails extends Component {
                     }
                     // console.log(responseJson);
                 }).catch((error) => {
-                    console.error(error);
+                    // console.error(error);
                     // Alert.alert(error);
-                    // Alert.alert("No internet connection");
+                    Alert.alert("No internet connection");
                     this.setState({ loading: false });
                 });
         }
@@ -432,9 +432,9 @@ class ProjectDetails extends Component {
                     }
                     // console.log(responseJson);
                 }).catch((error) => {
-                    console.error(error);
+                    // console.error(error);
                     // Alert.alert(error);
-                    // Alert.alert("No internet connection");
+                    Alert.alert("No internet connection");
                     this.setState({ loading: false });
                 });
         }

@@ -312,8 +312,8 @@ class ApprovedProjects extends Component {
                     // console.log(this.state.package);
                 });
             }).catch((error) => {
-                console.error(error);
-                // Alert.alert("No internet connection");
+                // console.error(error);
+                Alert.alert("No internet connection");
                 this.setState({ loading: false });
             });
     }
@@ -353,9 +353,9 @@ class ApprovedProjects extends Component {
               countValue: this.state.count
             });
           }).catch((error) => {
-            console.error(error);
+            // console.error(error);
             // Alert.alert(error);
-            // Alert.alert("No internet connection");
+            Alert.alert("No internet connection");
             this.setState({ loading: false });
           });
       }

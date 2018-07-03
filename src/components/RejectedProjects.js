@@ -119,8 +119,8 @@ class RejectedProjects extends Component {
                     this.setState({ loading: false });
                 });
             }).catch((error) => {
-                console.error(error);
-                // Alert.alert("No internet connection");
+                // console.error(error);
+                Alert.alert("No internet connection");
                 this.setState({ loading: false });
             });
     }
@@ -167,9 +167,9 @@ class RejectedProjects extends Component {
               countValue: this.state.count
             });
           }).catch((error) => {
-            console.error(error);
+            // console.error(error);
             // Alert.alert(error);
-            // Alert.alert("No internet connection");
+            Alert.alert("No internet connection");
             this.setState({ loading: false });
           });
       }

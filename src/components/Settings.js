@@ -104,9 +104,9 @@ class Settings extends Component {
               countValue: this.state.count
             });
           }).catch((error) => {
-            console.error(error);
+            // console.error(error);
             // Alert.alert(error);
-            // Alert.alert("No internet connection");
+            Alert.alert("No internet connection");
             this.setState({ loading: false });
           });
       }

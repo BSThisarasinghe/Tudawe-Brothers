@@ -86,8 +86,8 @@ class NewMessages extends Component {
 
                 }
             }).catch((error) => {
-                console.error(error);
-                // Alert.alert("No internet connection");
+                // console.error(error);
+                Alert.alert("No internet connection");
                 this.setState({ loading: false });
             });
     }

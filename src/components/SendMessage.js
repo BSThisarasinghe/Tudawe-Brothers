@@ -101,14 +101,14 @@ class SendMessage extends Component {
     renderListItem = ({ item }) => (
         <View style={{
             width: '100%',
-            height: 50,
+            flex: -1,
             flexDirection: 'row',
             marginBottom: 5,
             justifyContent: (item.status == 'yes') ? 'flex-end' : 'flex-start',
             alignItems: 'flex-end'
         }} key={item.ID}>
             <View style={{
-                width: '60%', height: 50, alignItems: 'flex-start', justifyContent: 'center', backgroundColor: (item.status == 'yes') ? '#167BFB' : '#D5EEF0', borderRadius: 20, borderWidth: 1,
+                width: '60%', flex: -1, alignItems: 'flex-start', justifyContent: 'center', backgroundColor: (item.status == 'yes') ? '#167BFB' : '#D5EEF0', borderRadius: 20, borderWidth: 1,
                 borderRadius: 20,
                 borderColor: '#ddd',
                 borderBottomWidth: 0,
@@ -117,6 +117,7 @@ class SendMessage extends Component {
                 shadowOpacity: 0.1,
                 shadowRadius: 2,
                 elevation: 1,
+                padding: 5
             }}>
                 <Text style={{
                     fontSize: 15,
@@ -148,9 +149,9 @@ class SendMessage extends Component {
                     countValue: this.state.count
                 });
             }).catch((error) => {
-                console.error(error);
+                // console.error(error);
                 // Alert.alert(error);
-                // Alert.alert("No internet connection");
+                Alert.alert("No internet connection");
                 this.setState({ loading: false });
             });
     }

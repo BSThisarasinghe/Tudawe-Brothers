@@ -136,15 +136,26 @@ class ProjectPage extends Component {
     }
 
     componentWillMount() {
+        // this.forceUpdate();
         this.projectsList();
         this.getCount();
         BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
     }
 
     componentDidMount() {
+        // this.forceUpdate();
         this.props.navigation.setParams({
             countValue: this.state.count
         });
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.package !== this.state.package) {
+            this.projectsList();
+        }
+        if (prevState.count !== this.state.count) {
+            this.getCount();
+        }
     }
 
     componentWillUnmount() {
@@ -160,29 +171,29 @@ class ProjectPage extends Component {
 
     getCount() {
         fetch('http://bsthisarasinghe-001-site1.1tempurl.com/getCount.php', {
-          method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            deviceId: deviceId
-          })
-    
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                deviceId: deviceId
+            })
+
         }).then((response) => response.json())
-          .then((responseJson) => {
-            // console.log(responseJson);
-            this.setState({ count: responseJson });
-            this.props.navigation.setParams({
-              countValue: this.state.count
+            .then((responseJson) => {
+                // console.log(responseJson);
+                this.setState({ count: responseJson });
+                this.props.navigation.setParams({
+                    countValue: this.state.count
+                });
+            }).catch((error) => {
+                // console.error(error);
+                // Alert.alert(error);
+                Alert.alert("No internet connection");
+                this.setState({ loading: false });
             });
-          }).catch((error) => {
-            // console.error(error);
-            // Alert.alert(error);
-            Alert.alert("No internet connection");
-            this.setState({ loading: false });
-          });
-      }
+    }
 
     onSearch(value) {
         // this.setState({ package: [] });
@@ -230,6 +241,7 @@ class ProjectPage extends Component {
                 data={finalPakageDetails}
                 renderItem={this.renderListItem}
                 keyExtractor={(item, index) => item.SRN_No.toString()}
+                extraData={this.state}
                 scrollEnabled={this.state.scrollEnabled}
             />
         );

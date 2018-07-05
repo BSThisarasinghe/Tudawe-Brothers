@@ -14,8 +14,8 @@ $arr = array();
 $sql = "SELECT DISTINCT JobMaster.Job_Code, SiteRequisitionMaster.SRN_No, JobMaster.Job_Name FROM (((UserSRNJobPermission INNER JOIN JobMaster "
         . "ON UserSRNJobPermission.AccountCode = JobMaster.Job_Code) INNER JOIN SiteRequisitionMaster ON "
         . "JobMaster.Job_Code = SiteRequisitionMaster.Job_Code) INNER JOIN UserDocumentAuthorization ON "
-        . "JobMaster.Job_Code = UserDocumentAuthorization.JobCode) WHERE SiteRequisitionMaster.Cancelied!=1 "
-        . "and TLReject!=1 and SLReject!=1 and FLReject!=1 AND (UserDocumentAuthorization.UserID = '" . $userlevel . "' OR (SiteRequisitionMaster.FLevel = 0 AND SiteRequisitionMaster.SLevel = 0 AND "
+        . "JobMaster.Job_Code = UserDocumentAuthorization.JobCode) WHERE SiteRequisitionMaster.Cancelied != 1 "
+        . "AND ((UserDocumentAuthorization.UserID = '" . $userlevel . "' AND (TLReject = 1 OR SLReject = 1 OR FLReject = 1)) OR (TLReject!=1 AND SLReject!=1 AND FLReject!=1 AND ((SiteRequisitionMaster.FLevel = 0 AND SiteRequisitionMaster.SLevel = 0 AND "
         . "UserDocumentAuthorization.FirstLevel = '" . $userlevel . "') OR (SiteRequisitionMaster.FLevel = 0 AND SiteRequisitionMaster.SLevel = 0 AND "
         . "UserDocumentAuthorization.FirstAlternative = '" . $userlevel . "') OR (SiteRequisitionMaster.FLevel != 0"
         . " AND SiteRequisitionMaster.SLevel = 0 AND SiteRequisitionMaster.TLevel = 0 AND UserDocumentAuthorization.SecondLevel = '" . $userlevel . "')"
@@ -24,7 +24,7 @@ $sql = "SELECT DISTINCT JobMaster.Job_Code, SiteRequisitionMaster.SRN_No, JobMas
         . "UserDocumentAuthorization.ThirdLevel = '" . $userlevel . "') OR (SiteRequisitionMaster.SLevel != 0 AND SiteRequisitionMaster.TLevel = 0 AND SiteRequisitionMaster.FourthLevel = 0 AND "
         . "UserDocumentAuthorization.ThirdAlternative = '" . $userlevel . "') OR (SiteRequisitionMaster.TLevel != 0 "
         . "AND SiteRequisitionMaster.FourthLevel = 0 AND UserDocumentAuthorization.FourthLevel = '" . $userlevel . "') OR (SiteRequisitionMaster.TLevel != 0 "
-        . "AND SiteRequisitionMaster.FourthLevel = 0 AND UserDocumentAuthorization.FourthAlternative = '" . $userlevel . "'))";
+        . "AND SiteRequisitionMaster.FourthLevel = 0 AND UserDocumentAuthorization.FourthAlternative = '" . $userlevel . "'))))";
 if ($job_level != NULL) {
     if ($job_level == '1st Level') {
         $sql = "SELECT DISTINCT JobMaster.Job_Code, SiteRequisitionMaster.SRN_No, JobMaster.Job_Name FROM (((UserSRNJobPermission INNER JOIN "

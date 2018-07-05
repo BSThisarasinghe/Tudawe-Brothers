@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet, TextInput, View, Alert, Text, TouchableOpacity, Image, Picker, ScrollView, FlatList, BackHandler, Modal, TouchableHighlight, Button } from 'react-native';
+import { StyleSheet, TextInput, View, Alert, Text, TouchableOpacity, Image, Picker, ScrollView, FlatList, BackHandler, TouchableHighlight, Button } from 'react-native';
+import Modal from "react-native-modal";
 import { StackNavigator } from 'react-navigation';
 import DeviceInfo from 'react-native-device-info';
 import Moment from 'moment';
@@ -189,7 +190,7 @@ class ProjectDetails extends Component {
 
         }).then((response) => response.json())
             .then((responseJson) => {
-                // console.log(responseJson.results);
+                console.log(responseJson.results);
                 // this.setState({ data: responseJson.results });
                 this.setState({ data: responseJson.results }, function () {
                     this.setState({ loading: false });
@@ -255,8 +256,13 @@ class ProjectDetails extends Component {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
     }
 
+    // componentDidUpdate(prevProps, prevState) {
+    //     if (prevState.count !== this.state.count) {
+    //         this.getCount();
+    //     }
+    // }
+
     handleBackButtonClick() {
-        // BackHandler.exitApp();
         const { navigate } = this.props.navigation;
         navigate('Third');
         return true;
@@ -486,20 +492,26 @@ class ProjectDetails extends Component {
                         <Text style={styles.textStyle}>{this.state.data[0].UserName}</Text>
                     </View>
                 </View>
+                <View style={styles.cardStyle}>
+                    <View style={{ width: '35%' }}>
+                        <Text style={styles.textBoldStyle}>Remarks: </Text>
+                    </View>
+                    <View style={{ width: '65%' }}>
+                        <Text style={styles.textStyle}>{this.state.data[0].Remarks}</Text>
+                    </View>
+                </View>
                 <Modal
-                    animationType="slide"
-                    transparent={true}
-                    presentationStyle='overFullScreen'
-                    visible={this.state.modalVisible}
-                    onRequestClose={() => {
-                        alert('Window has been closed.');
-                    }}>
-                    <View style={{ marginTop: 100, height: 200, width: '80%', backgroundColor: '#dde7f9', borderRadius: 5, alignSelf: 'center', shadowColor: '#000', shadowOffset: { width: 2, height: 2 }, shadowOpacity: 0.3, borderColor: '#AFAEAE', borderWidth: 1 }}>
-                        <View style={styles.cardStyle}>
-                            <View style={{ width: '35%', height: 50, justifyContent: 'center', alignItems: 'flex-start' }}>
-                                <Text style={{ color: '#000' }}>Note: </Text>
+                    animationIn="slideInUp"
+                    animationOut="slideOutDown"
+                    isVisible={this.state.modalVisible}
+                    onBackButtonPress={() => this.setModalVisible(!this.state.modalVisible)}
+                    onBackdropPress={() => this.setModalVisible(!this.state.modalVisible)}>
+                    <View style={{ marginTop: 100, height: 200, width: '80%', backgroundColor: '#fff', borderRadius: 5, alignSelf: 'center', paddingBottom: 0 }}>
+                        <View style={styles.modalStyle}>
+                            <View style={{ width: '100%', height: 50, justifyContent: 'center', alignItems: 'flex-start' }}>
+                                <Text style={{ color: '#65707a' }}>Enter the reason to cancel the project: </Text>
                             </View>
-                            <View style={{ width: '65%', height: 50 }}>
+                            <View style={{ width: '100%', height: 50 }}>
                                 <TextInput
                                     multiline={true}
                                     numberOfLines={4}
@@ -512,34 +524,34 @@ class ProjectDetails extends Component {
                                 />
                             </View>
                         </View>
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+                        <View style={{ flexDirection: 'row', marginTop: 35, flex: 1 }}>
                             <TouchableOpacity style={{
-                                width: 100,
-                                height: 30,
+                                flex: 1,
+                                height: 35,
                                 alignSelf: 'stretch',
                                 alignItems: 'center',
                                 justifyContent: 'center',
                                 backgroundColor: '#fff',
                                 borderRadius: 2,
                                 borderWidth: 1,
-                                borderColor: '#022B96',
-                                marginLeft: 5,
-                                marginRight: 5
+                                borderColor: '#eceded',
+                                // marginLeft: 5,
+                                // marginRight: 5
                             }} onPress={() => this.setModalVisible(!this.state.modalVisible)}>
                                 <Text>Cancel</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={{
-                                width: 100,
-                                height: 30,
+                                flex: 1,
+                                height: 35,
                                 alignSelf: 'stretch',
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                backgroundColor: '#022B96',
+                                backgroundColor: '#4bc1d2',
                                 borderRadius: 2,
                                 borderWidth: 1,
-                                borderColor: '#022B96',
-                                marginLeft: 5,
-                                marginRight: 5
+                                borderColor: '#4bc1d2',
+                                // marginLeft: 5,
+                                // marginRight: 5
                             }} onPress={() => this.onCancel(!this.state.modalVisible)}>
                                 <Text style={{ color: '#fff' }}>OK</Text>
                             </TouchableOpacity>
@@ -547,19 +559,17 @@ class ProjectDetails extends Component {
                     </View>
                 </Modal>
                 <Modal
-                    animationType="slide"
-                    transparent={true}
-                    presentationStyle='overFullScreen'
-                    visible={this.state.modalVisible2}
-                    onRequestClose={() => {
-                        alert('Window has been closed.');
-                    }}>
-                    <View style={{ marginTop: 100, height: 200, width: '80%', backgroundColor: '#dde7f9', borderRadius: 5, alignSelf: 'center', borderColor: '#AFAEAE', borderWidth: 1 }}>
-                        <View style={styles.cardStyle}>
-                            <View style={{ width: '35%', height: 50, justifyContent: 'center', alignItems: 'flex-start' }}>
-                                <Text style={{ color: '#000' }}>Note: </Text>
+                    animationIn="slideInUp"
+                    animationOut="slideOutDown"
+                    isVisible={this.state.modalVisible2}
+                    onBackButtonPress={() => this.setRejectModalVisible(!this.state.modalVisible2)}
+                    onBackdropPress={() => this.setRejectModalVisible(!this.state.modalVisible2)}>
+                    <View style={{ marginTop: 100, height: 200, width: '80%', backgroundColor: '#fff', borderRadius: 5, alignSelf: 'center', paddingBottom: 0 }}>
+                        <View style={styles.modalStyle}>
+                            <View style={{ width: '100%', height: 50, justifyContent: 'center', alignItems: 'flex-start' }}>
+                                <Text style={{ color: '#65707a' }}>Enter the reason to reject the project: </Text>
                             </View>
-                            <View style={{ width: '65%', height: 50 }}>
+                            <View style={{ width: '100%', height: 50 }}>
                                 <TextInput
                                     multiline={true}
                                     numberOfLines={4}
@@ -572,34 +582,30 @@ class ProjectDetails extends Component {
                                 />
                             </View>
                         </View>
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+                        <View style={{ flexDirection: 'row', marginTop: 35, flex: 1  }}>
                             <TouchableOpacity style={{
-                                width: 100,
-                                height: 30,
+                                flex: 1,
+                                height: 35,
                                 alignSelf: 'stretch',
                                 alignItems: 'center',
                                 justifyContent: 'center',
                                 backgroundColor: '#fff',
                                 borderRadius: 2,
                                 borderWidth: 1,
-                                borderColor: '#022B96',
-                                marginLeft: 5,
-                                marginRight: 5
+                                borderColor: '#eceded'
                             }} onPress={() => this.setRejectModalVisible(!this.state.modalVisible2)}>
                                 <Text>Cancel</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={{
-                                width: 100,
-                                height: 30,
+                                flex: 1,
+                                height: 35,
                                 alignSelf: 'stretch',
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                backgroundColor: '#022B96',
+                                backgroundColor: '#4bc1d2',
                                 borderRadius: 2,
                                 borderWidth: 1,
-                                borderColor: '#022B96',
-                                marginLeft: 5,
-                                marginRight: 5
+                                borderColor: '#4bc1d2'
                             }} onPress={() => this.onReject(!this.state.modalVisible2)}>
                                 <Text style={{ color: '#fff' }}>OK</Text>
                             </TouchableOpacity>
@@ -624,14 +630,12 @@ class ProjectDetails extends Component {
                     </View>
                 </View>
                 <Modal
-                    animationType="slide"
-                    transparent={true}
-                    presentationStyle='overFullScreen'
-                    visible={this.state.modalVisible3}
-                    onRequestClose={() => {
-                        alert('Window has been closed.');
-                    }}>
-                    <View style={{ marginTop: 100, height: 300, width: '80%', backgroundColor: '#dde7f9', borderRadius: 5, alignSelf: 'center', flexDirection: 'column', borderColor: '#AFAEAE', borderWidth: 1 }}>
+                    animationIn="slideInUp"
+                    animationOut="slideOutDown"
+                    isVisible={this.state.modalVisible3}
+                    onBackButtonPress={() => this.removeEditModalVisible(!this.state.modalVisible3)}
+                    onBackdropPress={() => this.removeEditModalVisible(!this.state.modalVisible3)}>
+                    <View style={{ marginTop: 100, height: 300, width: '80%', backgroundColor: '#fff', borderRadius: 5, alignSelf: 'center', paddingBottom: 0 }}>
                         <View style={styles.cardStyle}>
                             <View style={{ width: '35%', height: 50, justifyContent: 'center', alignItems: 'flex-start' }}>
                                 <Text style={styles.textBoldStyle}>Qty: </Text>
@@ -666,34 +670,30 @@ class ProjectDetails extends Component {
                                 />
                             </View>
                         </View>
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+                        <View style={{ flexDirection: 'row', marginTop: 40, flex: 1 }}>
                             <TouchableOpacity style={{
-                                width: 100,
-                                height: 30,
+                                flex: 1,
+                                height: 35,
                                 alignSelf: 'stretch',
                                 alignItems: 'center',
                                 justifyContent: 'center',
                                 backgroundColor: '#fff',
                                 borderRadius: 2,
                                 borderWidth: 1,
-                                borderColor: '#022B96',
-                                marginLeft: 5,
-                                marginRight: 5
+                                borderColor: '#eceded'
                             }} onPress={() => this.removeEditModalVisible(!this.state.modalVisible3)}>
                                 <Text>Cancel</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={{
-                                width: 100,
-                                height: 30,
+                                flex: 1,
+                                height: 35,
                                 alignSelf: 'stretch',
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                backgroundColor: '#022B96',
+                                backgroundColor: '#4bc1d2',
                                 borderRadius: 2,
                                 borderWidth: 1,
-                                borderColor: '#022B96',
-                                marginLeft: 5,
-                                marginRight: 5
+                                borderColor: '#4bc1d2'
                             }} onPress={() => this.onFocus(!this.state.modalVisible3)}>
                                 <Text style={{ color: '#fff' }}>Update</Text>
                             </TouchableOpacity>
@@ -764,31 +764,6 @@ class ProjectDetails extends Component {
         }
     }
 
-    displayCode(value) {
-        return (
-            <TextInput
-                onChangeText={value => this.setState({ value1: value })}
-                onBlur={() => this.onFocus(this.state.value1)}
-                value={value}
-                style={styles.inputStyle}
-                underlineColorAndroid='transparent'
-            />
-        );
-    }
-
-    displayDes(value) {
-        // console.log(value);
-        return (
-            <TextInput
-                onChangeText={value => this.setState({ value2: value })}
-                onBlur={() => this.onFocus1(this.state.value2, this.state.item_data[0].Item_Code)}
-                value={value}
-                style={styles.inputStyle}
-                underlineColorAndroid='transparent'
-            />
-        );
-    }
-
     tableView = ({ item }) => (
         <View style={{ flex: 1, flexDirection: 'row', borderWidth: 1 }} key={item.Item_Code}>
             <View style={{ flex: 3, borderWidth: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -796,27 +771,12 @@ class ProjectDetails extends Component {
             </View>
             <View style={{ flex: 1, borderWidth: 1, justifyContent: 'center', alignItems: 'center' }}>
                 <Text style={styles.dataStyle}>{item.Qty_Required}</Text>
-                {/* <TextInput
-                    onChangeText={value => this.setState({ value2: value })}
-                    onBlur={() => this.onFocus1(this.state.value2, item.Item_Code)}
-                    value={item.Qty_Required.toString()}
-                    // style={styles.inputStyle}
-                    underlineColorAndroid='transparent'
-                /> */}
             </View>
             <View style={{ flex: 1, borderWidth: 1, justifyContent: 'center', alignItems: 'center' }}>
                 <Text style={styles.dataStyle}>{item.UnitofMeasure}</Text>
             </View>
             <View style={{ flex: 2, borderWidth: 1, justifyContent: 'center', alignItems: 'center' }}>
-                {/* {this.displayDate(item.Delivery_Date.date)} */}
                 <Text style={styles.dataStyle}>{item.Delivery_Date.date}</Text>
-                {/* <TextInput
-                    onChangeText={val => this.setState({ value3: val })}
-                    onBlur={() => this.onFocus2(this.state.value3, item.Item_Code)}
-                    value={item.Delivery_Date.date.toString()}
-                    style={styles.inputStyle}
-                    underlineColorAndroid='transparent'
-                /> */}
             </View>
             <View style={{ flex: 2, borderWidth: 1, justifyContent: 'center', alignItems: 'center' }}>
                 <Button title="Edit" color='#6FC7FA' onPress={() => this.setEditModalVisible(!this.state.modalVisible3, item.Qty_Required, item.Delivery_Date.date, item.Item_Code)} />
@@ -887,7 +847,7 @@ const styles = {
         backgroundColor: '#fff',
         borderWidth: 1,
         borderColor: '#c8cbcf',
-        borderRadius: 2
+        borderRadius: 5
     },
     approveStyle: {
         flex: 1,
@@ -961,6 +921,16 @@ const styles = {
     },
     dataStyle: {
         color: '#000'
+    },
+    modalStyle: {
+        marginTop: 20,
+        padding: 5,
+        marginLeft: 20,
+        marginRight: 20,
+        justifyContent: 'flex-start',
+        flexDirection: 'column',
+        //borderColor: '#ddd',
+        position: 'relative',
     }
 }
 

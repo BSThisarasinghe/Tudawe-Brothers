@@ -111,6 +111,18 @@ class ProfileActivity extends Component {
     BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
   }
 
+  // componentDidUpdate(prevProps, prevState) {
+  //   //   if (prevState.count !== this.state.count) {
+  //       // this.getCount();
+  //   //   }
+  //   // if (prevState.msg !== this.state.msg) {
+  //   this.countMessages();
+  //   // }
+  //   //   if (prevState.projects !== this.state.projects) {
+  //   //     this.countProjects();
+  //   //   }
+  // }
+
   handleBackButtonClick() {
     BackHandler.exitApp();
     return true;

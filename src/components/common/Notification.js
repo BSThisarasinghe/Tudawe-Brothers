@@ -65,7 +65,7 @@ class Notification extends Component {
     showLogout() {
         if (this.state.loading) {
             return (
-                <ModalDropdown options={['', 'Logout']} onSelect={(idx, value) => this.onSelectOpt(idx, value)} style={{ width: '100%', height: 30, justifyContent: 'center', paddingLeft: 20 }} dropdownStyle={{ width: 100, height: 100 }} dropdownTextStyle={{ color: '#000', fontSize: 15 }} dropdownTextHighlightStyle={{ fontWeight: 'bold' }} >
+                <ModalDropdown options={['', 'Logout']} onSelect={(idx, value) => this.onSelectOpt(idx, value)} style={{ width: '100%', height: 30, justifyContent: 'center', paddingLeft: 20 }} dropdownStyle={{ width: 100, height: 82, paddingBottom: 0 }} dropdownTextStyle={{ color: '#000', fontSize: 15 }} dropdownTextHighlightStyle={{ fontWeight: 'bold' }} >
                     <View style={{ height: 30, width: 60, alignItems: 'center', paddingRight: 10 }}>
                         <Image
                             source={require('../pics/logout.png')}
@@ -76,7 +76,7 @@ class Notification extends Component {
             );
         }
         return (
-            <ModalDropdown options={[this.state.user_name, 'Logout']} onSelect={(idx, value) => this.onSelectOpt(idx, value)} style={{ width: '100%', height: 30, justifyContent: 'center', paddingLeft: 20 }} dropdownStyle={{ width: 100, height: 100 }} dropdownTextStyle={{ color: '#000', fontSize: 15 }} dropdownTextHighlightStyle={{ fontWeight: 'bold' }} >
+            <ModalDropdown options={[this.state.user_name, 'Logout']} onSelect={(idx, value) => this.onSelectOpt(idx, value)} style={{ width: '100%', height: 30, justifyContent: 'center', paddingLeft: 20 }} dropdownStyle={{ width: 100, height: 82, paddingBottom: 0 }} dropdownTextStyle={{ color: '#000', fontSize: 15 }} dropdownTextHighlightStyle={{ fontWeight: 'bold' }} >
                 <View style={{ height: 30, width: 60, alignItems: 'center', paddingRight: 20 }}>
                     <Image
                         source={require('../pics/logout.png')}

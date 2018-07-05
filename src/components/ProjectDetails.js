@@ -506,7 +506,7 @@ class ProjectDetails extends Component {
                     isVisible={this.state.modalVisible}
                     onBackButtonPress={() => this.setModalVisible(!this.state.modalVisible)}
                     onBackdropPress={() => this.setModalVisible(!this.state.modalVisible)}>
-                    <View style={{ marginTop: 100, height: 200, width: '80%', backgroundColor: '#fff', borderRadius: 5, alignSelf: 'center', paddingBottom: 0 }}>
+                    <View style={{ marginTop: 100, height: 200, width: '80%', backgroundColor: '#fff', borderRadius: 5, alignSelf: 'center', paddingBottom: 0, marginBottom: 50 }}>
                         <View style={styles.modalStyle}>
                             <View style={{ width: '100%', height: 50, justifyContent: 'center', alignItems: 'flex-start' }}>
                                 <Text style={{ color: '#65707a' }}>Enter the reason to cancel the project: </Text>
@@ -564,7 +564,7 @@ class ProjectDetails extends Component {
                     isVisible={this.state.modalVisible2}
                     onBackButtonPress={() => this.setRejectModalVisible(!this.state.modalVisible2)}
                     onBackdropPress={() => this.setRejectModalVisible(!this.state.modalVisible2)}>
-                    <View style={{ marginTop: 100, height: 200, width: '80%', backgroundColor: '#fff', borderRadius: 5, alignSelf: 'center', paddingBottom: 0 }}>
+                    <View style={{ marginTop: 100, height: 200, width: '80%', backgroundColor: '#fff', borderRadius: 5, alignSelf: 'center', paddingBottom: 0, marginBottom: 50 }}>
                         <View style={styles.modalStyle}>
                             <View style={{ width: '100%', height: 50, justifyContent: 'center', alignItems: 'flex-start' }}>
                                 <Text style={{ color: '#65707a' }}>Enter the reason to reject the project: </Text>
@@ -635,7 +635,7 @@ class ProjectDetails extends Component {
                     isVisible={this.state.modalVisible3}
                     onBackButtonPress={() => this.removeEditModalVisible(!this.state.modalVisible3)}
                     onBackdropPress={() => this.removeEditModalVisible(!this.state.modalVisible3)}>
-                    <View style={{ marginTop: 100, height: 300, width: '80%', backgroundColor: '#fff', borderRadius: 5, alignSelf: 'center', paddingBottom: 0 }}>
+                    <View style={{ marginTop: 100, height: 240, width: '80%', backgroundColor: '#fff', borderRadius: 5, alignSelf: 'center', paddingBottom: 0, marginBottom: 100 }}>
                         <View style={styles.cardStyle}>
                             <View style={{ width: '35%', height: 50, justifyContent: 'center', alignItems: 'flex-start' }}>
                                 <Text style={styles.textBoldStyle}>Qty: </Text>
@@ -670,10 +670,10 @@ class ProjectDetails extends Component {
                                 />
                             </View>
                         </View>
-                        <View style={{ flexDirection: 'row', marginTop: 40, flex: 1 }}>
+                        <View style={{ flexDirection: 'row', marginTop: 40, flex: 1, marginBottom: 0 }}>
                             <TouchableOpacity style={{
                                 flex: 1,
-                                height: 35,
+                                height: 40,
                                 alignSelf: 'stretch',
                                 alignItems: 'center',
                                 justifyContent: 'center',
@@ -686,7 +686,7 @@ class ProjectDetails extends Component {
                             </TouchableOpacity>
                             <TouchableOpacity style={{
                                 flex: 1,
-                                height: 35,
+                                height: 40,
                                 alignSelf: 'stretch',
                                 alignItems: 'center',
                                 justifyContent: 'center',

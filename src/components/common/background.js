@@ -7,6 +7,7 @@ const Img = () => {
             <Image 
                 source={require('./../pics/background.jpg')}
                 style={styles.imageStyle}
+                blurRadius={2}
             />
         </View>
     );

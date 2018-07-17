@@ -353,7 +353,7 @@ const styles = {
     color: '#000'
   },
   textStyle: {
-    fontSize: 17,
+    fontSize: 16,
     fontWeight: 'bold',
     paddingLeft: 20,
     flex: 1,

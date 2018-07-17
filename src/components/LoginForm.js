@@ -128,7 +128,7 @@ class LoginForm extends Component {
                             <TextInput
                                 ref="1"
                                 placeholder="Username"
-                                placeholderTextColor="#fff"
+                                // placeholderTextColor="#fff"
                                 onChangeText={user_email => this.setState({ user_email })}
                                 value={this.state.user_email}
                                 style={styles.inputStyle}
@@ -146,7 +146,7 @@ class LoginForm extends Component {
                                 ref="2"
                                 secureTextEntry
                                 placeholder="Password"
-                                placeholderTextColor="#fff"
+                                // placeholderTextColor="#fff"
                                 autoCorrect={false}
                                 onChangeText={user_password => this.setState({ user_password })}
                                 value={this.state.user_password}
@@ -171,7 +171,7 @@ class LoginForm extends Component {
 
 const styles = {
     inputStyle: {
-        color: '#fff',
+        color: '#000',
         paddingRight: 5,
         paddingLeft: 5,
         fontSize: 18,
@@ -206,7 +206,7 @@ const styles = {
         justifyContent: 'center',
     },
     imageStyle: {
-        height: 150,
+        height: 175,
         width: 150
     },
     errorStyle: {
@@ -216,7 +216,7 @@ const styles = {
     },
     buttonStyle: {
         marginTop: 20,
-        borderBottomWidth: 1,
+        // borderBottomWidth: 1,
         padding: 5,
         borderRadius: 60,
         justifyContent: 'flex-start',

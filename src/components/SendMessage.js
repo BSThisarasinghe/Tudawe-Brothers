@@ -107,6 +107,11 @@ class SendMessage extends Component {
             justifyContent: (item.status == 'yes') ? 'flex-end' : 'flex-start',
             alignItems: 'flex-end'
         }} key={item.ID}>
+            {item.status == 'no' ?
+                <View style={{ backgroundColor: '#C1E0F1', width: 60, height: 60, borderRadius: 50, justifyContent: 'center', alignItems: 'center' }}>
+                    <Text>{item.senderName}</Text>
+                </View>
+                : <Text></Text>}
             <View style={{
                 width: '60%', flex: -1, alignItems: 'flex-start', justifyContent: 'center', backgroundColor: (item.status == 'yes') ? '#167BFB' : '#D5EEF0', borderRadius: 20, borderWidth: 1,
                 borderRadius: 20,

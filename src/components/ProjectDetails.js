@@ -582,7 +582,7 @@ class ProjectDetails extends Component {
                                 />
                             </View>
                         </View>
-                        <View style={{ flexDirection: 'row', marginTop: 35, flex: 1  }}>
+                        <View style={{ flexDirection: 'row', marginTop: 35, flex: 1 }}>
                             <TouchableOpacity style={{
                                 flex: 1,
                                 height: 35,
@@ -764,25 +764,29 @@ class ProjectDetails extends Component {
         }
     }
 
-    tableView = ({ item }) => (
-        <View style={{ flex: 1, flexDirection: 'row', borderWidth: 1 }} key={item.Item_Code}>
-            <View style={{ flex: 3, borderWidth: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={styles.dataStyle}>{item.Item_Description}</Text>
+    tableView = ({ item }) => {
+        Moment.locale('en');
+        var fullDate = Moment(item.Delivery_Date.date).format('YYYY/MM/DD');
+        return (
+            <View style={{ flex: 1, flexDirection: 'row', borderWidth: 1 }} key={item.Item_Code}>
+                <View style={{ flex: 3, borderWidth: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    <Text style={styles.dataStyle}>{item.Item_Description}</Text>
+                </View>
+                <View style={{ flex: 1, borderWidth: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    <Text style={styles.dataStyle}>{item.Qty_Required}</Text>
+                </View>
+                <View style={{ flex: 1, borderWidth: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    <Text style={styles.dataStyle}>{item.UnitofMeasure}</Text>
+                </View>
+                <View style={{ flex: 2, borderWidth: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    <Text style={styles.dataStyle}>{fullDate}</Text>
+                </View>
+                <View style={{ flex: 2, borderWidth: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    <Button title="Edit" color='#6FC7FA' onPress={() => this.setEditModalVisible(!this.state.modalVisible3, item.Qty_Required, item.Delivery_Date.date, item.Item_Code)} />
+                </View>
             </View>
-            <View style={{ flex: 1, borderWidth: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={styles.dataStyle}>{item.Qty_Required}</Text>
-            </View>
-            <View style={{ flex: 1, borderWidth: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={styles.dataStyle}>{item.UnitofMeasure}</Text>
-            </View>
-            <View style={{ flex: 2, borderWidth: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={styles.dataStyle}>{item.Delivery_Date.date}</Text>
-            </View>
-            <View style={{ flex: 2, borderWidth: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Button title="Edit" color='#6FC7FA' onPress={() => this.setEditModalVisible(!this.state.modalVisible3, item.Qty_Required, item.Delivery_Date.date, item.Item_Code)} />
-            </View>
-        </View>
-    )
+        )
+    }
 
     render() {
         take = this;
@@ -920,7 +924,8 @@ const styles = {
         paddingBottom: 10
     },
     dataStyle: {
-        color: '#000'
+        color: '#000',
+        fontSize: 12
     },
     modalStyle: {
         marginTop: 20,

@@ -35,7 +35,7 @@ if($r['FLevel'] == 0){
 $result_set = sqlsrv_query($conn, $sql);
 if($result_set){
 
-    $insert = "INSERT INTO Actions(action, task, job_code, member, action_date, reason) VALUES('" . $reject . "', 'reject','" . $job_code . "','" . $id . "','" . $date . "','" . $text . "')";
+    $insert = "INSERT INTO Actions(action, task, job_code, member, action_date, reason, seenBy) VALUES('" . $reject . "', 'reject','" . $job_code . "','" . $id . "','" . $date . "','" . $text . "','" . $id . "')";
     $insert_set = sqlsrv_query($conn, $insert);
     $msg = "Job Rejected";
     // $SuccessMsgJson = json_encode(array('results' => $details));

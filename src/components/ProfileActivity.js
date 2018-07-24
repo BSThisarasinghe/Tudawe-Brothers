@@ -43,7 +43,8 @@ class ProfileActivity extends Component {
       notification: '',
       count: 0,
       msg: 0,
-      projects: 0
+      projects: 0,
+      id: ''
     };
   }
 
@@ -83,9 +84,9 @@ class ProfileActivity extends Component {
         navigate('Eleventh', { Email: this.state.user_email });
 
       }).catch((error) => {
-        // console.error(error);
+        console.error(error);
         // Alert.alert(error);
-        Alert.alert("No internet connection");
+        // Alert.alert("No internet connection");
         this.setState({ loading: false });
       });
   }
@@ -113,7 +114,7 @@ class ProfileActivity extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     //   if (prevState.count !== this.state.count) {
-        // this.getCount();
+    // this.getCount();
     //   }
     // if (prevState.msg !== this.state.msg) {
     this.countMessages();
@@ -147,9 +148,9 @@ class ProfileActivity extends Component {
           countValue: this.state.count
         });
       }).catch((error) => {
-        // console.error(error);
+        console.error(error);
         // Alert.alert(error);
-        Alert.alert("No internet connection");
+        // Alert.alert("No internet connection");
         this.setState({ loading: false });
       });
   }
@@ -161,9 +162,9 @@ class ProfileActivity extends Component {
         // console.log(responseJson.count);
         this.setState({ msg: responseJson.count });
       }).catch((error) => {
-        // console.error(error);
+        console.error(error);
         // Alert.alert(error);
-        Alert.alert("No internet connection");
+        // Alert.alert("No internet connection");
         this.setState({ loading: false });
       });
   }
@@ -186,12 +187,14 @@ class ProfileActivity extends Component {
     fetch('http://bsthisarasinghe-001-site1.1tempurl.com/notification.php')
       .then((response) => response.json())
       .then((responseJson) => {
-        //console.log("Hello");
-        this.setState({ notification: responseJson });
+        // console.log(responseJson.action);
+        if(responseJson != null){
+          this.setState({ notification: responseJson.action, id: responseJson.id });
+        }
       }).catch((error) => {
-        // console.error(error);
+        console.error(error);
         // Alert.alert(error);
-        Alert.alert("No internet connection");
+        // Alert.alert("No internet connection");
         this.setState({ loading: false });
       });
   }
@@ -199,16 +202,41 @@ class ProfileActivity extends Component {
   handleAppStateChange(appState) {
     if (appState === 'background' || appState === 'inactive') {
       // console.log("App is in background");
-      let date = new Date(Date.now() + (60 * 1000));
+      let date = new Date(Date.now() + (2 * 1000));
 
       if (Platform.OS === 'ios') {
         date = date.toISOString();
       }
 
-      PushNotification.localNotificationSchedule({
-        message: this.state.notification, // (required)
-        date, // in 60 secs
-      });
+      if (this.state.notification != '') {
+        PushNotification.localNotificationSchedule({
+          message: this.state.notification, // (required)
+          date, // in 60 secs
+        });
+      }
+
+      fetch('http://bsthisarasinghe-001-site1.1tempurl.com/seenStatus.php', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: this.state.id
+        })
+      }).then((response) => response.json())
+        .then((responseJson) => {
+          console.log('responseJson');
+          // this.setState({ count: responseJson });
+          // this.props.navigation.setParams({
+          //   countValue: this.state.count
+          // });
+        }).catch((error) => {
+          console.error(error);
+          // Alert.alert(error);
+          // Alert.alert("No internet connection");
+          this.setState({ loading: false });
+        });
     }
   }
 
@@ -222,9 +250,9 @@ class ProfileActivity extends Component {
           navigate('First');
         }
       }).catch((error) => {
-        // console.error(error);
+        console.error(error);
         // Alert.alert(error);
-        Alert.alert("No internet connection");
+        // Alert.alert("No internet connection");
         // this.setState({ loading: false });
       });
   }

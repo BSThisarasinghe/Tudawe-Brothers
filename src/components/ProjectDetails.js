@@ -782,7 +782,9 @@ class ProjectDetails extends Component {
                     <Text style={styles.dataStyle}>{fullDate}</Text>
                 </View>
                 <View style={{ flex: 2, borderWidth: 1, justifyContent: 'center', alignItems: 'center' }}>
-                    <Button title="Edit" color='#6FC7FA' onPress={() => this.setEditModalVisible(!this.state.modalVisible3, item.Qty_Required, item.Delivery_Date.date, item.Item_Code)} />
+                    <TouchableOpacity style={{ height: 25, width: 40, backgroundColor: '#6FC7FA', borderRadius: 2, justifyContent: 'center', alignItems: 'center' }} onPress={() => this.setEditModalVisible(!this.state.modalVisible3, item.Qty_Required, item.Delivery_Date.date, item.Item_Code)}>
+                        <Text style={{ fontSize: 12, color: '#fff' }}>Edit</Text>
+                    </TouchableOpacity>
                 </View>
             </View>
         )

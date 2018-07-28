@@ -23,7 +23,8 @@ class ProfileActivity extends Component {
     const { params = {} } = navigation.state;
     return {
       title: 'Tudawe Brothers',
-      headerStyle: { backgroundColor: '#fad815' },
+      headerStyle: { backgroundColor: '#fad815', height: 45 },
+      headerTitleStyle: { fontSize: 18 },
       headerRight: <Notification onPress={() => take.showNotifications()} count={params.countValue} navigation={navigation} />,
       headerLeft: <Back />
     }
@@ -202,7 +203,7 @@ class ProfileActivity extends Component {
   handleAppStateChange(appState) {
     if (appState === 'background' || appState === 'inactive') {
       // console.log("App is in background");
-      let date = new Date(Date.now() + (2 * 1000));
+      let date = new Date(Date.now() + (20 * 1000));
 
       if (Platform.OS === 'ios') {
         date = date.toISOString();
@@ -211,7 +212,7 @@ class ProfileActivity extends Component {
       if (this.state.notification != '') {
         PushNotification.localNotificationSchedule({
           message: this.state.notification, // (required)
-          date, // in 60 secs
+          date, // in 20 secs
         });
       }
 
@@ -388,7 +389,7 @@ const styles = {
     color: '#fff'
   },
   buttonStyle: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
     flex: 1,
     height: '100%',
     borderRadius: 5,

@@ -19,7 +19,8 @@ class ApprovedProjects extends Component {
         const { params = {} } = navigation.state;
         return {
             title: 'SRN Status',
-            headerStyle: { backgroundColor: '#fad815' },
+            headerStyle: { backgroundColor: '#fad815', height: 45 },
+            headerTitleStyle: { fontSize: 18 },
             headerRight: <Notification onPress={() => take.showNotifications()} count={params.countValue} navigation={navigation} />,
         }
     };
@@ -336,29 +337,29 @@ class ApprovedProjects extends Component {
 
     getCount() {
         fetch('http://bsthisarasinghe-001-site1.1tempurl.com/getCount.php', {
-          method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            deviceId: deviceId
-          })
-    
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                deviceId: deviceId
+            })
+
         }).then((response) => response.json())
-          .then((responseJson) => {
-            // console.log(responseJson);
-            this.setState({ count: responseJson });
-            this.props.navigation.setParams({
-              countValue: this.state.count
+            .then((responseJson) => {
+                // console.log(responseJson);
+                this.setState({ count: responseJson });
+                this.props.navigation.setParams({
+                    countValue: this.state.count
+                });
+            }).catch((error) => {
+                // console.error(error);
+                // Alert.alert(error);
+                Alert.alert("No internet connection");
+                this.setState({ loading: false });
             });
-          }).catch((error) => {
-            // console.error(error);
-            // Alert.alert(error);
-            Alert.alert("No internet connection");
-            this.setState({ loading: false });
-          });
-      }
+    }
 
     handleBackButtonClick() {
         // BackHandler.exitApp();
@@ -427,7 +428,7 @@ class ApprovedProjects extends Component {
                 <Img />
                 <Card>
                     <View style={styles.mainStyle}>
-                        <View style={{ height: 50, justifyContent: 'center', alignItems: 'center' }}>
+                        <View style={{ height: 40, justifyContent: 'center', alignItems: 'center' }}>
                             <Image source={require('./pics/search.png')} style={styles.iconStyle} />
                         </View>
                         <TextInput
@@ -498,7 +499,7 @@ const styles = {
         justifyContent: 'flex-start',
         borderColor: '#ddd',
         position: 'relative',
-        paddingBottom: 40
+        paddingBottom: 100
     },
     iconStyle: {
         height: 40,
@@ -551,6 +552,7 @@ const styles = {
         flex: 1,
         backgroundColor: '#fff',
         borderRadius: 5,
+        height: 40
     },
     mainStyle: {
         // padding: 5,

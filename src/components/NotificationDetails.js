@@ -18,7 +18,8 @@ class NotificationDetails extends Component {
         const { params = {} } = navigation.state;
         return {
             title: 'Details',
-            headerStyle: { backgroundColor: '#fad815' }
+            headerStyle: { backgroundColor: '#fad815', height: 45 },
+            headerTitleStyle: { fontSize: 18 }
         }
     };
 

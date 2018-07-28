@@ -20,7 +20,8 @@ class ProjectDetails extends Component {
         const { params = {} } = navigation.state;
         return {
             title: 'Job Details',
-            headerStyle: { backgroundColor: '#fad815' },
+            headerStyle: { backgroundColor: '#fad815', height: 45 },
+            headerTitleStyle: { fontSize: 18 },
             headerRight: <Notification onPress={() => take.showNotifications()} count={params.countValue} navigation={navigation} />
         }
     };
@@ -857,6 +858,7 @@ const styles = {
     },
     approveStyle: {
         flex: 1,
+        height: 30,
         alignSelf: 'stretch',
         alignItems: 'center',
         justifyContent: 'center',
@@ -869,6 +871,7 @@ const styles = {
     },
     cancelStyle: {
         flex: 1,
+        height: 30,
         alignSelf: 'stretch',
         alignItems: 'center',
         justifyContent: 'center',
@@ -881,6 +884,7 @@ const styles = {
     },
     rejectStyle: {
         flex: 1,
+        height: 30,
         alignSelf: 'stretch',
         alignItems: 'center',
         justifyContent: 'center',

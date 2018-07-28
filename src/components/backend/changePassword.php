@@ -32,7 +32,7 @@ if ($cur_pwd == ''){
    // Echo the message.
     echo $SuccessMsgJson; 
 }else if ($con_pwd == ''){
-    $msg = 'Please confirmm the password';
+    $msg = 'Please confirm the password';
     
     // Converting the message into JSON format.
    $SuccessMsgJson = json_encode($msg);
@@ -66,3 +66,4 @@ if ($cur_pwd == ''){
 
 
 ?>
+

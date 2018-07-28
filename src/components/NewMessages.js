@@ -12,8 +12,8 @@ class NewMessages extends Component {
     static navigationOptions =
         {
             title: 'Notifications',
-            headerStyle: { backgroundColor: '#fad815' },
-            // headerRight: <Notification />
+            headerStyle: { backgroundColor: '#fad815', height: 45 },
+            headerTitleStyle: { fontSize: 18 }
         };
 
     constructor(props) {
@@ -217,7 +217,7 @@ class NewMessages extends Component {
                 <Img />
                 <Card>
                     <View style={styles.mainStyle}>
-                        <View style={{ height: 50, justifyContent: 'center', alignItems: 'center' }}>
+                        <View style={{ height: 40, justifyContent: 'center', alignItems: 'center' }}>
                             <Image source={require('./pics/search.png')} style={styles.iconStyle} />
                         </View>
                         <TextInput
@@ -337,6 +337,7 @@ const styles = {
         flex: 1,
         backgroundColor: '#fff',
         borderRadius: 5,
+        height: 40
     },
     iconStyle: {
         height: 30,

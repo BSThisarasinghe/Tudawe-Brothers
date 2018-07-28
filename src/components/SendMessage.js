@@ -18,7 +18,8 @@ class SendMessage extends Component {
         const { params = {} } = navigation.state;
         return {
             title: 'Message',
-            headerStyle: { backgroundColor: '#fad815' },
+            headerStyle: { backgroundColor: '#fad815', height: 45 },
+            headerTitleStyle: { fontSize: 18 },
             headerRight: <Notification onPress={() => take.showNotifications()} count={params.countValue} navigation={navigation} />,
         }
     };

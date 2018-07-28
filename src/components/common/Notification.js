@@ -119,8 +119,8 @@ class Notification extends Component {
 
 const styles = {
     imageStyle: {
-        width: 30,
-        height: 30
+        width: 25,
+        height: 25
     },
     buttonStyle: {
         marginLeft: 5,
@@ -137,8 +137,8 @@ const styles = {
         height: 100
     },
     downStyle: {
-        width: 30,
-        height: 30
+        width: 25,
+        height: 25
     }
 }
 

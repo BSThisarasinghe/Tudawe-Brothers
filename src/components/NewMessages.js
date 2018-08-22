@@ -35,7 +35,7 @@ class NewMessages extends Component {
     }
 
     goBack() {
-        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/logout.php')
+        fetch('http://buwaneka-001-site1.1tempurl.com/logout.php')
             .then((response) => response.json())
             .then((responseJson) => {
                 // console.log(responseJson.results[0]);
@@ -59,7 +59,7 @@ class NewMessages extends Component {
 
     removeNotification(id, device, action, action_date, job_code, member, reason, task) {
         // console.log(id, ",", device);
-        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/updateNotification.php', {
+        fetch('http://buwaneka-001-site1.1tempurl.com/updateNotification.php', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -129,7 +129,7 @@ class NewMessages extends Component {
     }
 
     projectsList() {
-        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/newMessages.php')
+        fetch('http://buwaneka-001-site1.1tempurl.com/newMessages.php')
             .then((response) => response.json())
             .then((responseJson) => {
                 // console.log(responseJson.results[0].task);
@@ -184,7 +184,7 @@ class NewMessages extends Component {
         this.setState({ loading: true });
         // console.log(value);
         if (value != '') {
-            fetch('http://bsthisarasinghe-001-site1.1tempurl.com/search_notifications.php', {
+            fetch('http://buwaneka-001-site1.1tempurl.com/search_notifications.php', {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',

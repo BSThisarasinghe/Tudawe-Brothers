@@ -73,7 +73,7 @@ class ProjectDetails extends Component {
     }
 
     goBack() {
-        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/logout.php')
+        fetch('http://buwaneka-001-site1.1tempurl.com/logout.php')
             .then((response) => response.json())
             .then((responseJson) => {
                 // console.log(responseJson.results[0]);
@@ -97,7 +97,7 @@ class ProjectDetails extends Component {
 
     onFocus(visible) {
         // console.log(value);
-        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/changeItem.php', {
+        fetch('http://buwaneka-001-site1.1tempurl.com/changeItem.php', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -123,7 +123,7 @@ class ProjectDetails extends Component {
     }
 
     onFocus1(value, item_code) {
-        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/changeDes.php', {
+        fetch('http://buwaneka-001-site1.1tempurl.com/changeDes.php', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -149,7 +149,7 @@ class ProjectDetails extends Component {
 
 
     onFocus2(value, item_code) {
-        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/changeDate.php', {
+        fetch('http://buwaneka-001-site1.1tempurl.com/changeDate.php', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -178,7 +178,7 @@ class ProjectDetails extends Component {
     }
 
     fetchJobData() {
-        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/projectDetails.php', {
+        fetch('http://buwaneka-001-site1.1tempurl.com/projectDetails.php', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -207,7 +207,7 @@ class ProjectDetails extends Component {
     }
 
     fetchItemData() {
-        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/itemDetails.php', {
+        fetch('http://buwaneka-001-site1.1tempurl.com/itemDetails.php', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -270,7 +270,7 @@ class ProjectDetails extends Component {
     }
 
     getCount() {
-        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/getCount.php', {
+        fetch('http://buwaneka-001-site1.1tempurl.com/getCount.php', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -321,7 +321,7 @@ class ProjectDetails extends Component {
             job_code: this.props.navigation.state.params.code
         });
         const { navigate } = this.props.navigation;
-        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/approve.php', {
+        fetch('http://buwaneka-001-site1.1tempurl.com/approve.php', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -378,7 +378,7 @@ class ProjectDetails extends Component {
         } else {
             this.setState({ underlineColorAndroid: 'transparent' });
             this.setState({ modalVisible: visible });
-            fetch('http://bsthisarasinghe-001-site1.1tempurl.com/cancel.php', {
+            fetch('http://buwaneka-001-site1.1tempurl.com/cancel.php', {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
@@ -418,7 +418,7 @@ class ProjectDetails extends Component {
         } else {
             this.setState({ underlineColorAndroid: 'transparent' });
             this.setState({ modalVisible2: visible });
-            fetch('http://bsthisarasinghe-001-site1.1tempurl.com/reject.php', {
+            fetch('http://buwaneka-001-site1.1tempurl.com/reject.php', {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',

@@ -54,7 +54,7 @@ class SendMessage extends Component {
     }
 
     goBack() {
-        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/logout.php')
+        fetch('http://buwaneka-001-site1.1tempurl.com/logout.php')
             .then((response) => response.json())
             .then((responseJson) => {
                 // console.log(responseJson.results[0]);
@@ -137,7 +137,7 @@ class SendMessage extends Component {
     )
 
     getCount() {
-        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/getCount.php', {
+        fetch('http://buwaneka-001-site1.1tempurl.com/getCount.php', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -163,7 +163,7 @@ class SendMessage extends Component {
     }
 
     sendMsg() {
-        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/sendMsg.php', {
+        fetch('http://buwaneka-001-site1.1tempurl.com/sendMsg.php', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -186,7 +186,7 @@ class SendMessage extends Component {
     }
 
     getMsg() {
-        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/pullMessages.php')
+        fetch('http://buwaneka-001-site1.1tempurl.com/pullMessages.php')
             .then((response) => response.json())
             .then((responseJson) => {
                 this.setState({ message: responseJson.results }, function () {

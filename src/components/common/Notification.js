@@ -18,7 +18,7 @@ class Notification extends Component {
     }
 
     getUser() {
-        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/showUser.php')
+        fetch('http://buwaneka-001-site1.1tempurl.com/showUser.php')
             .then((response) => response.json())
             .then((responseJson) => {
                 this.setState({ user_name: responseJson }, function () {
@@ -46,7 +46,7 @@ class Notification extends Component {
     }
 
     goBack() {
-        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/logout.php')
+        fetch('http://buwaneka-001-site1.1tempurl.com/logout.php')
             .then((response) => response.json())
             .then((responseJson) => {
                 // console.log(responseJson.results[0]);

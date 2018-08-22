@@ -46,7 +46,7 @@ class NotificationDetails extends Component {
     }
 
     goBack() {
-        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/logout.php')
+        fetch('http://buwaneka-001-site1.1tempurl.com/logout.php')
             .then((response) => response.json())
             .then((responseJson) => {
                 // console.log(responseJson.results[0]);
@@ -121,7 +121,7 @@ class NotificationDetails extends Component {
     }
 
     getDetails() {
-        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/getDetails.php', {
+        fetch('http://buwaneka-001-site1.1tempurl.com/getDetails.php', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -187,7 +187,7 @@ class NotificationDetails extends Component {
     }
 
     getCount() {
-        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/getCount.php', {
+        fetch('http://buwaneka-001-site1.1tempurl.com/getCount.php', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',

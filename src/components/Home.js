@@ -31,7 +31,7 @@ class Home extends Component {
     // this.setState({ error: '', loading: true });
     //console.log(email);
 
-    fetch('http://bsthisarasinghe-001-site1.1tempurl.com/index.php')
+    fetch('http://buwaneka-001-site1.1tempurl.com/index.php')
       .then((response) => response.json())
       .then((responseJson) => {
         // console.log(responseJson);

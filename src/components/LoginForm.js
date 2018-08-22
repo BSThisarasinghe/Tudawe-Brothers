@@ -30,7 +30,7 @@ class LoginForm extends Component {
         this.setState({ error: '', loading: true });
         //console.log(email);
 
-        fetch('http://bsthisarasinghe-001-site1.1tempurl.com/index.php', {
+        fetch('http://buwaneka-001-site1.1tempurl.com/index.php', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',

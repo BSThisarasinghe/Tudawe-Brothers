@@ -77,7 +77,7 @@ class ProfileActivity extends Component {
   }
 
   sendMsg() {
-    fetch('http://bsthisarasinghe-001-site1.1tempurl.com/seenMessages.php')
+    fetch('http://buwaneka-001-site1.1tempurl.com/seenMessages.php')
       .then((response) => response.json())
       .then((responseJson) => {
         console.log(responseJson);
@@ -131,7 +131,7 @@ class ProfileActivity extends Component {
   }
 
   getCount() {
-    fetch('http://bsthisarasinghe-001-site1.1tempurl.com/getCount.php', {
+    fetch('http://buwaneka-001-site1.1tempurl.com/getCount.php', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -157,7 +157,7 @@ class ProfileActivity extends Component {
   }
 
   countMessages() {
-    fetch('http://bsthisarasinghe-001-site1.1tempurl.com/countMessages.php')
+    fetch('http://buwaneka-001-site1.1tempurl.com/countMessages.php')
       .then((response) => response.json())
       .then((responseJson) => {
         // console.log(responseJson.count);
@@ -171,7 +171,7 @@ class ProfileActivity extends Component {
   }
 
   countProjects() {
-    fetch('http://bsthisarasinghe-001-site1.1tempurl.com/projectsCount.php')
+    fetch('http://buwaneka-001-site1.1tempurl.com/projectsCount.php')
       .then((response) => response.json())
       .then((responseJson) => {
         // console.log(responseJson.count);
@@ -185,7 +185,7 @@ class ProfileActivity extends Component {
   }
 
   getNotification() {
-    fetch('http://bsthisarasinghe-001-site1.1tempurl.com/notification.php')
+    fetch('http://buwaneka-001-site1.1tempurl.com/notification.php')
       .then((response) => response.json())
       .then((responseJson) => {
         // console.log(responseJson.action);
@@ -216,7 +216,7 @@ class ProfileActivity extends Component {
         });
       }
 
-      fetch('http://bsthisarasinghe-001-site1.1tempurl.com/seenStatus.php', {
+      fetch('http://buwaneka-001-site1.1tempurl.com/seenStatus.php', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -242,7 +242,7 @@ class ProfileActivity extends Component {
   }
 
   goBack() {
-    fetch('http://bsthisarasinghe-001-site1.1tempurl.com/logout.php')
+    fetch('http://buwaneka-001-site1.1tempurl.com/logout.php')
       .then((response) => response.json())
       .then((responseJson) => {
         // console.log(responseJson.results[0]);

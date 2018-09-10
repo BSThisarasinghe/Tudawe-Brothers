@@ -85,9 +85,9 @@ class ProfileActivity extends Component {
         navigate('Eleventh', { Email: this.state.user_email });
 
       }).catch((error) => {
-        // console.error(error);
+        console.error(error);
         // Alert.alert(error);
-        Alert.alert("No internet connection");
+        // Alert.alert("No internet connection");
         this.setState({ loading: false });
       });
   }
@@ -149,9 +149,9 @@ class ProfileActivity extends Component {
           countValue: this.state.count
         });
       }).catch((error) => {
-        // console.error(error);
+        console.error(error);
         // Alert.alert(error);
-        Alert.alert("No internet connection");
+        // Alert.alert("No internet connection");
         this.setState({ loading: false });
       });
   }
@@ -163,9 +163,9 @@ class ProfileActivity extends Component {
         // console.log(responseJson.count);
         this.setState({ msg: responseJson.count });
       }).catch((error) => {
-        // console.error(error);
+        console.error(error);
         // Alert.alert(error);
-        Alert.alert("No internet connection");
+        // Alert.alert("No internet connection");
         this.setState({ loading: false });
       });
   }
@@ -177,9 +177,9 @@ class ProfileActivity extends Component {
         // console.log(responseJson.count);
         this.setState({ projects: responseJson.count });
       }).catch((error) => {
-        // console.error(error);
+        console.error(error);
         // Alert.alert(error);
-        Alert.alert("No internet connection");
+        // Alert.alert("No internet connection");
         this.setState({ loading: false });
       });
   }
@@ -193,9 +193,9 @@ class ProfileActivity extends Component {
           this.setState({ notification: responseJson.action, id: responseJson.id });
         }
       }).catch((error) => {
-        // console.error(error);
+        console.error(error);
         // Alert.alert(error);
-        Alert.alert("No internet connection");
+        // Alert.alert("No internet connection");
         this.setState({ loading: false });
       });
   }
@@ -233,9 +233,9 @@ class ProfileActivity extends Component {
           //   countValue: this.state.count
           // });
         }).catch((error) => {
-          // console.error(error);
+          console.error(error);
           // Alert.alert(error);
-          Alert.alert("No internet connection");
+          // Alert.alert("No internet connection");
           this.setState({ loading: false });
         });
     }
@@ -251,9 +251,9 @@ class ProfileActivity extends Component {
           navigate('First');
         }
       }).catch((error) => {
-        // console.error(error);
+        console.error(error);
         // Alert.alert(error);
-        Alert.alert("No internet connection");
+        // Alert.alert("No internet connection");
         // this.setState({ loading: false });
       });
   }

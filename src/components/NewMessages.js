@@ -83,7 +83,7 @@ class NewMessages extends Component {
                         task: task
                     });
                 } else {
-
+                    console.log("Yeah");
                 }
             }).catch((error) => {
                 // console.error(error);

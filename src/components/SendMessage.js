@@ -63,9 +63,9 @@ class SendMessage extends Component {
                     navigate('First');
                 }
             }).catch((error) => {
-                // console.error(error);
+                console.error(error);
                 // Alert.alert(error);
-                Alert.alert("No internet connection");
+                // Alert.alert("No internet connection");
                 // this.setState({ loading: false });
             });
     }
@@ -155,9 +155,9 @@ class SendMessage extends Component {
                     countValue: this.state.count
                 });
             }).catch((error) => {
-                // console.error(error);
+                console.error(error);
                 // Alert.alert(error);
-                Alert.alert("No internet connection");
+                // Alert.alert("No internet connection");
                 this.setState({ loading: false });
             });
     }
@@ -179,8 +179,8 @@ class SendMessage extends Component {
                 this.textInput.clear();
                 this.getMsg();
             }).catch((error) => {
-                //console.error(error);
-                Alert.alert("No internet connection");
+                console.error(error);
+                // Alert.alert("No internet connection");
                 this.setState({ loading: false });
             });
     }
@@ -194,8 +194,8 @@ class SendMessage extends Component {
                     console.log(responseJson.results);
                 });
             }).catch((error) => {
-                //console.error(error);
-                Alert.alert("No internet connection");
+                console.error(error);
+                // Alert.alert("No internet connection");
                 this.setState({ loading: false });
             });
     }

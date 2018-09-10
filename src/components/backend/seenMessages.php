@@ -12,6 +12,11 @@ while($row = sqlsrv_fetch_array($row_set, SQLSRV_FETCH_ASSOC)){
         $query = "UPDATE Messages SET seenBy = '" . $seen . "'";
         $result_set = sqlsrv_query($conn, $query);
     }
+    // else{
+    //     $msg = "nooooo";
+    // $SuccessMsgJson = json_encode($msg);
+    // echo $SuccessMsgJson;
+    // }
 }
 
 if($result_set){
